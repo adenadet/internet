@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
 </head>
 <body class="hold-transition sidebar-mini">
-<div class="wrapper">
-    @include('partials.lte.topnav')
+<div class="wrapper" id="corner">
+    @include('partials.lte.navbar')
     @include('partials.lte.aside')
     <div class="content-wrapper">
         <div class="content-header">
@@ -22,12 +22,13 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Starter Page</li>
+                            <li class="breadcrumb-item active">@yield('title')</li>
                         </ol>
                     </div>
                 </div>
             </div>
         </div>
+        @yield('content')
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -103,6 +104,7 @@
         <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
     </footer>
 </div>
+<script src="{{asset('js/app.js')}}"></script>
 <script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('dist/js/adminlte.min.js')}}"></script>
