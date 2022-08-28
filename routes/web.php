@@ -55,29 +55,29 @@ Route::group(['middleware' => 'auth','namespace' => 'App\Http\Controllers\EMR', 
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/chats',                    'ModulesController@chats');
-    Route::get('/contacts',                 'ModulesController@contacts');
-    Route::get('/dashboard',                'ModulesController@dashboard');
-    Route::get('/departments',              'ModulesController@departments');
-    Route::get('/internet',                 'ModulesController@internet');
-    Route::get('/notices',                  'ModulesController@notices');
-    Route::get('/policies',                 'ModulesController@policies');
-    Route::get('/profile',                  'ModulesController@profile');
-    Route::get('/settings',                 'ModulesController@settings');
-    Route::get('/staff_month',              'ModulesController@staff_month');
-    Route::get('/ticketing',                'ModulesController@ticketing');
-    Route::get('/users',                    'ModulesController@users');
+    Route::get('/chats',                    [App\Http\Controllers\ModulesController::class, 'chats']);
+    Route::get('/contacts',                 [App\Http\Controllers\ModulesController::class, 'contacts']);
+    Route::get('/dashboard',                [App\Http\Controllers\ModulesController::class, 'dashboard']);
+    Route::get('/departments',              [App\Http\Controllers\ModulesController::class, 'departments']);
+    Route::get('/internet',                 [App\Http\Controllers\ModulesController::class, 'internet']);
+    Route::get('/notices',                  [App\Http\Controllers\ModulesController::class, 'notices']);
+    Route::get('/policies',                 [App\Http\Controllers\ModulesController::class, 'policies']);
+    Route::get('/profile',                  [App\Http\Controllers\ModulesController::class, 'profile']);
+    Route::get('/settings',                 [App\Http\Controllers\ModulesController::class, 'settings']);
+    Route::get('/staff_month',              [App\Http\Controllers\ModulesController::class, 'staff_month']);
+    Route::get('/ticketing',                [App\Http\Controllers\ModulesController::class, 'ticketing']);
+    Route::get('/users',                    [App\Http\Controllers\ModulesController::class, 'users']);
     
     //Auto Redirect
-    Route::get('/chats/{any}',              'ModulesController@chats')->where('any', '.*');
-    Route::get('/departments/{any}',        'ModulesController@departments')->where('any', '.*');
-    Route::get('/internet/{any}',           'ModulesController@internet')->where('any', '.*');
-    Route::get('/notices/{any}',            'ModulesController@notices')->where('any', '.*');
-    Route::get('/policies/{any}',           'ModulesController@policies')->where('any', '.*');
-    Route::get('/settings/{any}',           'ModulesController@settings')->where('any', '.*');
-    Route::get('/staff_month/{any}',        'ModulesController@staff_month')->where('any', '.*');
-    Route::get('/ticketing/{any}',          'ModulesController@ticketing')->where('any', '.*');
-    Route::get('/users/{any}',              'ModulesController@users')->where('any', '.*');
+    Route::get('/chats/{any}',              [App\Http\Controllers\ModulesController::class, 'chats'])->where('any', '.*');
+    Route::get('/departments/{any}',        [App\Http\Controllers\ModulesController::class, 'departments'])->where('any', '.*');
+    Route::get('/internet/{any}',           [App\Http\Controllers\ModulesController::class, 'internet'])->where('any', '.*');
+    Route::get('/notices/{any}',            [App\Http\Controllers\ModulesController::class, 'notices'])->where('any', '.*');
+    Route::get('/policies/{any}',           [App\Http\Controllers\ModulesController::class, 'policies'])->where('any', '.*');
+    Route::get('/settings/{any}',           [App\Http\Controllers\ModulesController::class, 'settings'])->where('any', '.*');
+    Route::get('/staff_month/{any}',        [App\Http\Controllers\ModulesController::class, 'staff_month'])->where('any', '.*');
+    Route::get('/ticketing/{any}',          [App\Http\Controllers\ModulesController::class, 'ticketing'])->where('any', '.*');
+    Route::get('/users/{any}',              [App\Http\Controllers\ModulesController::class, 'users'])->where('any', '.*');
 
 });
 

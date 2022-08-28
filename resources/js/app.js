@@ -14,7 +14,7 @@ Vue.component(VueDocPreview);
 
 //Import PDF Reader
 import VuePdfReader from 'vue-pdf-reader';
-Vue.use(VuePdfReader);
+Vue.component(VuePdfReader);
 
 //Import Progress Bar
 import VueProgressBar from 'vue-progressbar';
