@@ -1,4 +1,4 @@
-@extends('layouts.learn')
+@extends('layouts.lte')
 
 @section('extra_content')
     <router-view></router-view>

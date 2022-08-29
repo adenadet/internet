@@ -10,6 +10,7 @@ use App\Models\Area;
 use App\Models\Branch;
 use App\Models\Department;
 use App\Models\NextOfKin;
+use App\Models\Staff;
 use App\Models\State;
 use App\Models\User;
 
@@ -191,7 +192,7 @@ class UserController extends Controller
         $departments = Department::select('id', 'name')->orderBy('name', 'ASC')->get();
         $nok = NextOfKin::where('user_id', auth('api')->id())->get();
         $states = State::orderBy('name', 'ASC')->get();
-        $user = User::where('id', auth('api')->id())->with('area')->with('state')->with('branch')->get();
+        $user = Staff::where('user_id', auth('api')->id())->with('area')->with('state')->with('branch')->first();
         
         return response()->json([
             'areas' => $areas,

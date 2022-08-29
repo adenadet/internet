@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Area;
 use App\Models\Branch;
 use App\Models\NextOfKin;
+use App\Models\Staff;
 use App\Models\State;
 use App\Models\User;
 
@@ -16,7 +17,7 @@ class ProfileController extends Controller
     public function index()
     {
         return response()->json([
-            'user' => User::where('id', auth('api')->id())->with('area')->with('branch')->with('state')->with('next_of_kin')->get(),
+            'user' => Staff::where('user_id', auth('api')->id())->with('area')->with('branch')->with('state')->with('next_of_kin')->get(),
             'areas' => Area::select('name', 'id')->where('state_id', 25)->get(),
             'branches' => Branch::all(),
             'states' => State::where('country_id', 1)->get(),
@@ -69,35 +70,16 @@ class ProfileController extends Controller
             ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //

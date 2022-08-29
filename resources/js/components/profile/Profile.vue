@@ -82,7 +82,7 @@ export default {
         this.getInitials();
         Fire.$on('Reload', response =>{
             console.log("Working");
-            this.user = response.data.user[0];
+            this.user = response.data.user;
             this.areas = response.data.areas;
             this.branches = response.data.branches;
             this.departments = response.data.departments;
@@ -96,7 +96,7 @@ export default {
     methods:{
         getInitials(){
             axios.get('/api/ums/profile').then(response =>{
-                this.user = response.data.user[0];
+                this.user = response.data.user;
                 this.areas = response.data.areas;
                 this.branches = response.data.branches;
                 this.departments = response.data.departments;

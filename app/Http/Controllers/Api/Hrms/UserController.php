@@ -11,6 +11,7 @@ use App\Models\Branch;
 use App\Models\NextOfKin;
 use App\Models\State;
 use App\Models\User;
+use App\Models\Staff;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permissions;
@@ -97,7 +98,7 @@ class UserController extends Controller
     public function profile()
     {
         $branches = Branch::all();
-        $user = User::where('id', auth('api')->id())->with('area')->with('state')->with('branch')->get();
+        $user = Staff::where('user_id', auth('api')->id())->with('area')->with('state')->with('branch')->first();
         $nok = NextOfKin::where('user_id', auth('api')->id())->get();
         $states = State::orderBy('name', 'ASC')->get();
         $areas = Area::where('state_id', 25)->orderBy('name', 'ASC')->get();

@@ -1,4 +1,4 @@
-@extends('layouts.learn')
+@extends('layouts.lte')
 
 @section('content')
 <div class="container">

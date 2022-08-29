@@ -10,6 +10,7 @@ use App\Models\SOM\Month;
 use App\Models\SOM\Winner;
 use App\Models\Notice;
 use App\Models\User;
+use App\Models\Staff;
 
 use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;

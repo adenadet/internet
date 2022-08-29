@@ -8,6 +8,7 @@
                             <h3 class="">Profile</h3>
                         </div>
                         <div class="text-center user-info">
+                            {{user}}
                             <img :src="(user.image) ? '/img/profile/'+user.image : ''" width="300" height="auto" alt="avatar">
                             <p class=""></p>
                         </div>
@@ -87,14 +88,7 @@
         created() {
             this.getInitials();
             Fire.$on('Reload', response =>{
-                console.log("Working");
-                this.user = response.data.user[0];
-                this.areas = response.data.areas;
-                this.branches = response.data.branches;
-                this.departments = response.data.departments;
-                this.states = response.data.states;
-                this.nok = response.data.nok[0];
-
+                this.reloadProfile(response);
                 Fire.$emit('BioDataFill', this.user);
                 Fire.$emit('NextOfKinFill', this.nok);
             });
@@ -102,19 +96,14 @@
         methods:{
             getInitials(){
                 axios.get('/api/hrms/profile').then(response =>{
-                    this.user = response.data.user[0];
-                    this.areas = response.data.areas;
-                    this.branches = response.data.branches;
-                    this.departments = response.data.departments;
-                    this.states = response.data.states;
-                    this.nok = response.data.nok[0];
+                    this.reloadProfile(response);
                     this.$Progress.finish();
                     toast.fire({
                         icon: 'success',
                         title: 'Profile loaded successfully',
                     });
-                    Fire.$emit('BioDataFill', this.user);
-                    Fire.$emit('NextOfKinFill', this.nok);
+                    //Fire.$emit('BioDataFill', this.user);
+                    //Fire.$emit('NextOfKinFill', this.nok);
                 })
                 .catch(()=>{
                     this.$Progress.fail();
@@ -127,6 +116,16 @@
             getProfilePic(){
                 let  photo = (this.form.image.length >= 150) ? this.form.image : "./"+this.form.image;
                 return photo;
+            },
+            reloadProfile(response){
+                console.log("Working");
+                this.user = response.data.user;
+                this.areas = response.data.areas;
+                this.branches = response.data.branches;
+                this.departments = response.data.departments;
+                this.states = response.data.states;
+                this.nok = response.data.nok[0];
+
             },
             updateProfilePic(e){
                 let file = e.target.files[0];
