@@ -63,7 +63,7 @@
                                         <td>{{payment.service != null ? payment.service.name : 'Service Not Defined'}}</td>
                                         <td>455-981-221</td>
                                         <td>El snort testosterone trophy driving gloves handsome</td>
-                                        <td>&#x20A6; {{payment.service != null ? payment.service.amount | currency : '0.00'}}</td>
+                                        <td>&#x20A6; {{payment.service != null ? payment.service.amount : '0.00' | currency}}</td>
                                     </tr>
                                 </tbody>
                             </table>
