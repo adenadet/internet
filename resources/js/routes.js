@@ -1,5 +1,28 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+//Applicant Component
+import ApplicantAppointment       from './applicants/Appointment.vue';
+import ApplicantAppointments      from './applicants/Appointments.vue';
+import ApplicantDashboard         from './applicants/Dashboard.vue';
+import ApplicantPayment           from './applicants/Payment.vue';
+import ApplicantPayments          from './applicants/Payments.vue';
+import ApplicantProfile           from './applicants/Profile.vue';
+
+    import ApplicantProfileFormDetails  from './applicants/forms/Details.vue';
+    import ApplicantAppointmentForm     from './applicants/forms/Appointment.vue';
+    import ApplicantPaymentForm         from './applicants/forms/Payment.vue';
+
+Vue.component('ApplicantAppointment',          ApplicantAppointment);
+Vue.component('ApplicantAppointments',         ApplicantAppointments);
+Vue.component('ApplicantDashboard',            ApplicantDashboard);
+Vue.component('ApplicantPayment',              ApplicantPayment);
+Vue.component('ApplicantPayments',             ApplicantPayments);
+Vue.component('ApplicantProfile',              ApplicantProfile);
+    
+    Vue.component('ApplicantProfileFormDetails',   ApplicantProfileFormDetails);
+    Vue.component('ApplicantAppointmentForm',      ApplicantAppointmentForm);
+    Vue.component('ApplicantPaymentForm', ApplicantPaymentForm);
+
 
 //Chat Components
 import BranchAdmin  from './branches/Admin.vue';
@@ -67,13 +90,13 @@ import EServiceFrontAppointment      from './eservices/front/Appointment.vue';
 import EServiceFrontAppointments     from './eservices/front/Appointments.vue';
 import EServicePayments              from './eservices/front/Payments.vue';
 
-    import EServiceFormPatient      from './eservices/front/forms/Patient.vue';
+    import EServiceFormApplicant      from './eservices/front/forms/Applicant.vue';
     import EServiceFormPayment      from './eservices/front/forms/Payment.vue';
 Vue.component('EServiceFrontAppointment',        EServiceFrontAppointment);
 Vue.component('EServiceFrontAppointments',       EServiceFrontAppointments);
 Vue.component('EServicePayments',                EServicePayments);
 
-    Vue.component('EServiceFormPatient', EServiceFormPatient);
+    Vue.component('EServiceFormApplicant', EServiceFormApplicant);
     Vue.component('EServiceFormPayment', EServiceFormPayment);
 
 import Users from './components/Users.vue';
@@ -351,6 +374,11 @@ Vue.component('UserFormUser',       UserFormUser);
 
 
 let routes = [
+    //Applicant Module
+    {path: '/applicants',             component: ApplicantDashboard},
+    {path: '/applicants/dashboard',   component: ApplicantDashboard},
+    {path: '/applicants/profile',     component: ApplicantProfile},
+
 
     //Dashboard Module
         {path: '/home',             component: DashboardMain},

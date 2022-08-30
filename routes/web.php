@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth','namespace' => 'App\Http\Controllers\Learn'
     Route::get('/tutor_area/{any}',       'TutorController@index')->where('any', '.*'); 
 });
 
-Route::group(['middleware' => 'auth','namespace' => 'App\Http\Controllers\EMR', 'name' => 'eservices.', 'prefix' => '/eservices'],function(){
+Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Controllers\EMR', 'name' => 'eservices.', 'prefix' => '/eservices'],function(){
     Route::get('/administrator',          'ServiceController@administrator');
     Route::get('/front_office',           'ServiceController@front');
     Route::get('/medical_officer',        'ServiceController@medical');
@@ -54,19 +54,19 @@ Route::group(['middleware' => 'auth','namespace' => 'App\Http\Controllers\EMR', 
     Route::get('/radiologist/{any}',      'ServiceController@radiologist')->where('any', '.*'); 
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/chats',                    [App\Http\Controllers\ModulesController::class, 'chats']);
-    Route::get('/contacts',                 [App\Http\Controllers\ModulesController::class, 'contacts']);
-    Route::get('/dashboard',                [App\Http\Controllers\ModulesController::class, 'dashboard']);
-    Route::get('/departments',              [App\Http\Controllers\ModulesController::class, 'departments']);
-    Route::get('/internet',                 [App\Http\Controllers\ModulesController::class, 'internet']);
-    Route::get('/notices',                  [App\Http\Controllers\ModulesController::class, 'notices']);
-    Route::get('/policies',                 [App\Http\Controllers\ModulesController::class, 'policies']);
-    Route::get('/profile',                  [App\Http\Controllers\ModulesController::class, 'profile']);
-    Route::get('/settings',                 [App\Http\Controllers\ModulesController::class, 'settings']);
-    Route::get('/staff_month',              [App\Http\Controllers\ModulesController::class, 'staff_month']);
-    Route::get('/ticketing',                [App\Http\Controllers\ModulesController::class, 'ticketing']);
-    Route::get('/users',                    [App\Http\Controllers\ModulesController::class, 'users']);
+Route::middleware(['auth', 'role:Staff'])->group(function () {
+    Route::get('/chats',         [App\Http\Controllers\ModulesController::class, 'chats'])->name('chats');
+    Route::get('/contacts',      [App\Http\Controllers\ModulesController::class, 'contacts'])->name('contacts');
+    Route::get('/dashboard',     [App\Http\Controllers\ModulesController::class, 'dashboard'])->name('dashboard');
+    Route::get('/departments',   [App\Http\Controllers\ModulesController::class, 'departments'])->name('departments');
+    Route::get('/internet',      [App\Http\Controllers\ModulesController::class, 'internet'])->name('internet');
+    Route::get('/notices',       [App\Http\Controllers\ModulesController::class, 'notices'])->name('notices');
+    Route::get('/policies',      [App\Http\Controllers\ModulesController::class, 'policies'])->name('policies');
+    Route::get('/profile',       [App\Http\Controllers\ModulesController::class, 'profile'])->name('profile');
+    Route::get('/settings',      [App\Http\Controllers\ModulesController::class, 'settings'])->name('settings');
+    Route::get('/staff_month',   [App\Http\Controllers\ModulesController::class, 'staff_month'])->name('staff_month');
+    Route::get('/ticketing',     [App\Http\Controllers\ModulesController::class, 'ticketing'])->name('ticketing');
+    Route::get('/users',         [App\Http\Controllers\ModulesController::class, 'users'])->name('users');
     
     //Auto Redirect
     Route::get('/chats/{any}',              [App\Http\Controllers\ModulesController::class, 'chats'])->where('any', '.*');
@@ -82,3 +82,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/member_area/{any}', 'HomeController@index')->where('any', '.*');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/applicants',         [App\Http\Controllers\ApplicantController::class, 'index'])->name('applicants');
+});

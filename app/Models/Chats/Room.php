@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Chat;
+namespace App\Models\Chats;
 
 use App\Models\Structure;
 
@@ -11,11 +11,11 @@ class Room extends Structure
     protected $fillable = array('name', 'description', 'status', 'created_by', 'created_at', 'updated_at', 'deleted_at', 'deleted_by'); 
 
     public function members(){
-        return $this->hasMany('App\Models\Chat\RoomMember', 'room_id', 'id');
+        return $this->hasMany('App\Models\Chats\Member', 'room_id', 'id');
     }
 
     public function messages(){
-        return $this->hasMany('App\Models\Chat\Message', 'room_id', 'id');
+        return $this->hasMany('App\Models\Chats\Message', 'room_id', 'id');
     }
 
     public function creator(){

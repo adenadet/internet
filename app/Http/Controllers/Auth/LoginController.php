@@ -15,17 +15,18 @@ class LoginController extends Controller
     //protected $redirectTo = RouteServiceProvider::HOME;
     public function redirectTo() {
         $role = Auth::user()->user_type; 
+        dd($role);
         switch ($role) {
             case 'SuperAdmin':
                 return '/admin/dashboard'; break;
             case 'staff':
                 return '/staff/dashboard'; break;
             case 'patient':
-                return '/patient/dashboard'; break;
+                return '/patients/dashboard'; break;
             case 'doctor':
-                return '/doctor/dashboard'; break; 
+                return '/doctors/dashboard'; break; 
             case 'hospital':
-                return '/hospital/dashboard'; break; 
+                return '/hospitals/dashboard'; break; 
             default:
                 return '/home'; break;
         }
@@ -48,11 +49,11 @@ class LoginController extends Controller
         $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'unique_id';
         if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password'])))
         {
-            if (Auth::user()->user_type == 'admin'){
-                return redirect()->route('admin');
+            if (Auth::user()->user_type == 'staff'){
+                return redirect()->route('users');
             }
             else{
-                return redirect()->route('home');
+                return redirect()->route('applicants');
             }
         }
         else{

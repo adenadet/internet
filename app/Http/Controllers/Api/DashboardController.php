@@ -26,11 +26,11 @@ class DashboardController extends Controller
         $staff_month = $this->staff_months('1');
         
         return response()->json([
-            'birthdays'     => User::birthDayBetween(Carbon::now(), Carbon::now()->addWeek())->orderByRaw("DAYOFMONTH('dob')", 'ASC')->limit(8)->get(),
+            //'birthdays'     => User::birthDayBetween(Carbon::now(), Carbon::now()->addWeek())->orderByRaw("DAYOFMONTH('dob')", 'ASC')->limit(8)->get(),
             'chats'         => $chats,
             'message_rooms' => Member::where('user_id', '=', auth('api')->id())->with('room.messages')->get(),
             'new_staffs'    => User::orderBy('created_at', 'DESC')->limit(8)->get(),
-            'tickets'       => Ticket::where('agent_id', '=', auth('api')->id())->orWhere('category_id', '=', auth('api')->user()->department_id)->with(['creator', 'category', 'status', 'priority'])->latest()->paginate(5),
+            //'tickets'       => Ticket::where('agent_id', '=', auth('api')->id())->orWhere('category_id', '=', auth('api')->user()->department_id)->with(['creator', 'category', 'status', 'priority'])->latest()->paginate(5),
             'staff_months'  => Winner::where('month_id', '=', $staff_month)->with('user.department')->with('branch')->get(),
             'notices'       => Notice::orderBy('created_at', 'DESC')->paginate(3),
         ]);
