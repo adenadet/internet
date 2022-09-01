@@ -287,10 +287,10 @@ Vue.component('PoliciesForm',        PoliciesForm);
 Vue.component('PoliciesFormAssign',  PoliciesFormAssign);
 
 //Profile Components
-import Profile from './components/profile/Profile.vue';
-import PMFormBioData from './components/profile/forms/BioData.vue';
-import PMFormNOK from './components/profile/forms/NextOfKin.vue';
-import PMFormPassword from './components/profile/forms/Password.vue';
+import Profile from './profile/Profile.vue';
+import PMFormBioData from './profile/forms/BioData.vue';
+import PMFormNOK from './profile/forms/NextOfKin.vue';
+import PMFormPassword from './profile/forms/Password.vue';
 
 
 Vue.component('Profile',        Profile);
