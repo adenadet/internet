@@ -3,15 +3,13 @@
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
+Route::get('/patient', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
 
 Auth::routes();
 
@@ -85,4 +83,7 @@ Route::get('/member_area/{any}', 'HomeController@index')->where('any', '.*');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/applicants',         [App\Http\Controllers\ApplicantController::class, 'index'])->name('applicants');
+
+    Route::get('/applicants/{any}',   [App\Http\Controllers\ApplicantController::class, 'index'])->where('any', '.*');
+
 });

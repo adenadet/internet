@@ -10,7 +10,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                            <!-- PatientAppointmentForm :appointment="appointment" / -->
+                            < :appointment="appointment" / -->
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                            <EServiceFormPatient /> 
+                            <PMFormBioData :areas="areas" :branches="branches" :departments="departments" :editMode="editMode" :states="states" :user="user" /> 
                         </div>
                     </div>
                 </div>

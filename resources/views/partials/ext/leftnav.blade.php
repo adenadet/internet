@@ -17,41 +17,39 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <router-link to="/applicant/dashboard" class="nav-link">
+                    <router-link to="/applicants/dashboard" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </router-link >
                 </li>
                 <li class="nav-item">
-                    <router-link to="/applicant/profile" class="nav-link">
+                    <router-link to="/applicants/profile" class="nav-link">
                         <i class="nav-icon fas fas fa-user"></i>
                         <p>Profile</p>
                     </router-link >
                 </li>
                 <li class="nav-item">
-                    <router-link to="/applicant/appointments" class="nav-link">
+                    <router-link to="/applicants/appointments" class="nav-link">
                         <i class="nav-icon fas fas fa-calendar-day"></i>
                         <p>Appointments</p>
                     </router-link >
                 </li>
                 <li class="nav-item">
-                    <router-link to="/applicant/payments" class="nav-link">
+                    <router-link to="/applicants/payments" class="nav-link">
                         <i class="nav-icon fas fa-wallet"></i>
                         <p>Payments</p>
                     </router-link >
                 </li>
                 <li class="nav-item">
-                    <router-link to="/applicant/ticket" class="nav-link">
+                    <router-link to="/applicants/ticket" class="nav-link">
                         <i class="nav-icon fas fa-tags"></i>
                         <p>Tickets</p>
                     </router-link >
                 </li>
                 <li class="nav-item">
-                    <router-link to="/applicant/payment" class="nav-link">
-                        <i class="nav-icon fas fa-power-off"></i>
-                        <p>Log Out</p>
-                    </router-link >
+                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link"><i class="nav-icon fas fa-power-off"></i><p>Log Out </p></a>
                 </li>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
             </ul>
         </nav>
     </div>

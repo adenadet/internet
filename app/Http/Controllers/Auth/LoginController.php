@@ -50,7 +50,7 @@ class LoginController extends Controller
         if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password'])))
         {
             if (Auth::user()->user_type == 'staff'){
-                return redirect()->route('users');
+                return redirect()->route('dashboard');
             }
             else{
                 return redirect()->route('applicants');

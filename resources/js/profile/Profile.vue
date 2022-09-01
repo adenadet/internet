@@ -81,13 +81,12 @@ export default {
     created() {
         this.getInitials();
         Fire.$on('Reload', response =>{
-            console.log("Working");
             this.user = response.data.user;
             this.areas = response.data.areas;
             this.branches = response.data.branches;
             this.departments = response.data.departments;
             this.states = response.data.states;
-            this.nok = response.data.nok[0];
+            this.nok = response.data.nok;
 
             Fire.$emit('BioDataFill', this.user);
             Fire.$emit('NextOfKinFill', this.nok);
@@ -101,7 +100,7 @@ export default {
                 this.branches = response.data.branches;
                 this.departments = response.data.departments;
                 this.states = response.data.states;
-                this.nok = response.data.nok[0];
+                this.nok = response.data.nok;
                 this.$Progress.finish();
                 toast.fire({
                     icon: 'success',

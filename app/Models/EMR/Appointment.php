@@ -13,6 +13,10 @@ class Appointment extends Structure
     protected $table = 'emr_appointments';
     protected $fillable = array('id', 'patient_id', 'service_id', 'date', 'schedule', 'status', 'arrived_at', 'payment_channel', 'paid_by', 'created_at', 'deleted_by', 'deleted_at');
 
+    public function patient(){
+        return $this->belongsTo('App\Models\EMR\Patient', 'patient_id', 'user_id');
+    }
+
     public function service(){
         return $this->belongsTo('App\Models\EMR\Service', 'service_id', 'id');
     }

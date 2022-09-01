@@ -38,20 +38,16 @@
                         <ul class="nav nav-pills">
                             <li class="nav-item"><a class="nav-link active" href="#bio-data" data-toggle="tab">Bio Data</a></li>
                             <li class="nav-item"><a class="nav-link" href="#next-of-kin" data-toggle="tab">Next of Kin</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#applicant" data-toggle="tab">Applicant Detail</a></li>
                             <li class="nav-item"><a class="nav-link" href="#password" data-toggle="tab">Password</a></li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="tab-pane active" id="bio-data">
-                                <PatientProfileFormDetails :areas="areas" :states="states" :user="user" />
-                            </div>
-                            <div class="tab-pane" id="next-of-kin">
-                                <ProfileFormNOK :nok="nok" />
-                            </div>
-                            <div class="tab-pane" id="password">
-                                <ProfileFormPassword />
-                            </div>
+                            <div class="tab-pane active" id="bio-data"><PMFormBioData :areas="areas" :editMode="editMode" :states="states" :nations="nations" :user="user" /></div>
+                            <div class="tab-pane" id="next-of-kin"><PMFormNOK :nok="nok"/></div>
+                            <div class="tab-pane" id="applicant"><ApplicantDetailsForm :applicant="applicant"/></div>
+                            <div class="tab-pane" id="password"><PMFormPassword /></div>
                         </div>
                     </div>
                 </div>
@@ -70,6 +66,7 @@ export default {
             nok:{},
             states:[],  
             user:{}, 
+            nations: [],
         }
     },
     mounted() {},
@@ -90,11 +87,12 @@ export default {
     methods:{
         getInitials(){
             axios.get('/api/ums/profile').then(response =>{
-                this.user = response.data.user[0];
+                this.user = response.data.user;
                 this.areas = response.data.areas;
                 this.branches = response.data.branches;
                 this.states = response.data.states;
-                this.nok = response.data.nok[0];
+                this.nations = response.data.nations;
+                this.nok = response.data.nok;
                 this.$Progress.finish();
                 toast.fire({
                     icon: 'success',

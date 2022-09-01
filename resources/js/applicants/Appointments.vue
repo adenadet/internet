@@ -11,14 +11,14 @@
                                     aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                            <PatientAppointmentForm :appointment="appointment" />
+                            <ApplicantAppointmentForm :appointment="appointment" />
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
-                    <div class="card">
+                <div class="col-md-12">
+                    <div class="card col-12">
                         <div class="card-header">
                             <h3 class="card-title">All Appointments</h3>
                             <div class="card-tools">
@@ -52,7 +52,7 @@
                                         <td><span class="tag tag-success">{{appointment.status == 0 ? 'Unpaid' :(appointment.status == 1 ? 'Paid' :(appointment.status == 2 ? 'Reschedule' :(appointment.status == 3 ? 'Cancelled' : (appointment.status == 8 ? 'Certificate Sent' :'Done'))))}}</span></td>
                                         <td>
                                             <div class="btn btn-group">
-                                                <router-link :to="'/patient/appointment/'+appointment.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
+                                                <router-link :to="'/applicants/appointment/'+appointment.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
                                                 <button class="btn btn-success btn-sm"><i class="fa fa-file-pdf"></i></button>
                                                 <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                                             </div> 

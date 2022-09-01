@@ -26,7 +26,7 @@ class Staff extends Structure
     }
 
     protected $fillable = [
-        'first_name', 'middle_name', 'last_name', 'bvn', 'email', 'password', 'unique_id', 'username', 'street', 'street2', 'city', 'area_id', 'state_id', 'phone', 'branch_id', 'sex', 'image', 'saving_id', 'pin', 'department_id'     
+        'branch_id', 'saving_id', 'pin', 'department_id'     
         ];
 
     public function area(){

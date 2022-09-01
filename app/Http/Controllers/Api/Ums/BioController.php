@@ -30,7 +30,7 @@ class BioController extends Controller
             'area_id' => 'numeric',
             'phone' => 'numeric',
             'alt_phone' => 'nullable|numeric',
-            'branch_id' => 'required|numeric',
+            'personal_email' => 'nullable|string',
             'sex' => 'required|string',
             'dob' => 'required|date',
         ]);
@@ -59,17 +59,18 @@ class BioController extends Controller
             'street2' => $request['street2'],
             'city' => $request['city'],
             'state_id' => $request['state_id'],
+            'nation_id' => $request['nation_id'],
             'area_id' => $request['area_id'],
             'personal_email' => $request['personal_email'],
             'phone' => $request['phone'],
             'alt_phone' => $request['alt_phone'],
-            'branch_id' => $request['branch_id'],
-            'department_id' => $request['department_id'],
+            //'branch_id' => $request['branch_id'],
+            //'department_id' => $request['department_id'],
             'sex' => $request['sex'],
             'dob' => $request['dob'],
             'image' => $image_url,
             'updated_at' => date('Y-m-d H:i:s'),
-            'unique_id' => $request->input('unique_id'),
+            //'unique_id' => $request->input('unique_id'),
             ]
         );
         $user->joined_at = $request->input('joined_at');
@@ -84,11 +85,11 @@ class BioController extends Controller
         
         return response()->json([
             'added' => $user,
-            'user' => User::where('id', auth('api')->id())->with('area')->with('branch')->with('state')->get(),
+            'user' => User::where('id', auth('api')->id())->with('area')->with('branch')->with('state')->first(),
             'areas' => Area::select('name', 'id')->where('state_id', 25)->get(),
             'branches' => Branch::all(),
             'states' => State::where('country_id', 1)->get(),
-            'nok' => NextOfKin::where('user_id', auth('api')->id())->get(),
+            'nok' => NextOfKin::where('user_id', auth('api')->id())->first(),
             ]);
     }
 

@@ -1,14 +1,10 @@
 @extends('layouts.ext')
 
-@section('extra_content')
+@section('content')
 <section class="content">
     <div class="row">
-        <div class="col-md-3">
-        </div>
-        <div class="col-md-9">
-            <router-view></router-view>
-            <vue-progress-bar></vue-progress-bar>
-        </div>
+        <router-view></router-view>
+        <vue-progress-bar></vue-progress-bar>
     </div>
 </section>
 @endsection

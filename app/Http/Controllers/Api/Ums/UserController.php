@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Area;
 use App\Models\Branch;
+use App\Models\Country;
 use App\Models\Department;
 use App\Models\NextOfKin;
 use App\Models\Staff;
@@ -88,10 +89,10 @@ class UserController extends Controller
             'area_id' => 'numeric',
             'phone' => 'numeric',
             'alt_phone' => 'nullable|numeric',
-            'branch_id' => 'required|numeric',
+            //'branch_id' => 'required|numeric',
             'sex' => 'required|string',
             'dob' => 'required|date',
-            'unique_id' => 'required|unique:users',
+            //'unique_id' => 'required|unique:users',
         ]);
 
         $image_url = null;
@@ -190,11 +191,12 @@ class UserController extends Controller
         $areas = Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get();
         $branches = Branch::select('id', 'name')->orderBy('name', 'ASC')->get();
         $departments = Department::select('id', 'name')->orderBy('name', 'ASC')->get();
-        $nok = NextOfKin::where('user_id', auth('api')->id())->get();
+        $nok = NextOfKin::where('user_id', auth('api')->id())->first();
         $states = State::orderBy('name', 'ASC')->get();
-        $user = Staff::where('user_id', auth('api')->id())->with('area')->with('state')->with('branch')->first();
+        $user = User::where('id', auth('api')->id())->with('area')->with('state')->with('branch')->first();
         
         return response()->json([
+            'nations' => Country::all(),
             'areas' => $areas,
             'user' => $user,
             'branches' => $branches,

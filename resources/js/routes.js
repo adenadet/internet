@@ -8,7 +8,7 @@ import ApplicantPayment           from './applicants/Payment.vue';
 import ApplicantPayments          from './applicants/Payments.vue';
 import ApplicantProfile           from './applicants/Profile.vue';
 
-    import ApplicantProfileFormDetails  from './applicants/forms/Details.vue';
+    import ApplicantDetailsForm         from './applicants/forms/Details.vue';
     import ApplicantAppointmentForm     from './applicants/forms/Appointment.vue';
     import ApplicantPaymentForm         from './applicants/forms/Payment.vue';
 
@@ -19,9 +19,9 @@ Vue.component('ApplicantPayment',              ApplicantPayment);
 Vue.component('ApplicantPayments',             ApplicantPayments);
 Vue.component('ApplicantProfile',              ApplicantProfile);
     
-    Vue.component('ApplicantProfileFormDetails',   ApplicantProfileFormDetails);
-    Vue.component('ApplicantAppointmentForm',      ApplicantAppointmentForm);
-    Vue.component('ApplicantPaymentForm', ApplicantPaymentForm);
+    Vue.component('ApplicantDetailsForm',      ApplicantDetailsForm);
+    Vue.component('ApplicantAppointmentForm',  ApplicantAppointmentForm);
+    Vue.component('ApplicantPaymentForm',      ApplicantPaymentForm);
 
 
 //Chat Components
@@ -374,128 +374,130 @@ Vue.component('UserFormUser',       UserFormUser);
 
 
 let routes = [
-    //Applicant Module
+//Applicant Module
     {path: '/applicants',             component: ApplicantDashboard},
+    {path: '/applicants/appointment/:id', component: ApplicantAppointment},
+    {path: '/applicants/appointments',component: ApplicantAppointments},
     {path: '/applicants/dashboard',   component: ApplicantDashboard},
     {path: '/applicants/profile',     component: ApplicantProfile},
 
 
-    //Dashboard Module
-        {path: '/home',             component: DashboardMain},
-        {path: '/dashboard',        component: DashboardMain},
+//Dashboard Module
+    {path: '/home',             component: DashboardMain},
+    {path: '/dashboard',        component: DashboardMain},
 
-    //Chats Links
-        {path: '/branches',         component: BranchAll},
-        {path: '/branches/:id',     component: BranchSingle},
+//Chats Links
+    {path: '/branches',         component: BranchAll},
+    {path: '/branches/:id',     component: BranchSingle},
 
-    //Chats Links
-        {path: '/chats',            component: ChatMain},
-        {path: '/chats/private',    component: ChatMain},
-    
-    //Contact Links
-        {path: '/contacts',           component:ContactAll},
-        {path: '/contacts/staff/:id', component:ContactSingle},
+//Chats Links
+    {path: '/chats',            component: ChatMain},
+    {path: '/chats/private',    component: ChatMain},
 
-    //Department Links
-        {path: '/departments',       component:DepartmentAll},
-        {path: '/departments/:id',   component:DepartmentSingle},
+//Contact Links
+    {path: '/contacts',           component:ContactAll},
+    {path: '/contacts/staff/:id', component:ContactSingle},
 
-    //EServices Links
-        {path: '/eservices/front_office',                   component:EServiceFrontAppointments},
-        {path: '/eservices/front_office/appointments',      component:EServiceFrontAppointments},
-        {path: '/eservices/front_office/appointment/:id',   component:EServiceFrontAppointment},
-        {path: '/eservices/front_office/payments',          component:EServicePayments},
+//Department Links
+    {path: '/departments',       component:DepartmentAll},
+    {path: '/departments/:id',   component:DepartmentSingle},
 
-    //Network Checkers Module
-        {path: '/internet', component: NetworkDashboard},
-    
-    //Learning Module
-        //Administrator Area Sub Module
-        {path: '/learn/admin_area',                 component: AdminCourses},
-        {path: '/learn/admin_area/categories',      component: AdminCategories},
-        {path: '/learn/admin_area/course/:id',      component: AdminCourse},
-        {path: '/learn/admin_area/courses',         component: AdminCourses},
-        {path: '/learn/admin_area/exam/:id',        component: AdminExam},
-        {path: '/learn/admin_area/exams',           component: AdminExams},
-        {path: '/learn/admin_area/exam_results',    component: AdminExamResults},
-        {path: '/learn/admin_area/exam_results/:id',component: AdminExamResult},
-        {path: '/learn/admin_area/exam_result/:id', component: AdminResult},
-        {path: '/learn/admin_area/lesson/:id',      component: AdminLesson},
-        {path: '/learn/admin_area/result/:id',      component: AdminResult},
-        //{path: '/admin_area/result/:id', component: AdminResult},
-    
-        //Student Area Sub Module
-        {path: '/learn/student_area',               component: StudentCourses},
-        {path: '/learn/student_area/course/:id',    component: StudentCourse},
-        {path: '/learn/student_area/courses',       component: StudentCourses},
-        {path: '/learn/student_area/exams',         component: StudentExams},
-        {path: '/learn/student_area/lesson/:id',    component: StudentLesson},
-        {path: '/learn/student_area/result/:id',    component: StudentResult},
-        {path: '/learn/student_area/results',       component: StudentResults},
-    
-        //Tutor Area Sub Module
-        {path: '/learn/tutor_area', component: TutorCourses},
-        {path: '/learn/tutor_area/course/:id', component: TutorCourse},
-        {path: '/learn/tutor_area/courses', component: TutorCourses},
-        {path: '/learn/tutor_area/exams', component: TutorExams},
-        {path: '/learn/tutor_area/exam/:id', component: AdminExam},
-        {path: '/learn/tutor_area/lesson/:id', component: TutorLesson},
-        {path: '/learn/tutor_area/result/:id', component: TutorResult},
-    
-        {path: '/student_area/exams', component: LmsStdExams},
-        //{path: '/student_area/lesson/:id', component: LmsStdLesson},
-        {path: '/tutor_area/courses', component: LmsTutCourses},
-        {path: '/tutor_area/exams', component: LmsTutExams},
-    
-    //Notice Board Module
-        {path: '/notices', component: NoticeAll},
-        {path: '/notices/admin', component: NoticeAdmin},
-        {path: '/notices/:id', component: NoticeSingle},
-        //{path: '/notices', component: NoticeAll},
+//EServices Links
+    {path: '/eservices/front_office',                   component:EServiceFrontAppointments},
+    {path: '/eservices/front_office/appointments',      component:EServiceFrontAppointments},
+    {path: '/eservices/front_office/appointment/:id',   component:EServiceFrontAppointment},
+    {path: '/eservices/front_office/payments',          component:EServicePayments},
 
-    //Profile Module
-        {path: '/policies',             component: PoliciesDept},
-        {path: '/policies/department',  component: PoliciesDept},
-        {path: '/policies/general',     component: PoliciesGen},
-        {path: '/policies/admin',       component: PoliciesAdmin},
-        {path: '/policies/view/:id',    component: PoliciesView},
+//Network Checkers Module
+    {path: '/internet', component: NetworkDashboard},
+
+//Learning Module
+    //Administrator Area Sub Module
+    {path: '/learn/admin_area',                 component: AdminCourses},
+    {path: '/learn/admin_area/categories',      component: AdminCategories},
+    {path: '/learn/admin_area/course/:id',      component: AdminCourse},
+    {path: '/learn/admin_area/courses',         component: AdminCourses},
+    {path: '/learn/admin_area/exam/:id',        component: AdminExam},
+    {path: '/learn/admin_area/exams',           component: AdminExams},
+    {path: '/learn/admin_area/exam_results',    component: AdminExamResults},
+    {path: '/learn/admin_area/exam_results/:id',component: AdminExamResult},
+    {path: '/learn/admin_area/exam_result/:id', component: AdminResult},
+    {path: '/learn/admin_area/lesson/:id',      component: AdminLesson},
+    {path: '/learn/admin_area/result/:id',      component: AdminResult},
+    //{path: '/admin_area/result/:id', component: AdminResult},
+
+    //Student Area Sub Module
+    {path: '/learn/student_area',               component: StudentCourses},
+    {path: '/learn/student_area/course/:id',    component: StudentCourse},
+    {path: '/learn/student_area/courses',       component: StudentCourses},
+    {path: '/learn/student_area/exams',         component: StudentExams},
+    {path: '/learn/student_area/lesson/:id',    component: StudentLesson},
+    {path: '/learn/student_area/result/:id',    component: StudentResult},
+    {path: '/learn/student_area/results',       component: StudentResults},
+
+    //Tutor Area Sub Module
+    {path: '/learn/tutor_area', component: TutorCourses},
+    {path: '/learn/tutor_area/course/:id', component: TutorCourse},
+    {path: '/learn/tutor_area/courses', component: TutorCourses},
+    {path: '/learn/tutor_area/exams', component: TutorExams},
+    {path: '/learn/tutor_area/exam/:id', component: AdminExam},
+    {path: '/learn/tutor_area/lesson/:id', component: TutorLesson},
+    {path: '/learn/tutor_area/result/:id', component: TutorResult},
+
+    {path: '/student_area/exams', component: LmsStdExams},
+    //{path: '/student_area/lesson/:id', component: LmsStdLesson},
+    {path: '/tutor_area/courses', component: LmsTutCourses},
+    {path: '/tutor_area/exams', component: LmsTutExams},
+
+//Notice Board Module
+    {path: '/notices', component: NoticeAll},
+    {path: '/notices/admin', component: NoticeAdmin},
+    {path: '/notices/:id', component: NoticeSingle},
+    //{path: '/notices', component: NoticeAll},
+
+//Profile Module
+    {path: '/policies',             component: PoliciesDept},
+    {path: '/policies/department',  component: PoliciesDept},
+    {path: '/policies/general',     component: PoliciesGen},
+    {path: '/policies/admin',       component: PoliciesAdmin},
+    {path: '/policies/view/:id',    component: PoliciesView},
+
+//Profile Module
+    {path: '/profile', component: Profile},
     
-    //Profile Module
-        {path: '/profile', component: Profile},
-        
-    //Settings Module
-        {path: '/settings/branches',        component: BranchAdmin},
-        {path: '/settings/departments',     component: DepartmentAdmin},
-        {path: '/settings/course/:id',      component: StgCourse},
-        {path: '/settings/courses',         component: StgCourses},
-    
-    //Socials Module
-        {path: '/socials/album/:id',    component: SocialAlbum},
-        {path: '/socials/albums',       component: SocialAlbums},
-        {path: '/socials/dashboard',    component: SocialDashboard},
-        {path: '/socials/forum/:id',    component: SocialForum},
-        {path: '/socials/forums',       component: SocialForums},
-    
-    //Staff of the Month Module
-        {path: '/staff_month',                component: SOMWinners},
-        {path: '/staff_month/nominate',       component: SOMNominate},
-        {path: '/staff_month/view/:month',    component: SocialAlbum},
-        {path: '/staff_month/vote',           component: SOMVote},
-        {path: '/staff_month/winners',        component: SOMWinners},
-        //{path: '/staff_month/dashboard',    component: SocialDashboard},
-    
-    //Ticketing Modules
-        {path: '/ticketing',                component: TicketPersonal},
-        {path: '/ticketing/admin',          component: TicketAdmin},
-        {path: '/ticketing/settings',       component: TicketSetting},
-        {path: '/ticketing/department',     component: TicketDepartment},
-        {path: '/ticketing/:id',            component: TicketSingle},
-    
-    //User Module
-        {path: '/users', component: AllUsers},
-        {path: '/users/all', component: AllUsers},
-        {path: '/users/roles', component: AllRoles},
-    ]
+//Settings Module
+    {path: '/settings/branches',        component: BranchAdmin},
+    {path: '/settings/departments',     component: DepartmentAdmin},
+    {path: '/settings/course/:id',      component: StgCourse},
+    {path: '/settings/courses',         component: StgCourses},
+
+//Socials Module
+    {path: '/socials/album/:id',    component: SocialAlbum},
+    {path: '/socials/albums',       component: SocialAlbums},
+    {path: '/socials/dashboard',    component: SocialDashboard},
+    {path: '/socials/forum/:id',    component: SocialForum},
+    {path: '/socials/forums',       component: SocialForums},
+
+//Staff of the Month Module
+    {path: '/staff_month',                component: SOMWinners},
+    {path: '/staff_month/nominate',       component: SOMNominate},
+    {path: '/staff_month/view/:month',    component: SocialAlbum},
+    {path: '/staff_month/vote',           component: SOMVote},
+    {path: '/staff_month/winners',        component: SOMWinners},
+    //{path: '/staff_month/dashboard',    component: SocialDashboard},
+
+//Ticketing Modules
+    {path: '/ticketing',                component: TicketPersonal},
+    {path: '/ticketing/admin',          component: TicketAdmin},
+    {path: '/ticketing/settings',       component: TicketSetting},
+    {path: '/ticketing/department',     component: TicketDepartment},
+    {path: '/ticketing/:id',            component: TicketSingle},
+
+//User Module
+    {path: '/users', component: AllUsers},
+    {path: '/users/all', component: AllUsers},
+    {path: '/users/roles', component: AllRoles},
+]
     
 Vue.component('formcontact', FormContact);
 Vue.component('formbiodata', FormBioData);

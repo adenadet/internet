@@ -38,13 +38,13 @@
                 <input type="text" class="form-control" id="street2" name="street2" placeholder="Enter Street Desc" v-model="BioData.street2" :class="{'is-invalid' : BioData.errors.has('street2') }">
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-3 col-sm-6">
             <div class="form-group">
                 <label>City*</label>
                 <input type="text" class="form-control" id="city" name="city" placeholder="Enter City *" v-model="BioData.city" :class="{'is-invalid' : BioData.errors.has('city') }">
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-3 col-sm-6">
             <div class="form-group">
                 <label>State</label>
                 <select class="form-control" id="state_id" name="state_id" placeholder="Enter State / County *" required v-model="BioData.state_id" :class="{'is-invalid' : BioData.errors.has('state_id') }">
@@ -53,7 +53,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-3 col-sm-6">
             <div class="form-group">
                 <label>LGA</label>
                 <select class="form-control" id="area_id" name="area_id" required v-model="BioData.area_id" :class="{'is-invalid' : BioData.errors.has('area_id') }">
@@ -62,65 +62,36 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-3 col-sm-6">
+            <div class="form-group">
+                <label>Country</label>
+                <select class="form-control" id="nation_id" name="nation_id" required v-model="BioData.nation_id" :class="{'is-invalid' : BioData.errors.has('nation_id') }">
+                    <option value="">--Select nation--</option>
+                    <option v-for="nation in nations" v-bind:key="nation.id" :value="nation.id" >{{nation.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label>Phone Number</label>
                 <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number *" required v-model="BioData.phone" :class="{'is-invalid' : BioData.errors.has('phone') }">
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label>Alternate Phone</label>
                 <input type="text" class="form-control" id="alt_phone" name="alt_phone" placeholder="Alternate Phone Number" v-model="BioData.alt_phone" :class="{'is-invalid' : BioData.errors.has('alt_phone') }">
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-                <label>Branch</label>
-                <select class="form-control" id="branch_id" name="branch_id" v-model="BioData.branch_id" :class="{'is-invalid' : BioData.errors.has('branch_id') }">
-                    <option value="">---Select Branch---</option>
-                    <option v-for="branch in branches" v-bind:key="branch.id" :value="branch.id" >{{branch.name}}</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-                <label>Department</label>
-                <select  :disabled= "editMode ? 'disabled' : 'false'" class="form-control" id="department_id" name="department_id" v-model="BioData.department_id" :class="{'is-invalid' : BioData.errors.has('branch_id') }">
-                    <option value="">---Select Department---</option>
-                    <option v-for="department in departments" v-bind:key="department.id" :value="department.id" >{{department.name}}</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label>Email Address</label>
                 <input :disabled= "editMode ? 'disabled' : 'false'" type="text" class="form-control" id="email" name="email" placeholder="Enter Email Address *" required v-model="BioData.email" :class="{'is-invalid' : BioData.errors.has('email') }">
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-6 col-sm-12">
             <div class="form-group">
-                <label>Personal Email Address</label>
-                <input type="email" class="form-control" id="personal_email" name="personal_email" placeholder="Enter Email Address *" required v-model="BioData.personal_email" :class="{'is-invalid' : BioData.errors.has('personal_email') }">
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-                <label>Join Date</label>
-                <input :disabled= "editMode ? 'disabled' : 'false'" type="date" class="form-control" id="joined_at" name="joined_at" placeholder="Enter Email Address *" required v-model="BioData.joined_at" :class="{'is-invalid' : BioData.errors.has('joined_at') }">
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-                <label>SNH ID</label>
-                <input :disabled= "editMode ? 'disabled' : 'false'" type="text" class="form-control" id="unique_id" name="unique_id" placeholder="Enter Email Address *" required v-model="BioData.unique_id" :class="{'is-invalid' : BioData.errors.has('unique_id') }">
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-                <label>Personal Email Address</label>
+                <label>Alternate Email Address</label>
                 <input type="email" class="form-control" id="personal_email" name="personal_email" placeholder="Enter Email Address *" required v-model="BioData.personal_email" :class="{'is-invalid' : BioData.errors.has('personal_email') }">
             </div>
         </div>
@@ -159,16 +130,12 @@ export default {
             BioData: new Form({
                 alt_phone:'', 
                 area_id:'', 
-                branch_id:'', 
                 city:'', 
-                department_id:'', 
                 dob:'', 
                 email:'',
                 first_name: '', 
                 id:'', 
                 image:'', 
-                joined_at: '',
-                unique_id: '',
                 last_name:'', 
                 middle_name:'', 
                 password:'', 
@@ -179,13 +146,13 @@ export default {
                 state_id:'', 
                 street:'', 
                 street2:'',
-                unique_id: '', 
-                }),
+            }),
         }
     },
     mounted() {
         Fire.$on('BioDataFill', user =>{
             this.BioData.fill(user);
+            console.log("Get Here");
         });
         Fire.$on('AfterCreation', ()=>{
             //axios.get("api/profile").then(({ data }) => (this.BioData.fill(data)));
@@ -195,7 +162,7 @@ export default {
         updateBioData(){
             console.log("Tested");
             this.$Progress.start();
-            this.BioData.post('/api/hrms/bios')
+            this.BioData.post('/api/ums/bios')
             .then(response =>{
                 this.$Progress.finish();
                 Fire.$emit('Reload', response);
@@ -207,12 +174,7 @@ export default {
                     });
                 })
             .catch(()=>{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!',
-                    footer: 'Please try again later!'
-                    });
+                Swal.fire({icon: 'error', title: 'Oops...', text: 'Something went wrong!', footer: 'Please try again later!'});
                 this.$Progress.fail();
                 });  
                     
@@ -225,16 +187,11 @@ export default {
             let file = e.target.files[0];
             let reader = new FileReader();
             if (file['size'] < 2000000){
-                reader.onloadend = (e) => {
-                    this.BioData.image = reader.result
-                    }
+                reader.onloadend = (e) => {this.BioData.image = reader.result}
                 reader.readAsDataURL(file)
             }
             else{
-                Swal.fire({
-                    type: 'error',
-                    title: 'File is too large'
-                })
+                Swal.fire({type: 'error', title: 'File is too large'});
             }
         },
     },
