@@ -11,6 +11,9 @@ use App\Models\NextOfKin;
 use App\Models\State;
 use App\Models\User;
 
+use App\Models\Staff;
+use App\Models\EMR\Patient;
+
 class BioController extends Controller
 {
     public function index()
@@ -21,6 +24,7 @@ class BioController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'user_type' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'street' => 'sometimes',
@@ -64,25 +68,27 @@ class BioController extends Controller
             'personal_email' => $request['personal_email'],
             'phone' => $request['phone'],
             'alt_phone' => $request['alt_phone'],
-            //'branch_id' => $request['branch_id'],
-            //'department_id' => $request['department_id'],
             'sex' => $request['sex'],
             'dob' => $request['dob'],
             'image' => $image_url,
             'updated_at' => date('Y-m-d H:i:s'),
-            //'unique_id' => $request->input('unique_id'),
             ]
         );
-        $user->joined_at = $request->input('joined_at');
         $user->dob = $request->input('dob');
         $user->save();
-        echo ($request->input('joined_at'));
+        
         $nok = NextOfKin::where('user_id', '=', $user->id)->count();
         if ($nok == 0){
             echo "No Next of Kin";
         }
         
-        
+        if ($request->input('user_type') == 'Applicant'){
+            $applicant = Patient::updateOrCreate(['user_id' => $user->id],[]);
+        }
+        elseif ($request->input('user_type') == 'Staff'){
+            $staff = Staff::updateOrCreate(['user_id' => $user->id],[]);
+        }
+
         return response()->json([
             'added' => $user,
             'user' => User::where('id', auth('api')->id())->with('area')->with('branch')->with('state')->first(),

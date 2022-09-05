@@ -10,7 +10,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
-                        <PatientPaymentForm :payment="payment" />
+                        <ApplicantPaymentForm :payment="payment" />
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                                     <td>{{payment.date | excelDate}}</td>
                                     <td><span class="tag tag-success">Approved</span></td>
                                     <td></td>
-                                    <td><router-link class="btn btn-success btn-sm" :to="'/patient/payment/'+payment.id"><i class="fa fa-eye"></i></router-link></td>
+                                    <td><router-link class="btn btn-success btn-sm" :to="'/applicants/payment/'+payment.id"><i class="fa fa-eye"></i></router-link></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -67,10 +67,7 @@ export default {
     methods:{  
         getInitials(){
             axios.get('/api/emr/payments').then(response =>{
-                console.log(response.data.payments);
-                this.payments = response.data.payments;
-                //this.refreshPayment(response)
-                //Fire.$emit('refreshPayment', response);
+                this.refreshPayment(response)
             })
             .catch(()=>{
                 this.$Progress.fail();
@@ -80,7 +77,7 @@ export default {
                 })
             });
         }, 
-        refreshPayments(response){
+        refreshPayment(response){
             this.payments = response.data.payments;
         }
     },

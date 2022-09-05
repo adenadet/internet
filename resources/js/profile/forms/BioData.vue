@@ -86,7 +86,7 @@
         <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label>Email Address</label>
-                <input :disabled= "editMode ? 'disabled' : 'false'" type="text" class="form-control" id="email" name="email" placeholder="Enter Email Address *" required v-model="BioData.email" :class="{'is-invalid' : BioData.errors.has('email') }">
+                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email Address *" required v-model="BioData.email" :class="{'is-invalid' : BioData.errors.has('email') }">
             </div>
         </div>
         <div class="col-md-6 col-sm-12">
@@ -197,9 +197,8 @@ export default {
     },
     props:{
         areas: Array,
-        branches: Array, 
-        departments: Array, 
         states: Array,
+        nations: Array,
         user: Object,
         editMode: Boolean,
     }

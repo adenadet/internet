@@ -375,15 +375,17 @@ Vue.component('UserFormUser',       UserFormUser);
 
 let routes = [
 //Applicant Module
-    {path: '/applicants',             component: ApplicantDashboard},
-    {path: '/applicants/appointment/:id', component: ApplicantAppointment},
-    {path: '/applicants/appointments',component: ApplicantAppointments},
-    {path: '/applicants/dashboard',   component: ApplicantDashboard},
-    {path: '/applicants/profile',     component: ApplicantProfile},
+    {path: '/applicants',                   component: ApplicantDashboard},
+    {path: '/applicants/appointment/:id',   component: ApplicantAppointment},
+    {path: '/applicants/appointments',      component: ApplicantAppointments},
+    {path: '/applicants/dashboard',         component: ApplicantDashboard},
+    {path: '/applicants/payments',          component: ApplicantPayments},
+    {path: '/applicants/payment/:id',       component: ApplicantPayment},
+    {path: '/applicants/profile',           component: ApplicantProfile},
 
 
 //Dashboard Module
-    {path: '/home',             component: DashboardMain},
+    {path: '/home',             component: ApplicantDashboard},
     {path: '/dashboard',        component: DashboardMain},
 
 //Chats Links

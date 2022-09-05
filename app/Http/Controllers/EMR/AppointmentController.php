@@ -12,6 +12,7 @@ class AppointmentController extends Controller
     {
         return response()->json([
             'appointments' => Appointment::whereNOTIN('status', [6, 7, 8, 9])->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
+            'services' => Service::orderBy('name', 'ASC')->get(),
         ]);
     }
 

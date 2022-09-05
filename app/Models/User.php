@@ -44,7 +44,11 @@ class User extends Authenticatable
     }
 
     public function next_of_kin(){
-        return $this->elongsTo('App\Models\NextOfKin', 'id', 'user_id');        
+        return $this->belongsTo('App\Models\NextOfKin', 'id', 'user_id');        
+    }
+
+    public function patient(){
+        return $this->belongsTo('App\Models\EMR\Patient', 'id', 'user_id');
     }
 
     public function repayments(){

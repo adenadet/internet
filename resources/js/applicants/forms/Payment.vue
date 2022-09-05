@@ -162,7 +162,6 @@ export default {
                     showConfirmButton: false,
                     timer: 1500
                     });
-                
                 })
             .catch(()=>{
                 Swal.fire({

@@ -3,9 +3,14 @@
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="/" class="nav-link">Home</a>
+        <li class="nav-item d-none d-sm-inline-block bg-grey">
+            <a href="/applicants" class="nav-link">Home</a>
         </li>
+        @if(Auth::user()->hasRole('E-Services') || Auth::user()->hasRole('Super Admin'))
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/dashboard" class="nav-link">Staff Area</a>
+        </li> 
+        @endif
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">

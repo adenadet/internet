@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div class="callout callout-info">
+                <div class="callout callout-info no-print">
                     <h5><i class="fas fa-info"></i> Note:</h5>
                     This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
                 </div>
@@ -11,24 +11,23 @@
                     <div class="row">
                         <div class="col-12">
                             <h4>
-                                <i class="fas fa-globe"></i> St. Nicholas Hospital
-                                <small class="float-right">Date: {{payment.date}}</small>
+                                <img class="img-fluid" width="50px" height="auto" src="/dist/img/snh_logo.png" /> St. Nicholas Hospital
+                                <small class="float-right">Date: {{payment.created_at | excelDate}}</small>
                             </h4>
                         </div>
                     </div>
                     <div class="row invoice-info">
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-3 invoice-col">
                             To
                             <address v-if="payment.patient != null">
                                 <strong>{{payment.patient != null ? payment.patient.first_name+' '+payment.patient.last_name: ''}}</strong><br />
                                 {{payment.patient != null ? payment.patient.street+', '+payment.patient.street2: ''}}<br/>
-                                {{payment.patient != null ? payment.patient.city+', '+payment.patient.state_id: ''}}<br>
-                                San Francisco, CA 94107<br/>
+                                {{payment.patient != null ? payment.patient.city+', '+payment.patient.state.name: ''}}<br>
                                 Phone: {{payment.patient != null ? payment.patient.phone: ''}}<br/>
                                 Email: {{payment.patient != null ? payment.patient.email: ''}}
                             </address>
                         </div>
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-3 invoice-col">
                             From
                             <address>
                                 <strong>St. Nicholas Hospital</strong><br>
@@ -38,11 +37,12 @@
                                 Email: info@saintnicholashospital.com
                             </address>
                         </div>
-                        <div class="col-sm-4 invoice-col">
+                        <div class="col-sm-3 invoice-col">
                             <b>Invoice #007612</b><br>
                             <br>
                             <b>Order ID:</b> 4F3S8J<br>
-                            <b>Payment Date:</b> {{payment.date}}<br>
+                            <b>Payment Status:</b> Paid<br>
+                            <b>Payment Date:</b> {{payment.created_at | excelDate}}<br>
                         </div>
                     </div>
                     <div class="row">
@@ -63,7 +63,7 @@
                                         <td>{{payment.service != null ? payment.service.name : 'Service Not Defined'}}</td>
                                         <td>455-981-221</td>
                                         <td>El snort testosterone trophy driving gloves handsome</td>
-                                        <td>&#x20A6; {{payment.service != null ? payment.service.amount : '0.00' | currency}}</td>
+                                        <td>&#x20A6; {{payment.service != null ? payment.service.price : '0.00' | currency}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -71,26 +71,19 @@
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            <p class="lead">Payment Methods:</p>
+                            <!--<p class="lead">Payment Methods:</p>
                             <img src="/dist/img/credit/visa.png" alt="Visa">
                             <img src="/dist/img/credit/mastercard.png" alt="Mastercard">
                             <img src="/dist/img/credit/american-express.png" alt="American Express">
-                            <img src="/dist/img/credit/paypal2.png" alt="Paypal">
-
-                            <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                                Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem
-                                plugg
-                                dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-                            </p>
+                            <img src="/dist/img/credit/paypal2.png" alt="Paypal">-->
                         </div>
                         <div class="col-6">
-                            <p class="lead">Amount Due 2/22/2014</p>
+                            <p class="lead"></p>
                             <div class="table-responsive">
                                 <table class="table">
-                                    <tr><th style="width:50%">Subtotal:</th><td>$250.30</td></tr>
-                                    <tr><th>Tax (9.3%)</th><td>$10.34</td></tr>
-                                    <tr><th>Shipping:</th><td>$5.80</td></tr>
-                                    <tr><th>Total:</th><td>$265.24</td></tr>
+                                    <tr><th style="width:50%">Subtotal:</th><td>&#x20A6; {{payment.service != null ? payment.service.price : '0.00' | currency}}</td></tr>
+                                    <tr><th>Tax (0.0%)</th><td>&#x20A6; {{0 | currency}}</td></tr>
+                                    <tr><th>Total:</th><td>&#x20A6; {{payment.service != null ? payment.service.price : '0.00' | currency}}</td></tr>
                                 </table>
                             </div>
                         </div>
@@ -136,16 +129,13 @@ export default {
         makePayment(payment){
             this.$Progress.start();
             this.paySpecific = true;
-            Fire.$emit('PaymentDataFill', payment);
+            Fire.$emit('PaymentDataFill', this.payment);
             $('#paymentModal').modal('show');
             this.$Progress.finish();
         },
     },
     mounted() {
         this.getAllInitials();
-        Fire.$on('preliminaryAdd', message =>{
-            this.messages.push(message);
-        }); 
     },
 } 
 </script>

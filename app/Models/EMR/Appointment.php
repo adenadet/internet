@@ -14,7 +14,7 @@ class Appointment extends Structure
     protected $fillable = array('id', 'patient_id', 'service_id', 'date', 'schedule', 'status', 'arrived_at', 'payment_channel', 'paid_by', 'created_at', 'deleted_by', 'deleted_at');
 
     public function patient(){
-        return $this->belongsTo('App\Models\EMR\Patient', 'patient_id', 'user_id');
+        return $this->belongsTo('App\Models\User', 'patient_id', 'id');
     }
 
     public function service(){
@@ -41,11 +41,7 @@ class Appointment extends Structure
         return $this->belongsTo('App\Models\User', 'deleted_by', 'id');
     }
 
-    public function images(){
-    	return $this->hasMany('App\Models\Shop\ProductImage', 'product_id', 'id');
+    public function payment(){
+    	return $this->belongsTo('App\Models\EMR\Payment', 'id', 'appointment_id');
 	}
-    
-    public function sizes(){
-        return $this->hasMany('App\Models\Inventory\ProductSize', 'product_id', 'id');
-    }
 }

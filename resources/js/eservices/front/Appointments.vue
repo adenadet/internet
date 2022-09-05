@@ -10,7 +10,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                            < :appointment="appointment" / -->
+                            <!-- :appointment="appointment" / -->
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                            <PMFormBioData :areas="areas" :branches="branches" :departments="departments" :editMode="editMode" :states="states" :user="user" /> 
+                            <PMFormBioData :areas="areas" :nations="nations" :editMode="editMode" :states="states" :user="user" /> 
                         </div>
                     </div>
                 </div>
@@ -102,6 +102,10 @@ export default {
             appointment: {},
             appointments: {},
             editMode: true,
+            nations: [],
+            areas: [],
+            states: [],
+            user: {}
         }
     },
     mounted() {
@@ -153,6 +157,9 @@ export default {
         },
         refreshAppointments(response) {
             this.appointments = response.data.appointments;
+            this.nations = response.data.nations;
+            this.states =  response.data.states;
+            this.areas = response.data.areas;
         }
     },
     props: {}

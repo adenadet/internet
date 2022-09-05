@@ -38,11 +38,9 @@ export default {
         }
     },
     mounted() {
-        Fire.$on('ApplicantDataFill', user =>{
-            this.ApplicantData.fill(user);
-        });
-        Fire.$on('AfterCreation', ()=>{
-            //axios.get("api/profile").then(({ data }) => (this.ApplicantData.fill(data)));
+        Fire.$on('ApplicantDataFill', patient =>{
+            this.ApplicantData.fill(patient);
+            console.log("Get Here");
         });
     },
     methods:{
@@ -51,7 +49,7 @@ export default {
             },
         updateApplicantData(){
             this.$Progress.start();
-            this.ApplicantData.post('/api/ums/bios')
+            this.ApplicantData.post('/api/ums/details')
             .then(response =>{
                 this.$Progress.finish();
                 Fire.$emit('Reload', response);
@@ -61,7 +59,6 @@ export default {
                     showConfirmButton: false,
                     timer: 1500
                     });
-                
                 })
             .catch(()=>{
                 Swal.fire({

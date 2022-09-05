@@ -15,6 +15,8 @@ use App\Models\Staff;
 use App\Models\State;
 use App\Models\User;
 
+use App\Models\EMR\Patient;
+
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -123,8 +125,8 @@ class UserController extends Controller
             'updated_at' => date('Y-m-d H:i:s'),
             'joined_at' => $request['joined_at'],
             'unique_id' => $request['unique_id'],
-
             ]);
+
         $user->save();
 
         return response()->json([
@@ -196,19 +198,37 @@ class UserController extends Controller
         $user = User::where('id', auth('api')->id())->with('area')->with('state')->with('branch')->first();
         
         return response()->json([
-            'nations' => Country::all(),
+            'nations' => Country::orderBy('name', 'ASC')->get(),
             'areas' => $areas,
             'user' => $user,
             'branches' => $branches,
             'departments' => $departments,
             'nok' => $nok,
-            'states' => $states,       
+            'states' => $states,
+            'patient' => Patient::where('user_id',  auth('api')->id())->first(),       
         ]);
     }
     
     public function show($id)
     {
         
+    }
+
+
+    public function details(Request $request)
+    {
+        $this->validate($request, [
+            'user_id' => 'required',
+            'nationality_id' => 'required',
+            'passport_no' => 'required',
+        ]);
+
+        $patient = Patient::find($request->input('user_id'));
+
+        $patient->nationality_id = $request->input('nationality_id');
+        $patient->passport_no = $request->input('passport_no');
+
+        $patient->save();
     }
 
     public function update(Request $request, $id)
