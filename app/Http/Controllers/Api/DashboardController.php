@@ -9,9 +9,14 @@ use App\Models\Chats\Room;
 use App\Models\SOM\Month;
 use App\Models\SOM\Winner;
 use App\Models\Notice;
-use App\Models\User;
+use App\Models\Area;
+use App\Models\State;
 use App\Models\Staff;
-
+use App\Models\Country;
+use App\Models\User;
+use App\Models\EMR\Appointment;
+use App\Models\EMR\Payment;
+use App\Models\EMR\Wallet;
 use App\Models\Ticket\Ticket;
 use Illuminate\Http\Request;
 //use Kordy\Ticketit\Models\Ticket;
@@ -56,6 +61,20 @@ class DashboardController extends Controller
         //
     }
 
+    public function applicant()
+    {
+        return response()->json([
+            'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
+            'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
+            'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
+            'payments' => Payment::where('patient_id', auth('api')->id())->with(['service', 'patient', 'appointment', 'employee'])->latest()->paginate(10),
+            'states' => State::orderBy('name', 'ASC')->get(), 
+            'tickets' => Ticket::where('user_id', '=', auth('api')->id())->with(['category', 'priority', 'creator', 'agent', 'status'])->orderBy('status_id', 'ASC')->orderBy('created_at', 'DESC')->paginate(10),
+            'wallet' => Wallet::where('user_id', '=', auth('api')->id())->first(),
+            'nations' => Country::orderBy('name', 'ASC')->get(),         
+        ]);
+    }
+    
     private function staff_months($i){
         if (!is_numeric($i)){return $i;}
         $date = date('Y-m-01', strtotime("-".$i." months"));

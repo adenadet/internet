@@ -42,10 +42,13 @@
                     </router-link >
                 </li>
                 <li class="nav-item">
-                    <router-link to="/applicants/ticket" class="nav-link">
+                    <router-link to="/applicants/tickets" class="nav-link">
                         <i class="nav-icon fas fa-tags"></i>
                         <p>Tickets</p>
                     </router-link >
+                </li>
+                <li class="nav-item">
+                    <router-link to="/applicants/wallets" class="nav-link"><i class="nav-icon fas fa-wallet"></i><p>Wallets</p></router-link>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link"><i class="nav-icon fas fa-power-off"></i><p>Log Out </p></a>

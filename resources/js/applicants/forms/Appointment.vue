@@ -19,22 +19,22 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 col-sm-12">
+        <div class="col-md-9 col-sm-12">
             <div class="form-group">
                 <label>Service *</label>
                 <select class="form-control" id="service_id" name="service_id" placeholder="Enter State / County *" required v-model="AppointmentData.service_id" :class="{'is-invalid' : AppointmentData.errors.has('service_id') }">
                     <option value="">--Select Service--</option>
-                    <option v-for="service in services" v-bind:key="service.id" :value="service.id" >{{service.name}}</option>
+                    <option v-for="service in services" v-bind:key="service.id" :value="service.id" >{{service.name+' @ N'+service.price}}</option>
                 </select>
             </div>
         </div>
-        <div class="col-md-6 col-sm-12">
+        <div class="col-md-3 col-sm-12">
             <div class="form-group">
                 <label>Date</label>
                 <input type="date" class="form-control" id="date" name="date" placeholder="Choose Convinent Date" v-model="AppointmentData.date" :class="{'is-invalid' : AppointmentData.errors.has('date') }" @change="noWeekend" onfocus="this.min=new Date().toISOString().split('T')[0]">
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label>Time Slot *</label>
                 <select type="text" class="form-control" id="time_slot" name="time_slot"  v-model="AppointmentData.time_slot" :class="{'is-invalid' : AppointmentData.errors.has('time_slot') }">
@@ -124,13 +124,12 @@ export default {
         },
         setDate(){
             this.today = new Date(Date.now()).toLocaleString();
-            alert(this.today);
         }
     },
     props:{
         services: Array,
         creator: String,
-         
+        users: Array, 
     }
 }
 </script>

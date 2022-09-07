@@ -7,6 +7,8 @@ import ApplicantDashboard         from './applicants/Dashboard.vue';
 import ApplicantPayment           from './applicants/Payment.vue';
 import ApplicantPayments          from './applicants/Payments.vue';
 import ApplicantProfile           from './applicants/Profile.vue';
+import ApplicantTicket            from './applicants/Ticket.vue';
+import ApplicantTickets           from './applicants/Tickets.vue';
 
     import ApplicantDetailsForm         from './applicants/forms/Details.vue';
     import ApplicantAppointmentForm     from './applicants/forms/Appointment.vue';
@@ -375,6 +377,7 @@ Vue.component('UserFormUser',       UserFormUser);
 
 let routes = [
 //Applicant Module
+    {path: '/',                             component: ApplicantDashboard},
     {path: '/applicants',                   component: ApplicantDashboard},
     {path: '/applicants/appointment/:id',   component: ApplicantAppointment},
     {path: '/applicants/appointments',      component: ApplicantAppointments},
@@ -382,6 +385,8 @@ let routes = [
     {path: '/applicants/payments',          component: ApplicantPayments},
     {path: '/applicants/payment/:id',       component: ApplicantPayment},
     {path: '/applicants/profile',           component: ApplicantProfile},
+    {path: '/applicants/tickets',           component: ApplicantTickets},
+    {path: '/applicants/ticket/:id',        component: ApplicantTicket},
 
 
 //Dashboard Module

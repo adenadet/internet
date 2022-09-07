@@ -74,6 +74,7 @@ export default {
             appointment: {},
             appointments: {},
             services: [],
+            patient: {},
             editMode: true,
         }
     },
@@ -90,10 +91,7 @@ export default {
             })
                 .catch(() => {
                     this.$Progress.fail();
-                    toast.fire({
-                        icon: 'error',
-                        title: 'Your appointments did not loaded successfully',
-                    })
+                    toast.fire({icon: 'error', title: 'Your appointments did not loaded successfully',})
                 });
         },
         newAppointment(){
@@ -107,6 +105,7 @@ export default {
         refreshAppointments(response) {
             this.appointments = response.data.appointments;
             this.services = response.data.services;
+            this.patient = response.data.patient;
         }
     },
     props: {}

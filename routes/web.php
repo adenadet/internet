@@ -13,9 +13,6 @@ Route::get('/patient', [App\Http\Controllers\HomeController::class, 'index'])->n
 
 Auth::routes();
 
-//Route::get('/home', 'HomeController@index')->name('home');
-
-
 Route::get('/clear-cache', function() {
     //$exitCode = Artisan::call('cache:clear');
     $exitCode = Artisan::call('config:cache');
@@ -23,7 +20,6 @@ Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');
     
     return "All done boss, anything else";
-    // return what you want
 });
 
 Route::group(['middleware' => 'auth','namespace' => 'App\Http\Controllers\Std', 'name' => 'student.'],function(){
