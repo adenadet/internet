@@ -19,6 +19,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable, HasRoles, SoftDeletes;
 
+    public $guard_name = 'web';
+
     public function sendPasswordResetNotification($token){
         $this->notify(new ResetPasswordNotification($token));
     }

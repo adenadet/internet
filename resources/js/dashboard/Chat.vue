@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <router-link to="/chats"><button class="btn btn-primary">See All</button></router-link>
+            <a href="/chats"><button class="btn btn-primary">See All</button></a>
         </div>
     </div>
 </template>

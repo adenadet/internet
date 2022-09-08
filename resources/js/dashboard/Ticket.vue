@@ -5,7 +5,7 @@
         <div class="card-tools">
             <ul class="nav nav-pills ml-auto">
                 <li class="nav-item">
-                <a href="/tickets" class="nav-link active">Add New</a>
+                <a href="/ticketing" class="nav-link active">Add New</a>
                 </li>
             </ul>
         </div>

@@ -138,6 +138,7 @@ export default {
                 image:'', 
                 last_name:'', 
                 middle_name:'', 
+                nation_id: '',
                 password:'', 
                 personal_email: '', 
                 phone:'', 

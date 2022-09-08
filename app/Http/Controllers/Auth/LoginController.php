@@ -49,12 +49,8 @@ class LoginController extends Controller
         $fieldType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'unique_id';
         if(auth()->attempt(array($fieldType => $input['username'], 'password' => $input['password'])))
         {
-            if (Auth::user()->user_type == 'staff'){
-                return redirect()->route('dashboard');
-            }
-            else{
-                return redirect()->route('applicants');
-            }
+            if (Auth::user()->hasRole('Staff')){return redirect()->route('dashboard');}
+            else{return redirect()->route('applicants');}
         }
         else{
             return redirect()->route('login')->with('error','Email-Address And Password Are Wrong.');

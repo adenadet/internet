@@ -46,7 +46,7 @@
                 <div class="card-body">
                     <div class="tab-content">
                         <div class="tab-pane active" id="bio-data">
-                            <PMFormBioData :areas="areas" :branches="branches" :departments="departments" :editMode="editMode" :states="states" :user="user" />
+                            <PMFormBioData :areas="areas" :branches="branches" :departments="departments" :editMode="editMode" :states="states" :user="user" :nations="nations"/>
                         </div>
                         <div class="tab-pane" id="next-of-kin">
                             <PMFormNOK :nok="nok"/>
@@ -71,7 +71,8 @@ export default {
             departments:[], 
             editMode: true, 
             nok:{},
-            states:[],  
+            states:[],
+            nations: [],  
             user:{}, 
         }
     },
@@ -80,34 +81,17 @@ export default {
     },
     created() {
         this.getInitials();
-        Fire.$on('Reload', response =>{
-            this.user = response.data.user;
-            this.areas = response.data.areas;
-            this.branches = response.data.branches;
-            this.departments = response.data.departments;
-            this.states = response.data.states;
-            this.nok = response.data.nok;
-
-            Fire.$emit('BioDataFill', this.user);
-            Fire.$emit('NextOfKinFill', this.nok);
-        });
+        Fire.$on('Reload', response =>{this.refreshProfile(response);});
     },
     methods:{
         getInitials(){
             axios.get('/api/ums/profile').then(response =>{
-                this.user = response.data.user;
-                this.areas = response.data.areas;
-                this.branches = response.data.branches;
-                this.departments = response.data.departments;
-                this.states = response.data.states;
-                this.nok = response.data.nok;
                 this.$Progress.finish();
+                this.reloadProfile(response);
                 toast.fire({
                     icon: 'success',
                     title: 'Profile loaded successfully',
                 });
-                Fire.$emit('BioDataFill', this.user);
-                Fire.$emit('NextOfKinFill', this.nok);
             })
             .catch(()=>{
                 this.$Progress.fail();
@@ -120,6 +104,17 @@ export default {
         getProfilePic(){
             let  photo = (this.form.image.length >= 150) ? this.form.image : "./"+this.form.image;
             return photo;
+        },
+        reloadProfile(response){
+            this.user = response.data.user;
+            this.areas = response.data.areas;
+            this.branches = response.data.branches;
+            this.departments = response.data.departments;
+            this.states = response.data.states;
+            this.nok = response.data.nok;
+            this.nations = response.data.nations;
+            Fire.$emit('BioDataFill', this.user);
+            Fire.$emit('NextOfKinFill', this.nok); 
         },
         updateProfilePic(e){
             let file = e.target.files[0];

@@ -53,14 +53,13 @@ class UserController extends Controller
             'roles' => 'required|array',
         ]);
 
+        print_r($request->input('roles'));
         $user = User::find($request->input('user_id'));
-        $roles = Role::whereIn('id', $request->input('roles'))->get();
-        $role_names = [];
-        foreach ($roles as $role){
-            array_push($role_names, $role->name);
-            $user->removeRole($role->name);
-        }
-        $user->syncRoles($role_names);
+        
+        $roles = Role::select('id', 'name')->whereIn('id', $request->input('roles'))->get();
+        print_r($roles);
+        
+        $user->syncRoles($request->input('roles'));
         
         $areas = Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get();
         $branches = Branch::select('id', 'name')->orderBy('name', 'ASC')->get();
