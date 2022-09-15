@@ -12,11 +12,12 @@ Route::group(['prefix'=>'ums'], function () {
     Route::get('/users/search', 'UserController@search')->name('users.search');
     
     Route::apiResources([
-        '/bios' => 'BioController',
-        '/nok' => 'NOKController',
-        '/roles' => 'RoleController',
-        '/users' => 'UserController',
-        '/branches' => 'BranchController',
-        '/departments' => 'DepartmentController',
+        '/branches'     => 'BranchController',
+        '/bios'         => 'BioController',
+        '/departments'  => 'DepartmentController',
+        '/nok'          => 'NOKController',
+        '/roles'        => 'RoleController',
+        '/staffs'       => 'StaffController',
+        '/users'        => 'UserController',
     ]);
 });

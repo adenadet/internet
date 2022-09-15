@@ -111,7 +111,11 @@ class RoomController extends Controller
                 }
             }
             if (empty($private_room)){
-                $room = Room::create(['created_by' => auth('api')->id(), 'name'=>'Private Conversation', 'room_type'  => 'Private',]);
+                $room = Room::create([
+                    'created_by' => auth('api')->id(), 
+                    'name'=>'Private Conversation', 
+                    'room_type'  => 'Private',
+                ]);
     
                 Member::create(['room_id'=>$room->id, 'user_id'=>auth('api')->id(), 'requested_by'=>auth('api')->id(), 'status'=> 1,]);
                 Member::create(['room_id'=>$room->id, 'user_id'=>$id, 'requested_by'=>auth('api')->id(), 'status'=> 1,]);

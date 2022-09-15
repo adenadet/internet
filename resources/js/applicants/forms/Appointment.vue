@@ -6,11 +6,12 @@
         <div v-if="creator == 'self'" class="col-sm-12">
             <div class="form-group">
                 <label>Applicant *</label>
-                <input type="text" required class="form-control" id="patient_id" name="patient_id" placeholder="First Name *" v-model="AppointmentData.patient_id" :class="{'is-invalid' : AppointmentData.errors.has('patient_id') }">
+                <div class="form-control">{{patient.first_name+' '+patient.last_name}}</div>
+                <input type="hidden" required class="form-control" id="patient_id" name="patient_id" placeholder="First Name *" v-model="AppointmentData.patient_id" :class="{'is-invalid' : AppointmentData.errors.has('patient_id') }">
                 <has-error :form="AppointmentData" field="patient_id"></has-error> 
             </div>
         </div>
-        <div class="col-sm-12">
+        <div v-else class="col-sm-12">
             <div class="form-group">
                 <label>Applicant *</label>
                 <input type="text" required class="form-control" id="first_name" name="first_name" placeholder="First Name *" v-model="AppointmentData.first_name" :class="{'is-invalid' : AppointmentData.errors.has('first_name') }">
@@ -53,7 +54,7 @@
 export default {
     data(){
         return  {
-            editMode: true, 
+            //editMode: true, 
             AppointmentData: new Form({
                 patient_id: '', 
                 service_id:'', 
@@ -75,6 +76,53 @@ export default {
         });
     },
     methods:{
+        updateAppointment(){
+            this.$Progress.start();
+            this.AppointmentData.post('/api/emr/appointments')
+            .then(response =>{
+                this.$Progress.finish();
+                Fire.$emit('Reload', response);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'The Profile details has been updated',
+                    showConfirmButton: false,
+                    timer: 1500
+                    });
+                
+                })
+            .catch(()=>{
+                Swal.fire({
+                    icon: 'error', title: 'Oops...', text: 'Something went wrong!', footer: 'Please try again later!'
+                    });
+                this.$Progress.fail();
+            });  
+            alert("Update Appointment");
+        },
+        createAppointment(){
+            this.$Progress.start();
+            this.AppointmentData.post('/api/emr/appointments')
+            .then(response =>{
+                this.$Progress.finish();
+                Fire.$emit('Reload', response);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'The Profile details has been updated',
+                    showConfirmButton: false,
+                    timer: 1500
+                    });
+                
+                })
+            .catch(()=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: 'Please try again later!'
+                    });
+                this.$Progress.fail();
+            });  
+            //alert("Create New Appointment");
+        },
         createUser(){
 
             },
@@ -130,6 +178,7 @@ export default {
         services: Array,
         creator: String,
         users: Array, 
+        patient: Object,
     }
 }
 </script>

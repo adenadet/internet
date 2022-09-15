@@ -64,6 +64,7 @@ Route::middleware(['auth', 'role:Staff'])->group(function () {
     
     //Auto Redirect
     Route::get('/chats/{any}',              [App\Http\Controllers\ModulesController::class, 'chats'])->where('any', '.*');
+    Route::get('/contacts/{any}',           [App\Http\Controllers\ModulesController::class, 'contacts'])->where('any', '.*');
     Route::get('/departments/{any}',        [App\Http\Controllers\ModulesController::class, 'departments'])->where('any', '.*');
     Route::get('/internet/{any}',           [App\Http\Controllers\ModulesController::class, 'internet'])->where('any', '.*');
     Route::get('/notices/{any}',            [App\Http\Controllers\ModulesController::class, 'notices'])->where('any', '.*');
@@ -75,7 +76,7 @@ Route::middleware(['auth', 'role:Staff'])->group(function () {
 
 });
 
-Route::get('/member_area/{any}', 'HomeController@index')->where('any', '.*');
+//Route::get('/member_area/{any}', 'HomeController@index')->where('any', '.*');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/applicants',         [App\Http\Controllers\ApplicantController::class, 'index'])->name('applicants');

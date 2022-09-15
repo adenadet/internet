@@ -7,11 +7,10 @@
                     <div class="modal-header">
                         <h4 class="modal-title" v-show="editMode">Edit Appointment</h4>
                         <h4 class="modal-title" v-show="!editMode">New Appointment</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
-                        <ApplicantAppointmentForm :appointment="appointment" :services="services"/>
+                        <ApplicantAppointmentForm :editMode="editMode" :appointment="appointment" :services="services" creator="self" :patient="patient"/>
                     </div>
                 </div>
             </div>
@@ -106,8 +105,8 @@ export default {
             this.appointments = response.data.appointments;
             this.services = response.data.services;
             this.patient = response.data.patient;
+
         }
     },
-    props: {}
 }
 </script>

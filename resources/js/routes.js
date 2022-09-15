@@ -55,10 +55,13 @@ Vue.component('ChatPrivate', ChatPrivate);
     Vue.component('ChatFormInput', ChatFormInput);
     Vue.component('ChatFormContactList', ChatFormContactList);
 
-import ContactAll       from './components/contacts/All.vue';
-import ContactSingle    from './components/contacts/Single.vue';
-Vue.component('ContactAll', ContactAll);
-Vue.component('ContactSingle', ContactSingle);
+import ContactAll       from './contacts/All.vue';
+import ContactSingle    from './contacts/Single.vue';
+import ContactStaff     from './contacts/Staff.vue';
+
+Vue.component('ContactAll',     ContactAll);
+Vue.component('ContactSingle',  ContactSingle);
+Vue.component('ContactStaff',   ContactStaff);
 
 import DashboardMain        from './dashboard/Main.vue';
 import DashboardBirthday    from './dashboard/Birthday.vue';
@@ -359,13 +362,13 @@ Vue.component('TicketSingle',           TicketSingle);
     Vue.component('TicketFormReply',    TicketFormReply);
 
 //User Modules Components
-import AllRoles from './components/users/AllRoles.vue';    
-import AllUsers from './components/users/AllUsers.vue';    
+import AllRoles from './users/AllRoles.vue';    
+import AllUsers from './users/AllUsers.vue';    
 
-import UserFormAssignRole   from './components/users/forms/AssignRole.vue';    
-import UserFormNOK          from './components/users/forms/NextOfKin.vue'; 
-import UserFormRole         from './components/users/forms/Role.vue';    
-import UserFormUser         from './components/users/forms/BioData.vue'; 
+import UserFormAssignRole   from './users/forms/AssignRole.vue';    
+import UserFormNOK          from './users/forms/NextOfKin.vue'; 
+import UserFormRole         from './users/forms/Role.vue';    
+import UserFormUser         from './users/forms/BioData.vue'; 
 
 Vue.component('AllRoles',           AllRoles);
 Vue.component('AllUsers',           AllUsers);
@@ -403,7 +406,7 @@ let routes = [
 
 //Contact Links
     {path: '/contacts',           component:ContactAll},
-    {path: '/contacts/staff/:id', component:ContactSingle},
+    {path: '/contacts/staff/:id', component:ContactStaff},
 
 //Department Links
     {path: '/departments',       component:DepartmentAll},

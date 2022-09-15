@@ -54,7 +54,28 @@ class BioController extends Controller
             if (file_exists($old_image)){ @unlink($old_image); }
         }
 
-        if (!(is_null($request->input('id')))){$user = User::find($request->input('id'));}
+        if (!(is_null($request->input('id')))){
+            $user = User::find($request->input('id'));
+        
+            $user->first_name = $request['first_name'];
+            $user->middle_name = $request['middle_name'];
+            $user->last_name = $request['last_name'];
+            $user->street = $request['street'];
+            $user->street2 = $request['street2'];
+            $user->city = $request['city'];
+            $user->state_id = $request['state_id'];
+            $user->nation_id = $request['nation_id'];
+            $user->area_id = $request['area_id'];
+            $user->personal_email = $request['personal_email'];
+            $user->phone = $request['phone'];
+            $user->alt_phone = $request['alt_phone'];
+            $user->sex = $request['sex'];
+            $user->dob = $request['dob'];
+            $user->image = $image_url;
+            $user->updated_at = date('Y-m-d H:i:s');
+
+            $user->save();
+        }
         else{
             $user = User::updateOrCreate(['email' => $request['email']],[
                 'first_name' => $request['first_name'],
@@ -75,9 +96,12 @@ class BioController extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
                 ]
             );
+
+            $user->dob = $request->input('dob');
+            
+            $user->save();
         }
-        $user->dob = $request->input('dob');
-        $user->save();
+        
         
         $nok = NextOfKin::where('user_id', '=', $user->id)->count();
         if ($nok == 0){
@@ -91,6 +115,7 @@ class BioController extends Controller
             'branches' => Branch::all(),
             'states' => State::where('country_id', 1)->get(),
             'nok' => NextOfKin::where('user_id', auth('api')->id())->first(),
+            'nations' => Country::orderBy('name', 'ASC')->get(),
             ]);
     }
 

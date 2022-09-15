@@ -210,7 +210,18 @@ class UserController extends Controller
     
     public function show($id)
     {
-        
+        $user = User::find($id);
+
+        return response()->json([
+            'nations' => Country::orderBy('name', 'ASC')->get(),
+            'areas' => $areas,
+            'user' => $user,
+            'branches' => $branches,
+            'departments' => $departments,
+            'nok' => $nok,
+            'states' => $states,
+            'patient' => Patient::where('user_id',  auth('api')->id())->first(),       
+        ]);
     }
 
 

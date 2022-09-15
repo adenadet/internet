@@ -33,13 +33,36 @@ class AppointmentController extends Controller
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
             'states' => State::orderBy('name', 'ASC')->get(),
-            'nations' => Country::orderBy('name', 'ASC')->get(),         
+            'nations' => Country::orderBy('name', 'ASC')->get(), 
+            'patient' => User::find(auth('api')->id()),     
         ]);
     }
 
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'patient_id' => 'required',
+            'service_id' => 'required',
+            'date' => 'required | date',
+            'schedule' => 'sometimes',
+        ]);
+
+        $appointment = Appointment::create([
+            'patient_id' => $request->input('patient_id'),
+            'service_id' => $request->input('service_id'),
+            'date'       => $request->input('date'),
+            'schedule'   => $request->input('schedule'),
+        ]);
+
+        return response()->json([
+            'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
+            'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
+            'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
+            'services' => Service::orderBy('name', 'ASC')->get(),
+            'states' => State::orderBy('name', 'ASC')->get(),
+            'nations' => Country::orderBy('name', 'ASC')->get(), 
+            'patient' => User::find(auth('api')->id()),     
+        ]);
     }
 
     public function show($id)
