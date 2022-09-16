@@ -14,7 +14,7 @@
         <ul class="users-list clearfix">
             <li v-for="user in staffs" :key="user.id">
                 <img style="height: 50px;" :src="(user.image) ? '/img/profile/'+user.image : '/img/profile/default.png'" :title="user.first_name+' '+user.last_name" :alt="user.first_name+' '+user.last_name">
-                <router-link :to="'/contacts/staff/'+user.id" class="users-list-name" href="#">{{user.first_name+' '+user.last_name}}</router-link>
+                <a :href="'/contacts/staff/'+user.id" class="users-list-name">{{user.first_name+' '+user.last_name}}</a>
                 <span class="users-list-date">{{user.joined_at | ExcelDateMonth}}</span>
             </li>
         </ul>

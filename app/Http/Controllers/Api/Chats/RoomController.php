@@ -91,10 +91,14 @@ class RoomController extends Controller
         $private_room = array();
 
         if (count($rooms) == 0){
-            $room = Room::create(['created_by' => auth('api')->id(), 'name'=>'Private Conversation', 'room_type'  => 'Private',]);
+            $room = Room::create([
+                'created_by' => auth('api')->id(), 
+                'name'=>'Private Conversation', 
+                'room_type'  => 'Private',
+            ]);
     
             Member::create(['room_id'=>$room->id, 'user_id'=>auth('api')->id(), 'requested_by'=>auth('api')->id(), 'status'=> 1,]);
-            Member::create(['room_id'=>$room->id, 'user_id'=>$id, 'requested_by'=>auth('api')->id(), 'status'=> 1,]);
+            //Member::create(['room_id'=>$room->id, 'user_id'=>$id, 'requested_by'=>auth('api')->id(), 'status'=> 1,]);
         }
         else{
             foreach ($rooms as $room){

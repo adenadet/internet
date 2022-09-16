@@ -139,7 +139,15 @@ Vue.filter('FullDate', function(text){
 
 Vue.filter('firstUp', function(text){
         return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(); 
-        });
+    });
+
+Vue.filter('getAge', function(text){
+    var birthYear = parseInt(moment(text).format('YYYY'));
+    var currentDate = new Date();
+    var currentYear = currentDate.getFullYear();
+    var age = currentYear - birthYear;
+    return age+' years';
+});
 
 Vue.filter('readMore', function (text, length, suffix) {
     if (text == null){return text;}

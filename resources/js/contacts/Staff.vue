@@ -1,48 +1,40 @@
 <template>
-<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+<div class="col-sm-8 col-md-8 offset-md-2 offset-sm-2 d-flex align-items-stretch flex-column">
     <div class="card bg-light d-flex flex-fill">
-        <div class="card-header text-muted border-bottom-0">Digital Strategist</div>
+        <div class="card-header text-muted border-bottom-0">Staff Details</div>
         <div class="card-body pt-0">
             <div class="row">
                 <div class="col-7">
-                    <h2 class="lead"><b>Nicole Pearson</b></h2>
-                    <p class="text-muted text-sm"><b>About: </b> Web Designer / UX / Graphic Artist / Coffee Lover </p>
+                    <h2 class="lead"><b>{{user.first_name}} {{user.middle_name}} {{user.last_name}}</b></h2>
                     <ul class="ml-4 mb-0 fa-ul text-muted">
-                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Address: Demo Street 123, Demo City 04312, NJ</li>
-                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Phone #: + 800 - 12 12 23 52</li>
+                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-envelope"></i></span> Email: {{user.email}}</li>
+                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Branch: {{((typeof staff.branch != 'undefined') && (staff.branch !== null))? staff.branch.name: ''}}</li>
+                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Department: {{((typeof staff.department != 'undefined') && (staff.department !== null))? staff.department.name: ''}}</li>
+                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone-square-alt"></i></span> Office Phone: {{((typeof staff.department != 'undefined') && (staff.department !== null))? staff.department.phone: ''}}</li>
+                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone-alt"></i></span> Phone #: {{user.phone}}</li>
+                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-birthday-cake"></i></span> Birthday: {{user.dob | ExcelDateMonth}}</li>
+                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-sign-in-alt"></i></span> Joined On: {{staff.joined_at | getAge}}</li>
                     </ul>
                 </div>
                 <div class="col-5 text-center">
                     <img :src="(user.image) ? '/img/profile/'+user.image : '/img/profile/default.png'" alt="" class="img-circle img-fluid">
                 </div>
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="text-right">
-                <a href="#" class="btn btn-sm bg-teal">
-                    <i class="fas fa-comments"></i>
-                </a>
-                <a href="#" class="btn btn-sm btn-primary">
-                    <i class="fas fa-user"></i> View Profile
-                </a>
-                </div>
-            </div>
             </div>
         </div>
+        <div class="card-footer">
+            <div class="text-right">
+                <button class="btn btn-sm btn-primary" @click="chatUser(user.id)"><i class="fas fa-comment-alt"></i> Chat with Staff</button>
+            </div>
+        </div>
+    </div>
+</div>
 </template>
 <script>
 export default {
     data(){
         return {
-            areas:[],
-            branches:[],
-            departments:[],
-            editMode: false,
-            savings:{},
-            states:[],
+            staff: {},
             user:{},
-            users:{},
-            form: new Form({}),
         }
     },
     methods:{
@@ -65,9 +57,8 @@ export default {
                 confirmButtonText: 'Yes, create it!'
             })
             .then((result) => {
-                //Send Delete request
                 if(result.value){
-                    axios.get('/api/chats/rooms/check/'+id)//check if there is an existing Room with only these two people
+                    axios.get('/api/chats/rooms/check/'+id)
                     .then(response =>{this.$router.push('/chats');})
                     .catch(()=>{toast.fire({icon: 'error', title: 'Chats not loaded successfully',})})
                 }
@@ -76,16 +67,13 @@ export default {
         getAllInitials(){
             this.$Progress.start();
             axios.get('/api/ums/staffs/'+this.$route.params.id).then(response =>{
-                this.areas = response.data.areas;
-                this.branches = response.data.branches;
-                this.departments = response.data.departments;
-                this.states = response.data.states;
-                this.users = response.data.users;
+                this.user = response.data.user;
+                this.staff = response.data.staff;
                 
                 this.$Progress.finish();
                 toast.fire({
                     icon: 'success',
-                    title: 'Users loaded successfully',
+                    title: 'Staff loaded successfully',
                 });
             })
             .catch(()=>{

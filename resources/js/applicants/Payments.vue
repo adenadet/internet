@@ -66,7 +66,7 @@ export default {
     },
     methods:{  
         getInitials(){
-            axios.get('/api/emr/payments').then(response =>{
+            axios.get('/api/emr/payments/initials').then(response =>{
                 this.refreshPayment(response)
             })
             .catch(()=>{

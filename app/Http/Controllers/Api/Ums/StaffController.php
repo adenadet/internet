@@ -48,7 +48,10 @@ class StaffController extends Controller
 
     public function show($id)
     {
-        //
+        return response()->json([
+            'staff' => Staff::where('user_id', '=', $id)->with(['branch', 'department'])->first(),       
+            'user' => User::find($id),
+        ]);
     }
 
     public function update(Request $request, $id)

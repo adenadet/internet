@@ -18,6 +18,14 @@ class PaymentController extends Controller
         ]);
     }
 
+    public function initials()
+    {
+        return response()->json([
+            'payments' => Payment::where('patient_id', '=', auth('api')->id())->with(['service', 'patient', 'appointment', 'employee'])->latest()->paginate(10),
+            'unpaid_appointments' => Appointment::where(['status', 0], ['patient_id', auth('api')->id()])->with(['service', 'patient'])->orderBy('date', 'ASC')->get(),
+        ]);
+    }
+
     public function store(Request $request)
     {
         //Validate the request
