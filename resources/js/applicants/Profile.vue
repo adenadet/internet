@@ -45,7 +45,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="bio-data"><PMFormBioData :areas="areas" :editMode="editMode" :states="states" :nations="nations" :user="user" /></div>
                     <div class="tab-pane" id="next-of-kin"><PMFormNOK :nok="nok"/></div>
-                    <div class="tab-pane" id="applicant"><ApplicantDetailsForm :nations="nations"/></div>
+                    <div class="tab-pane" id="applicant"><ApplicantDetailsForm :nations="nations" :user="user"/></div>
                     <div class="tab-pane" id="password"><PMFormPassword /></div>
                 </div>
             </div>

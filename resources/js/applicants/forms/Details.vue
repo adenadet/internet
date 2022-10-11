@@ -9,7 +9,7 @@
                 <select class="form-control" id="nationality_id" name="nationality_id" required v-model="ApplicantData.nationality_id" :class="{'is-invalid' : ApplicantData.errors.has('nationality_id') }">
                     <option value="">---Select Nationality---</option>
                     <option v-for="nation in nations" v-bind:key="nation.id" :value="nation.id" >{{nation.name}}</option>
-                </select>
+               </select>
                 <has-error :form="ApplicantData" field="nation"></has-error> 
             </div>
         </div>
@@ -20,6 +20,7 @@
                 <has-error :form="ApplicantData" field="passport_no"></has-error> 
             </div>
         </div>
+        <input type="hidden" class="form-control" id="user_id" name="user_id" v-model="ApplicantData.user_id" :class="{'is-invalid' : ApplicantData.errors.has('user_id') }"/>                
     </div>
     <button @click.prevent="updateApplicantData" type="submit" name="submit" class="submit btn btn-success">Submit</button>
 </form>
@@ -49,6 +50,7 @@ export default {
             },
         updateApplicantData(){
             this.$Progress.start();
+            this.ApplicantData.user_id = this.user.id;
             this.ApplicantData.post('/api/ums/details')
             .then(response =>{
                 this.$Progress.finish();
@@ -66,34 +68,14 @@ export default {
                     title: 'Oops...',
                     text: 'Something went wrong!',
                     footer: 'Please try again later!'
-                    });
+                });
                 this.$Progress.fail();
-                });  
-                    
+            });          
         },
-        getProfilePic(){
-            let photo = (this.ApplicantData.image.length >= 150) ? this.ApplicantData.image : "./"+this.ApplicantData.image;
-            return photo;
-            },
-        updateProfilePic(e){
-            let file = e.target.files[0];
-            let reader = new FileReader();
-            if (file['size'] < 2000000){
-                reader.onloadend = (e) => {
-                    this.ApplicantData.image = reader.result
-                    }
-                reader.readAsDataURL(file)
-            }
-            else{
-                swal.fire({
-                    type: 'error',
-                    title: 'File is too large'
-                })
-            }
-        }
     },
     props:{
         nations: Array,
+        user: Object,
     }
 }
 </script>
