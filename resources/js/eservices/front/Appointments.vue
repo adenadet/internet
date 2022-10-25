@@ -10,7 +10,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                            <!-- :appointment="appointment" / -->
+                            <EServiceFormAppointment :editMode="editMode" :appointment="appointment" :patients="patients" :services="services"/>
                         </div>
                     </div>
                 </div>
@@ -29,14 +29,14 @@
                 </div>
             </div>
             <div class="modal fade" id="applicantModal">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">Create Patient</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                            <PMFormBioData :areas="areas" :nations="nations" :editMode="editMode" :states="states" :user="user" /> 
+                            <ApplicantFormPatient :editMode="editMode" :nations="nations" :applicant="applicant" /> 
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                                     <tr v-for="(appointment, index) in appointments.data" :key="appointment.id">
                                         <td>{{index | addOne}}</td>
                                         <td>{{appointment.service_id != null && appointment.service != null ? appointment.service.name : ''}}</td>
-                                        <td>{{appointment.patient_id != null && appointment.patient != null ? appointment.patient.first_name+' '+appointment.patient.other_name+' '+appointment.patient.last_name:'Deleted User'}}</td>
+                                        <td>{{appointment.patient_id != null && appointment.patient != null ? appointment.patient.first_name+' '+appointment.patient.middle_name+' '+appointment.patient.last_name:'Deleted User'}}</td>
                                         <td>{{appointment.date | excelDate}}</td>
                                         <td>{{appointment.schedule}}</td>
                                         <td><span class="tag tag-success">{{appointment.status == 0 ? 'Unpaid' :(appointment.status == 1 ? 'Paid' :(appointment.status == 2 ? 'Reschedule' :(appointment.status == 3 ? 'Cancelled' : (appointment.status == 8 ? 'Certificate Sent' :'Done'))))}}</span></td>
@@ -99,19 +99,26 @@
 export default {
     data() {
         return {
+            applicant: {},
             appointment: {},
             appointments: {},
             editMode: true,
             nations: [],
-            areas: [],
-            states: [],
-            user: {}
+            patients: [],
+            services: [],
+            user: {},
         }
     },
     mounted() {
         this.getInitials();
         Fire.$on('refreshAppointment', response => {
             this.refreshAppointments(response);
+        });
+        Fire.$on('refresh', response => {
+            this.refreshAppointments(response);
+            $('#paymentModal').modal('hide');
+            $('#patientModal').modal('hide');
+            $('#appointmentModal').modal('hide');
         });
         Fire.$on('refreshPayment', response => {
             this.refreshAppointments(response);
@@ -136,17 +143,12 @@ export default {
             this.$Progress.finish();
         },
         getInitials() {
-            axios.get('/api/emr/appointments').then(response => {
-                //this.refreshAppointments(response)
-                Fire.$emit('refreshAppointment', response);
-            })
-                .catch(() => {
-                    this.$Progress.fail();
-                    toast.fire({
-                        icon: 'error',
-                        title: 'Your appointments did not loaded successfully',
-                    })
-                });
+            axios.get('/api/emr/appointments')
+            .then(response => {this.refreshAppointments(response)})
+            .catch(() => {
+                this.$Progress.fail();
+                toast.fire({icon: 'error', title: 'Your appointments did not loaded successfully',})
+            });
         },
         makePayment(appointment){
             this.$Progress.start();
@@ -157,9 +159,9 @@ export default {
         },
         refreshAppointments(response) {
             this.appointments = response.data.appointments;
+            this.services = response.data.services;
             this.nations = response.data.nations;
-            this.states =  response.data.states;
-            this.areas = response.data.areas;
+            this.patients = response.data.patients;
         }
     },
     props: {}

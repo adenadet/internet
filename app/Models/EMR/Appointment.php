@@ -14,7 +14,7 @@ class Appointment extends Structure
     protected $fillable = array('id', 'patient_id', 'service_id', 'date', 'schedule', 'status', 'arrived_at', 'payment_channel', 'paid_by', 'created_at', 'deleted_by', 'deleted_at');
 
     public function patient(){
-        return $this->belongsTo('App\Models\User', 'patient_id', 'id');
+        return $this->belongsTo('App\Models\EMR\Patient', 'patient_id', 'id');
     }
 
     public function service(){

@@ -39,12 +39,12 @@ Route::group(['middleware' => 'auth','namespace' => 'App\Http\Controllers\Learn'
 Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Controllers\EMR', 'name' => 'eservices.', 'prefix' => '/eservices'],function(){
     Route::get('/administrator',          'ServiceController@administrator');
     Route::get('/front_office',           'ServiceController@front');
-    Route::get('/medical_officer',        'ServiceController@medical');
+    Route::get('/doctor',                 'ServiceController@medical');
     Route::get('/radiologist',            'ServiceController@radiologist');
 
     Route::get('/administrator/{any}',    'ServiceController@administrator')->where('any', '.*'); 
     Route::get('/front_office/{any}',     'ServiceController@front')->where('any', '.*');
-    Route::get('/medical_officer/{any}',  'ServiceController@medical')->where('any', '.*');
+    Route::get('/doctor/{any}',           'ServiceController@medical')->where('any', '.*');
     Route::get('/radiologist/{any}',      'ServiceController@radiologist')->where('any', '.*'); 
 });
 

@@ -42,6 +42,7 @@
         "vue-pdf-reader": "^0.2.9",
         "vue-progressbar": "^0.7.5",
         "vue-router": "^3.4.3",
+        "vue-signature-pad": "^2.0.5",
         "vue-step-wizard": "^0.1.14",
         "vue-video-player": "^5.0.2",
         "vue-wysiwyg": "^1.7.2",

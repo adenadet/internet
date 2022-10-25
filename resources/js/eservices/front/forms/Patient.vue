@@ -1,110 +1,79 @@
 <template>
 <div>
 <form>
-    <alert-error :form="BioData"></alert-error> 
+    <alert-error :form="ApplicantData"></alert-error> 
     <div class="row">
         <div class="col-sm-4">
             <div class="form-group">
+                <label>Last Name*</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name *" required v-model="ApplicantData.last_name" :class="{'is-invalid' : ApplicantData.errors.has('last_name') }" />
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
                 <label>First Name *</label>
-                <input type="text" required class="form-control" id="first_name" name="first_name" placeholder="First Name *" v-model="BioData.first_name" :class="{'is-invalid' : BioData.errors.has('first_name') }">
-                <has-error :form="BioData" field="first_name"></has-error> 
+                <input type="text" required class="form-control" id="first_name" name="first_name" placeholder="First Name *" v-model="ApplicantData.first_name" :class="{'is-invalid' : ApplicantData.errors.has('first_name') }">
+                <has-error :form="ApplicantData" field="first_name"></has-error> 
             </div>
         </div>
         <div class="col-sm-4">
             <div class="form-group">
                 <label>Middle Name</label>
-                <input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="middle Name" v-model="BioData.middle_name" :class="{'is-invalid' : BioData.errors.has('middle_name') }"/>
-                <has-error :form="BioData" field="middle_name"></has-error> 
+                <input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="middle Name" v-model="ApplicantData.middle_name" :class="{'is-invalid' : ApplicantData.errors.has('middle_name') }"/>
+                <has-error :form="ApplicantData" field="middle_name"></has-error> 
             </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="form-group">
-                <label>Last Name*</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name *" required v-model="BioData.last_name" :class="{'is-invalid' : BioData.errors.has('last_name') }" />
-            </div>
-        </div>
+        </div>  
     </div>
     <div class="row">
-        <!-- Get Address -->
-        <div class="col-md-6 col-sm-12">
-            <div class="form-group">
-                <label>Address*</label>
-                <input type="text" class="form-control" id="street" name="street" placeholder="Enter Address *" required v-model="BioData.street" :class="{'is-invalid' : BioData.errors.has('street') }" />
-            </div>
-        </div>
-        <div class="col-md-6 col-sm-12">
-            <div class="form-group">
-                <label>Address2</label>
-                <input type="text" class="form-control" id="street2" name="street2" placeholder="Enter Street Desc" v-model="BioData.street2" :class="{'is-invalid' : BioData.errors.has('street2') }">
-            </div>
-        </div>
         <div class="col-md-4 col-sm-12">
+            <label>Date of Birth</label>
             <div class="form-group">
-                <label>City*</label>
-                <input type="text" class="form-control" id="city" name="city" placeholder="Enter City *" v-model="BioData.city" :class="{'is-invalid' : BioData.errors.has('city') }">
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-                <label>State</label>
-                <select class="form-control" id="state_id" name="state_id" placeholder="Enter State / County *" required v-model="BioData.state_id" :class="{'is-invalid' : BioData.errors.has('state_id') }">
-                    <option value="">--Select State--</option>
-                    <option v-for="state in states" v-bind:key="state.id" :value="state.id" >{{state.name}}</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-                <label>LGA</label>
-                <select class="form-control" id="area_id" name="area_id" required v-model="BioData.area_id" :class="{'is-invalid' : BioData.errors.has('area_id') }">
-                    <option value="">--Select area--</option>
-                    <option v-for="area in areas" v-bind:key="area.id" :value="area.id" >{{area.name}}</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number *" required v-model="BioData.phone" :class="{'is-invalid' : BioData.errors.has('phone') }">
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-                <label>Alternate Phone</label>
-                <input type="text" class="form-control" id="alt_phone" name="alt_phone" placeholder="Alternate Phone Number" v-model="BioData.alt_phone" :class="{'is-invalid' : BioData.errors.has('alt_phone') }">
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" class="form-control" id="personal_email" name="personal_email" placeholder="Enter Email Address *" required v-model="BioData.personal_email" :class="{'is-invalid' : BioData.errors.has('personal_email') }">
-            </div>
-        </div>
-    </div>
-    <div class="row">
-         <div class="col-md-4 col-sm-12">
-            <div class="form-group">
-                <label>Nationality</label>
-                <select class="form-control" id="nation_id" name="nation_id" v-model="BioData.nation_id" :class="{'is-invalid' : BioData.errors.has('nation_id') }">
-                    <option value="">---Select Nationality---</option>
-                    <option v-for="nation in nations" v-bind:key="nation.id" :value="nation.id" >{{nation.name}}</option>
-                </select>
+                <input name="dob" id="dob" type="date" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Birth Date" v-model="ApplicantData.dob" :class="{'is-invalid' : ApplicantData.errors.has('dob') }">
             </div>
         </div>
         <div class="col-md-4 col-sm-12">
             <div class="form-group">
                 <label>Sex</label>
-                <select class="form-control" id="sex" name="sex" required v-model="BioData.sex" :class="{'is-invalid' : BioData.errors.has('sex') }">
-                    <option value="">---Select Sex---</option>
+                <select class="form-control" id="sex" name="sex" required v-model="ApplicantData.sex" :class="{'is-invalid' : ApplicantData.errors.has('sex') }">
+                    <option value=''>---Select Sex---</option>
                     <option value="Female">Female</option>
                     <option value="Male">Male</option>
                 </select>
             </div>
         </div>
         <div class="col-md-4 col-sm-12">
-            <label>Date of Birth</label>
             <div class="form-group">
-                <input name="dob" id="dob" type="date" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Birth Date" v-model="BioData.dob" :class="{'is-invalid' : BioData.errors.has('dob') }">
+                <label>Last Menstrual Period (Females only)</label>
+                <input type="date" class="form-control" id="lmp" name="lmp" placeholder="Enter Last Menstrual Period *" required v-model="ApplicantData.lmp" :class="{'is-invalid' : ApplicantData.errors.has('lmp') }" />
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label>Nationality</label>
+                <select class="form-control" id="nationality_id" name="nationality_id" v-model="ApplicantData.nationality_id" :class="{'is-invalid' : ApplicantData.errors.has('nationality_id') }">
+                    <option value=''>---Select Nationality---</option>
+                    <option v-for="nation in nations" v-bind:key="nation.id" :value="nation.id" >{{nation.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label>Passport Number</label>
+                <input type="text" class="form-control" id="passport_number" name="passport_number" placeholder="Enter Passport Number *" required v-model="ApplicantData.passport_number" :class="{'is-invalid' : ApplicantData.errors.has('passport_number') }" />
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label>Visa Type</label>
+                <input type="text" class="form-control" id="visa_type" name="visa_type" placeholder="Enter Visa Type *" required v-model="ApplicantData.visa_type" :class="{'is-invalid' : ApplicantData.errors.has('visa_type') }" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+         <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label>No of accompanying children less than 11 years</label>
+                <input type="number" class="form-control" id="accompanying_kids" name="accompanying_kids" placeholder="Enter Number of Accompanying Kids *" required v-model="ApplicantData.accompanying_kids" :class="{'is-invalid' : ApplicantData.errors.has('accompanying_kids') }">
             </div>
         </div>
         <div class="col-md-4 col-sm-12">
@@ -113,9 +82,49 @@
                 <input type="file" class="form-control" placeholder="Birth Date" @change="updateProfilePic">
             </div>
         </div>
-        <input type="hidden" name="id" id="id" v-model="BioData.id">
+        <div class="col-md-4 col-sm-12">
+            <label>Passport Page</label>
+            <div class="form-group">
+                <input type="file" class="form-control" placeholder="Birth Date">
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number *" required v-model="ApplicantData.phone" :class="{'is-invalid' : ApplicantData.errors.has('phone') }">
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label>Alternate Phone</label>
+                <input type="text" class="form-control" id="alt_phone" name="alt_phone" placeholder="Alternate Phone Number" v-model="ApplicantData.alt_phone" :class="{'is-invalid' : ApplicantData.errors.has('alt_phone') }">
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email Address *" required v-model="ApplicantData.email" :class="{'is-invalid' : ApplicantData.errors.has('email') }">
+            </div>
+        </div>
+        <input type="hidden" name="id" id="id" v-model="ApplicantData.id">
     </div>
-    <button @click.prevent="updateBioData" type="submit" name="submit" class="submit btn btn-success">Submit</button>
+    <div class="row">
+        <!-- Get Address -->
+        <div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                <label>Address in Nigeria*</label>
+                <wysiwyg rows="5" id="nigerian_address" name="nigerian_address" placeholder="Enter Address *" required v-model="ApplicantData.nigerian_address" :class="{'is-invalid' : ApplicantData.errors.has('nigerian_address') }"></wysiwyg>
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="form-group">
+                <label>Address in the UK*</label>
+                <wysiwyg rows="5" id="uk_address" name="uk_address" placeholder="Enter Address *" required v-model="ApplicantData.uk_address" :class="{'is-invalid' : ApplicantData.errors.has('street') }"></wysiwyg>
+            </div>
+        </div>
+    </div>
+    
+    <button @click.prevent="editMode ? updateApplicantData() : createApplicant()" type="submit" name="submit" class="submit btn btn-success">Submit</button>
 </form>
 </div>
 </template>
@@ -123,48 +132,64 @@
 export default {
     data(){
         return  {
-            areas: [],
-            branches: [], 
-            departments: [], 
-            states: [],
-            nations: [],
-            BioData: new Form({
-                alt_phone:'', 
-                area_id:'', 
-                branch_id:'', 
-                city:'', 
-                dob:'', 
-                email:'',
+            ApplicantData: new Form({
                 first_name: '', 
+                middle_name:'', 
+                last_name:'', 
+                dob: '',
+                sex:'',
+                lmp:'', 
+                nationality_id: '',
+                alt_phone:'', 
+                phone:'', 
+                email:'',
                 id:'', 
                 image:'', 
-                last_name:'', 
-                middle_name:'', 
-                nation_id: '',
-                password:'', 
-                phone:'', 
-                roles:'',
-                sex:'', 
-                state_id:'', 
-                street:'', 
-                street2:'',
+                nigeria_address:'', 
+                uk_address:'',
+                accompanying_kids: 0,
+                visa_type: '',
+                passport_number: '',
                 }),
         }
     },
     mounted() {
-        this.getAllInitials();
-        Fire.$on('BioDataFill', user =>{
-            this.BioData.fill(user);
+        //this.getAllInitials();
+        Fire.$on('ApplicantDataFill', user =>{
+            this.ApplicantData.fill(user);
         });
         Fire.$on('AfterCreation', ()=>{
-            //axios.get("api/profile").then(({ data }) => (this.BioData.fill(data)));
+            //axios.get("api/profile").then(({ data }) => (this.ApplicantData.fill(data)));
         });
     },
     methods:{
-        updateBioData(){
+        createApplicant(){
+            this.$Progress.start();
+            this.ApplicantData.post('/api/emr/patients')
+            .then(response =>{
+                this.$Progress.finish();
+                Fire.$emit('reload', response);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'The Profile details has been updated',
+                    showConfirmButton: false,
+                    timer: 1500
+                    });
+                })
+            .catch(()=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                    footer: 'Please try again later!'
+                });
+            this.$Progress.fail();
+            });  
+        },
+        updateApplicantData(){
             console.log("Tested");
             this.$Progress.start();
-            this.BioData.post('/api/hrms/bios')
+            this.ApplicantData.put('/api/emr/patients/'+this.ApplicantData.id)
             .then(response =>{
                 this.$Progress.finish();
                 Fire.$emit('Reload', response);
@@ -187,7 +212,7 @@ export default {
                     
         },
         getProfilePic(){
-            let photo = (this.BioData.image.length >= 150) ? this.BioData.image : "./"+this.BioData.image;
+            let photo = (this.ApplicantData.image.length >= 150) ? this.ApplicantData.image : "./"+this.ApplicantData.image;
             return photo;
             },
         updateProfilePic(e){
@@ -195,7 +220,7 @@ export default {
             let reader = new FileReader();
             if (file['size'] < 2000000){
                 reader.onloadend = (e) => {
-                    this.BioData.image = reader.result
+                    this.ApplicantData.image = reader.result
                     }
                 reader.readAsDataURL(file)
             }
@@ -218,7 +243,7 @@ export default {
                     icon: 'success',
                     title: 'Profile loaded successfully',
                 });
-                Fire.$emit('BioDataFill', this.user);
+                Fire.$emit('ApplicantDataFill', this.user);
                 Fire.$emit('NextOfKinFill', this.nok);
             })
             .catch(()=>{
@@ -231,7 +256,9 @@ export default {
         },
     },
     props:{
-        editMode: Boolean,    
+        applicant: Object,
+        editMode: Boolean,   
+        nations: Array, 
     }
 }
 </script>

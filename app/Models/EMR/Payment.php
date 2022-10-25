@@ -11,7 +11,7 @@ class Payment extends Model
     protected $fillable = array('service_id', 'patient_id', 'appointment_id', 'amount', 'employee_id', 'channel', 'details', 'created_at', 'updated_at');
 
     public function patient(){
-    	return $this->belongsTo('App\Models\User', 'patient_id', 'id');
+    	return $this->belongsTo('App\Models\EMR\Patient', 'patient_id', 'id');
 	}
 
     public function appointment(){

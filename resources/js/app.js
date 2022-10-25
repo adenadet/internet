@@ -13,8 +13,8 @@ Vue.component(VueDocPreview);
 //Vue.component(pdf);
 
 //Import PDF Reader
-import VuePdfReader from 'vue-pdf-reader';
-Vue.component(VuePdfReader);
+import VuePdf from 'vue-pdf-reader';
+Vue.component(VuePdf);
 
 //Import Progress Bar
 import VueProgressBar from 'vue-progressbar';
@@ -82,30 +82,35 @@ window.Form = Form;
 
 //Import Chart and ChartKick for Charts
 import Chart from 'chart.js';
-import Chartkick from 'vue-chartkick'
+import Chartkick from 'vue-chartkick';
 Vue.use(Chartkick.use(Chart));
 
 //Import Emit for all components
 window.Fire = new Vue();
 
 //Import Multiselect Option
-import Multiselect from 'vue-multiselect'
-Vue.component('multiselect', Multiselect)
+import Multiselect from 'vue-multiselect';
+Vue.component('multiselect', Multiselect);
 
 //Import WYSIWYG
 import wysiwyg from "vue-wysiwyg";
+import "vue-wysiwyg/dist/vueWysiwyg.css";
 Vue.use(wysiwyg, {});
 
 //Import Youtube Player
-import VueYoutube from 'vue-youtube'
-Vue.use(VueYoutube)
+import VueYoutube from 'vue-youtube';
+Vue.use(VueYoutube);
+
+//Import Signature Pad
+import VueSignature from 'vue-signature-pad';
+Vue.use(VueSignature);
 
 //Special Created Filters
 Vue.filter('addOne', function(value) {
     if (isNaN(value)){ return '0';}
     let val = value + 1;
     return val;
-    });
+});
 
 Vue.filter('age', function(value){
     return moment().diff(moment(value, "DD MMM YYYY"), 'years');
@@ -115,31 +120,31 @@ Vue.filter('currency', function(value) {
     if (isNaN(value)){ return '0.00';}
     let val = (value/1).toFixed(2).replace(',', '.')
     return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    });
+});
 
 Vue.filter('ExcelDate', function(text){
     return moment(text).format('MMMM Do, YYYY');
-    });
+});
 
 Vue.filter('ExcelDateShort', function(text){
     return moment(text).format('DD/MM/YYYY');
-    });
+});
 
 Vue.filter('ExcelDateMonth', function(text){
     return moment(text).format('MMM Do');
-    });
+});
 
 Vue.filter('ExcelMonthYear', function(text){
     return moment(text).format('MMM, YYYY');
-    });
+});
     
 Vue.filter('FullDate', function(text){
     return moment(text).format('LLLL');
-    });
+});
 
 Vue.filter('firstUp', function(text){
-        return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(); 
-    });
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase(); 
+});
 
 Vue.filter('getAge', function(text){
     var birthYear = parseInt(moment(text).format('YYYY'));
@@ -156,7 +161,8 @@ Vue.filter('readMore', function (text, length, suffix) {
 });        
 
 Vue.filter('shortDate', function(text){
-    return moment(text).format('MMM Do, YY');    });
+    return moment(text).format('MMM Do, YY');    
+});
 
 Vue.filter('profilePicture', function (text){
     if (text == null){return '/img/profile/default.png';}

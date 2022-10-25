@@ -38,7 +38,7 @@
                         @endif
                         @if(Auth::user()->hasRole('E-Services MO') || Auth::user()->hasRole('Super Admin'))
                         <li class="nav-item">
-                            <a href="/eservices/medical_officer" class="nav-link">
+                            <a href="/eservices/doctor" class="nav-link">
                             <i class="fas fa-user-md nav-icon"></i>
                             <p>Medical Officer</p>
                             </a>

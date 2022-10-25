@@ -11,8 +11,9 @@ import ApplicantTicket            from './applicants/Ticket.vue';
 import ApplicantTickets           from './applicants/Tickets.vue';
 
     import ApplicantDetailsForm         from './applicants/forms/Details.vue';
-    import ApplicantAppointmentForm     from './applicants/forms/Appointment.vue';
-    import ApplicantPaymentForm         from './applicants/forms/Payment.vue';
+    import ApplicantFormPatient         from './eservices/front/forms/Patient.vue';
+    import ApplicantAppointmentForm     from './eservices/front/forms/Appointment.vue';
+    import ApplicantPaymentForm         from './eservices/front/forms/Payment.vue';
 
 Vue.component('ApplicantAppointment',          ApplicantAppointment);
 Vue.component('ApplicantAppointments',         ApplicantAppointments);
@@ -21,6 +22,7 @@ Vue.component('ApplicantPayment',              ApplicantPayment);
 Vue.component('ApplicantPayments',             ApplicantPayments);
 Vue.component('ApplicantProfile',              ApplicantProfile);
     
+    Vue.component('ApplicantFormPatient',      ApplicantFormPatient);
     Vue.component('ApplicantDetailsForm',      ApplicantDetailsForm);
     Vue.component('ApplicantAppointmentForm',  ApplicantAppointmentForm);
     Vue.component('ApplicantPaymentForm',      ApplicantPaymentForm);
@@ -95,14 +97,26 @@ import EServiceFrontAppointment      from './eservices/front/Appointment.vue';
 import EServiceFrontAppointments     from './eservices/front/Appointments.vue';
 import EServicePayments              from './eservices/front/Payments.vue';
 
-    import EServiceFormApplicant      from './eservices/front/forms/Applicant.vue';
+import EServiceDocConsultation         from './eservices/doctor/Consultation.vue';
+import EServiceDocConsultations        from './eservices/doctor/Consultations.vue';
+
+    import EServiceFormApplicant        from './eservices/front/forms/Applicant.vue';
+    import EServiceFormAppointment      from './eservices/front/forms/Appointment.vue';
     import EServiceFormPayment      from './eservices/front/forms/Payment.vue';
+
+    import EServiceDocFormConsent              from './eservices/doctor/forms/Consent.vue';
+
 Vue.component('EServiceFrontAppointment',        EServiceFrontAppointment);
 Vue.component('EServiceFrontAppointments',       EServiceFrontAppointments);
 Vue.component('EServicePayments',                EServicePayments);
 
-    Vue.component('EServiceFormApplicant', EServiceFormApplicant);
-    Vue.component('EServiceFormPayment', EServiceFormPayment);
+Vue.component('EServiceDocFormConsent',          EServiceDocFormConsent);
+Vue.component('EServiceDocConsultation',         EServiceDocConsultation);
+Vue.component('EServiceDocConsultations',        EServiceDocConsultations);
+
+    Vue.component('EServiceFormApplicant',       EServiceFormApplicant);
+    Vue.component('EServiceFormAppointment',     EServiceFormAppointment);
+    Vue.component('EServiceFormPayment',         EServiceFormPayment);
 
 import Users from './components/Users.vue';
 
@@ -417,6 +431,10 @@ let routes = [
     {path: '/eservices/front_office/appointments',      component:EServiceFrontAppointments},
     {path: '/eservices/front_office/appointment/:id',   component:EServiceFrontAppointment},
     {path: '/eservices/front_office/payments',          component:EServicePayments},
+    
+    {path: '/eservices/doctor',                         component:EServiceDocConsultations},
+    {path: '/eservices/doctor/consultations',           component:EServiceDocConsultations},
+    {path: '/eservices/doctor/consultation/:id',        component:EServiceDocConsultation},
 
 //Network Checkers Module
     {path: '/internet', component: NetworkDashboard},

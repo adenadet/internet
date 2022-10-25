@@ -5,6 +5,7 @@
     <div class="row">
         <div class="col-md-3">
             @if($page_title == 'E-Services | Front Office') @include('partials.eservices.front')
+            @elseif($page_title == 'E-Services | Medical Officer') @include('partials.eservices.doctor')
             @endif
         </div>
         <div class="col-md-9">

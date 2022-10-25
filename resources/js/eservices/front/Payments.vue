@@ -44,7 +44,7 @@
                                 <tbody v-else>
                                     <tr v-for="payment in payments.data" :key="payment.id">
                                         <td>{{payment.created_at | excelDateShort}}</td>
-                                        <td>{{payment.patient_id != null && payment.patient != null ? payment.patient.first_name+' '+payment.patient.other_name+' '+payment.patient.last_name:'Deleted User'}}</td>
+                                        <td>{{payment.patient_id != null && payment.patient != null ? payment.patient.first_name+' '+payment.patient.middle_name+' '+payment.patient.last_name:'Deleted User'}}</td>
                                         <td>{{payment.service_id != null && payment.service != null ? payment.service.name : ''}}</td>
                                         <td>{{payment.amount | currency}}</td>
                                         <td>{{payment.channel}} <br /><small>{{payment.details}}</small></td>
