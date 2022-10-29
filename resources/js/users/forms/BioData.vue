@@ -140,7 +140,7 @@
             </div>
         </div>
         <div class="col-md-4 col-sm-12">
-            <label>Profile Picture</label>
+            <label>Profile Pic</label>
             <div class="form-group">
                 <input type="file" class="form-control" placeholder="Birth Date" @change="updateProfilePic">
             </div>
@@ -248,7 +248,8 @@ export default {
             let reader = new FileReader();
             if (file['size'] < 2000000){
                 reader.onloadend = (e) => {
-                    this.BioData.image = reader.result
+                    this.BioData.image = reader.result;
+                    console.log(reader.result);
                     }
                 reader.readAsDataURL(file)
             }

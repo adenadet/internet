@@ -19,6 +19,11 @@
  */
 
 /*!
+ * Signature Pad v3.0.0-beta.4 | https://github.com/szimek/signature_pad
+ * (c) 2020 Szymon Nowak | Released under the MIT license
+ */
+
+/*!
  * Sizzle CSS Selector Engine v2.3.6
  * https://sizzlejs.com/
  *
@@ -33,6 +38,13 @@
  * The buffer module from node.js, for the browser.
  *
  * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
  * @license  MIT
  */
 
@@ -70,7 +82,15 @@
 
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+
+/**
+  * vue-class-component v7.2.6
+  * (c) 2015-present Evan You
+  * @license MIT
+  */
 
 /**
  * @license
@@ -91,6 +111,28 @@
  * Includes vtt.js <https://github.com/mozilla/vtt.js>
  * Available under Apache License Version 2.0
  * <https://github.com/mozilla/vtt.js/blob/master/LICENSE>
+ */
+
+/**
+ * @licstart The following is the entire license notice for the
+ * Javascript code in this page
+ *
+ * Copyright 2021 Mozilla Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @licend The above is the entire license notice for the
+ * Javascript code in this page
  */
 
 /**

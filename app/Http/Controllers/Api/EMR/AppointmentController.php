@@ -71,7 +71,7 @@ class AppointmentController extends Controller
     public function show($id)
     {
         return response()->json([
-            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment' ])->first(),
+            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation'])->first(),
         ]);
     }
 
@@ -98,5 +98,21 @@ class AppointmentController extends Controller
         }
         
         return response()->json(['schedules' => $schedules,]);
+    }
+
+    public function to_doctor($id)
+    {
+        $appointment = Appointment::findOrfail($id);
+
+        $appointment->status = 4;
+        $appointment->arrived_at = date('Y-m-d H:i:s');
+        $appointment->front_office_id = auth('api')->id();
+        $appointment->front_office_remark = "<p>The patient has arrived for Consultation.</p>";
+        
+        $appointment->save();
+
+        return response()->json([
+            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee' ])->first(),
+        ]);
     }
 }

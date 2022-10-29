@@ -190,6 +190,7 @@ export default {
             if (file['size'] < 2000000){
                 reader.onloadend = (e) => {this.BioData.image = reader.result}
                 reader.readAsDataURL(file)
+                //alert(reader.result)
             }
             else{
                 Swal.fire({type: 'error', title: 'File is too large'});

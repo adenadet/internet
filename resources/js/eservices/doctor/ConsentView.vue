@@ -1,6 +1,5 @@
 <template>
 <section>
-
 <div class="card row p-3">
     <h3>Annex F: Consent Form</h3>
     <p>UNITED KINGDOM PRE-ENTRY TUBERCULOSIS SCREENING PROGRAMME</p>
@@ -40,91 +39,55 @@
         <div class="row">
             <p>I have read this consent form, or had translated for me. I was invited to ask questions to clarify what was not clear to me. I understand the content of this declaration.</p>
             <div class="col-md-9">
-                Applicant's Signature <button class="btn btn-sm btn-primary" @click="sign(1)">Sign</button><br />
+                Applicant's Signature <br />
+                <img v-if="consent.signaturePad != null" :src="'/img/consents/'+consent.signaturePad" class="img-fluid"/>
             </div>
-            <div class="col-md-3">Date </div>
+            <div class="col-md-3">Date <br /> {{consent.created_at |excelDate}}</div>
             <div class="clear"></div>
-            <div class="col-md-12"><VueSignaturePad :options="options" class="signature" ref="signaturePad" v-model="consentForm.signaturePad" /></div>
-            <div class="col-md-12 btn-group buttons">
-                <button @click="undo(0)">Undo</button>
-                <button @click="save(0)">Save</button>
-            </div>
-            <p class="col-md-12">Please print your name: ____[[add applicant's name, Surname first]]</p>
+            <p class="col-md-12">Please print your name: {{patient.last_name+', '+patient.first_name+' '+patient.middle_name}}</p>
         </div>
     </div>
     <div class="col-md-12" style="border: 1px solid #232323;">
         <p>For children, or adults without the mental capacity to give consent, I confirm that I a the parent or legal guardian of the applicant and confirm that I give my consent.<br />For adults, who are not able to physically sign the form, I confirm that I am an independent witness and the applicant has given their consent orally or by other non-verbal means.</p>
         <div class="row">
-            <div class="col-md-9">Signature<br /></div>
-            <div class="col-md-3">Date <br /> [[add Date Here]]</div>
-            <div class="clear"></div>
-            <div class="col-md-12">	<VueSignaturePad :options="options" class="signature" ref="signaturePad_1" v-model="consentForm.signaturePad_1"/></div>
-            <div class="col-md-12">
-                <div class="buttons">
-                    <button @click="undo(1)">Undo</button>
-                    <button @click="save(1)">Save</button>
-                </div>
+            <div class="col-md-9">Signature<br />
+                <img v-if="consent.signaturePad_1 != null" :src="'/img/consents/'+consent.signaturePad_1" class="img-fluid"/>
             </div>
+            <div class="col-md-3">Date <br /> {{consent.created_at |excelDate}}</div>
+            <div class="clear"></div>
             
-        <p class="col-md-12">Please print your name: ____[[add applicant's name, Surname first]]</p>
-        <p class="col-md-12">Relationship to applicant: ____[[add applicant's name, Surname first]]</p>
+            <p class="col-md-12">Please print your name: {{consent.guardian != null ? consent.guardian : ''}}</p>
+            <p class="col-md-12">Relationship to applicant: {{consent.guardian_relationship != null ? consent.guardian_relationship : ''}}</p>
         </div>
     </div>
     <div class="col-md-12" style="border: 1px solid #232323;">
         <p>Statement of interpreter (if required); I have translatwed the content of this document for the applicant to the best of my ability and in a way in which I believe s/he can understand.</p>
         <div class="row">
-            <div class="col-md-9">Signed:<br /></div>
-            <div class="col-md-3">Date <br /> [[add Date Here]]</div>
+            <div class="col-md-9">Signed:<br /> <img v-if="consent.signaturePad_2 != null" :src="'/img/consents/'+consent.signaturePad_2" class="img-fluid"/></div>
+            <div class="col-md-3">Date <br /> {{consent.created_at | excelDate}}</div>
             <div class="clear"></div>
-            <div class="col-md-12"><VueSignaturePad :options="options" class="signature" ref="signaturePad_2" v-model="consentForm.signaturePad_2"/></div>			
-            <div class="col-md-12">
-                <div class="buttons">
-                    <button @click="undo(2)">Undo</button>
-                    <button @click="save(2)">Save</button>
-                </div>
-            </div>
-            
-            <p class="col-md-12">Please print your name: ____[[add interpreter's name, Surname first]]</p>
+            <p class="col-md-12">Please print your name: {{consent.interpreter != null ? consent.interpreter : ''}}</p>
         </div>
     </div>
     <div class="col-md-12" style="border: 1px solid #232323;">
         <p>For female applicants who might be pregnant; I confirm that I have had the risks of having a chest X-ray in pregnancy explained to me and I wish to carry on with the chest X-ray.</p>
         <div class="row">
             <div class="col-md-9">
-                Signed:<br />
+                Signed:<br /> <img v-if="consent.signaturePad_3 != null" :src="'/img/consents/'+consent.signaturePad_3" class="img-fluid"/>
             </div>
-            <div class="col-md-3">Date <br /> [[add Date Here]]</div>
-            <div class="clear"></div>
-            <div class="col-md-12"><VueSignaturePad :options="options" class="signature" ref="signaturePad_3" v-model="consentForm.signaturePad_3"/></div>
-            <div class="col-md-12">
-                <div class="buttons">
-                    <button @click="undo(3)">Undo</button>
-                    <button @click="save(3)">Save</button>
-                </div>
-            </div>
-            
-            <p class="col-md-12">Please print your name: ____[[add interpreter's name, Surname first]]</p>
+            <div class="col-md-3">Date <br /> {{consent.created_at | excelDate}}</div>
+            <p class="col-md-12">Please print your name: {{consent.pregnancy != null ? patient.last_name+', '+patient.first_name+' '+patient.middle_name: ''}}</p>
         </div>
     </div>
     <div class="col-md-12" style="border: 1px solid #232323;">
         <p>Statement of Physician (if required); I have explained the consent of this document to the applicant and confirm that the applicant has declined to go ahead with the assessment.</p>
         <div class="row">
             <div class="col-md-9">
-                Signed:<br />
+                Signed:<br /> <img v-if="consent.signaturePad_4 != null" :src="'/img/consents/'+consent.signaturePad_4" class="img-fluid"/>
             </div>
-            <div class="col-md-3">Date <br /> [[add Date Here]]</div>
+            <div class="col-md-3">Date <br /> {{consent.created_at | excelDate}}</div>
             <div class="clear"></div>
-            <div class="col-md-12">
-                <VueSignaturePad :options="options" class="signature" ref="signaturePad_4" v-model="consentForm.signaturePad_4"/>
-            </div>
-            <div class="col-md-12">
-                <div class="btn-group buttons">
-                    <button @click="undo(4)">Undo</button>
-                    <button @click="save(4)">Save</button>
-                </div>
-            </div>
-            <div class="clear"></div>
-            <p class="col-md-12">Please print your name: ____[[add interpreter's name, Surname first]]</p>
+            <p class="col-md-12">Please print your name: {{consent.doctor != null ? consent.doctor.last_name+', '+consent.doctor.first_name+' '+consent.doctor.middle_name : ''}}</p>
         </div>
     </div>
 </div>
@@ -134,60 +97,14 @@
 export default {
     data() {
         return {
-            consentForm: new Form({
-                signaturePad: '', 
-                signaturePad_1:'',
-                signaturePad_2:'',
-                signaturePad_3:'',
-                signaturePad_4:'', 
-                appointment_id:'', 
-                id: '',
-            }),
-            pad: 0,
-            options:{
-                penColor:"rgb(0, 0, 0)",
-                backgroundColor:"rgb(255,255,255)",
-            },
-            disabled:false,
-            dataUrl:"https://avatars2.githubusercontent.com/u/17644818?s=460&v=4"
         };
     },
     methods:{
-        undo(id) {
-            this.$refs.signaturePad.undoSignature();
-        },
-        save(id) {
-            const { isEmpty, data } = this.$refs.signaturePad.saveSignature();
-
-            alert("Open DevTools see the save data.");
-            console.log(isEmpty);
-            console.log(data);
-
-            if(id == 0){this.consentForm.signaturePad = data;}
-            else if(id == 1){this.consentForm.signaturePad_1 = data;}
-            else if(id == 2){this.consentForm.signaturePad_2 = data;}
-            else if(id == 3){this.consentForm.signaturePad_3 = data;}
-            else if(id == 4){this.consentForm.signaturePad_3 = data;}
-        },
-        change() {
-            this.options = {
-                penColor: "#00f",
-            };
-        },
-        resume() {
-            this.options = {
-                penColor: "#c0f",
-            };
-        },
-        sign(id){
-            this.$Progress.start();
-            $('#signaturetModal').modal('show');
-            this.$Progress.finish();
-        }
     },
     props:{
         consultation: Object,
         patient: Object,
+        consent: Object,
     }
 };
 </script>

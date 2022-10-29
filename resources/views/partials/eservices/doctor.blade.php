@@ -8,7 +8,10 @@
                 <router-link to="/eservices/doctor/consultations" class="nav-link"><i class="fa fa-calendar-day"></i> Consultations</router-link>
             </li>
             <li class="nav-item">
-                <router-link to="/eservices/doctor/review" class="nav-link"><i class="fa fa-file"></i> Review Results</router-link>
+                <router-link to="/eservices/doctor/reviews" class="nav-link"><i class="fa fa-file"></i> Review Results</router-link>
+            </li>
+            <li class="nav-item">
+                <router-link to="/eservices/doctor/certificate" class="nav-link"><i class="fa fa-certificate"></i> Issue Certificate</router-link>
             </li>
         </ul>
     </div>

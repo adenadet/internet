@@ -97,26 +97,49 @@ import EServiceFrontAppointment      from './eservices/front/Appointment.vue';
 import EServiceFrontAppointments     from './eservices/front/Appointments.vue';
 import EServicePayments              from './eservices/front/Payments.vue';
 
-import EServiceDocConsultation         from './eservices/doctor/Consultation.vue';
-import EServiceDocConsultations        from './eservices/doctor/Consultations.vue';
+import EServiceDocConsultation       from './eservices/doctor/Consultation.vue';
+import EServiceDocConsultations      from './eservices/doctor/Consultations.vue';
+import EServiceDocConsentView        from './eservices/doctor/ConsentView.vue';
+import EServiceDocConsultationView   from './eservices/doctor/ConsultationView.vue';
+import EServiceDocReviews            from './eservices/doctor/Reviews.vue';
+import EServiceDocView               from './eservices/doctor/View.vue';
+
+import EServiceRadReport             from './eservices/radiologist/Report.vue';
+import EServiceRadReports            from './eservices/radiologist/Reports.vue';
+import EServiceRadReviews            from './eservices/radiologist/Reviews.vue';
 
     import EServiceFormApplicant        from './eservices/front/forms/Applicant.vue';
     import EServiceFormAppointment      from './eservices/front/forms/Appointment.vue';
     import EServiceFormPayment      from './eservices/front/forms/Payment.vue';
 
     import EServiceDocFormConsent              from './eservices/doctor/forms/Consent.vue';
+    import EServiceDocFormScreening            from './eservices/doctor/forms/Screening.vue';
+
+    import EServiceRadFormReport            from './eservices/radiologist/forms/Report.vue';
 
 Vue.component('EServiceFrontAppointment',        EServiceFrontAppointment);
 Vue.component('EServiceFrontAppointments',       EServiceFrontAppointments);
 Vue.component('EServicePayments',                EServicePayments);
 
-Vue.component('EServiceDocFormConsent',          EServiceDocFormConsent);
 Vue.component('EServiceDocConsultation',         EServiceDocConsultation);
 Vue.component('EServiceDocConsultations',        EServiceDocConsultations);
+Vue.component('EServiceDocConsentView',          EServiceDocConsentView);
+Vue.component('EServiceDocConsultationView',     EServiceDocConsultationView);
+Vue.component('EServiceDocReviews',              EServiceDocReviews);
+Vue.component('EServiceDocView',                 EServiceDocView);
+
+Vue.component('EServiceRadReport',               EServiceRadReport);
+Vue.component('EServiceRadReports',              EServiceRadReports);
+Vue.component('EServiceRadReviews',              EServiceRadReviews);
 
     Vue.component('EServiceFormApplicant',       EServiceFormApplicant);
     Vue.component('EServiceFormAppointment',     EServiceFormAppointment);
     Vue.component('EServiceFormPayment',         EServiceFormPayment);
+
+    Vue.component('EServiceDocFormConsent',      EServiceDocFormConsent);
+    Vue.component('EServiceDocFormScreening',    EServiceDocFormScreening);
+
+    Vue.component('EServiceRadFormReport',       EServiceRadFormReport);
 
 import Users from './components/Users.vue';
 
@@ -426,15 +449,21 @@ let routes = [
     {path: '/departments',       component:DepartmentAll},
     {path: '/departments/:id',   component:DepartmentSingle},
 
-//EServices Links
+//EServices Links   
+    {path: '/eservices/doctor',                         component:EServiceDocConsultations},
+    {path: '/eservices/doctor/consultations',           component:EServiceDocConsultations},
+    {path: '/eservices/doctor/consultation/:id',        component:EServiceDocConsultation},
+    {path: '/eservices/doctor/reviews',                 component:EServiceDocReviews},
+    
     {path: '/eservices/front_office',                   component:EServiceFrontAppointments},
     {path: '/eservices/front_office/appointments',      component:EServiceFrontAppointments},
     {path: '/eservices/front_office/appointment/:id',   component:EServiceFrontAppointment},
     {path: '/eservices/front_office/payments',          component:EServicePayments},
-    
-    {path: '/eservices/doctor',                         component:EServiceDocConsultations},
-    {path: '/eservices/doctor/consultations',           component:EServiceDocConsultations},
-    {path: '/eservices/doctor/consultation/:id',        component:EServiceDocConsultation},
+
+    {path: '/eservices/radiologist',                    component:EServiceRadReports},
+    {path: '/eservices/radiologist/reports',            component:EServiceRadReports},
+    {path: '/eservices/radiologist/reviews',            component:EServiceRadReviews},
+    {path: '/eservices/radiologist/report/:id',         component:EServiceRadReport},
 
 //Network Checkers Module
     {path: '/internet', component: NetworkDashboard},

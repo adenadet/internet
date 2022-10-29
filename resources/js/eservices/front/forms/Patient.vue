@@ -59,7 +59,7 @@
         <div class="col-md-4 col-sm-12">
             <div class="form-group">
                 <label>Passport Number</label>
-                <input type="text" class="form-control" id="passport_number" name="passport_number" placeholder="Enter Passport Number *" required v-model="ApplicantData.passport_number" :class="{'is-invalid' : ApplicantData.errors.has('passport_number') }" />
+                <input type="text" class="form-control" id="passport_no" name="passport_no" placeholder="Enter Passport Number *" required v-model="ApplicantData.passport_no" :class="{'is-invalid' : ApplicantData.errors.has('passport_number') }" />
             </div>
         </div>
         <div class="col-md-4 col-sm-12">

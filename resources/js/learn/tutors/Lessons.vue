@@ -73,15 +73,7 @@
 </div>
 </template>
 <script>
-import VueDocPreview from 'vue-doc-preview';
-
 export default {
-    components:{
-        VueDocPreview
-    },
-    computed: {
-        player() {return this.$refs.youtube.player;}
-    },
     data(){
         return {
             course:{},

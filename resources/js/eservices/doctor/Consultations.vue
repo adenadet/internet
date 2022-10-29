@@ -1,46 +1,6 @@
 <template>
     <section class="content-header">
         <div class="container-fluid">
-            <div class="modal fade" id="consultationModal">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" v-show="editMode">Edit Consultation</h4>
-                            <h4 class="modal-title" v-show="!editMode">New Consultation</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- :consultation="consultation" / -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="paymentModal">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Make Payment</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        </div>
-                        <div class="modal-body">
-                            <EServiceFormPayment />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="applicantModal">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Create Patient</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        </div>
-                        <div class="modal-body">
-                            <ApplicantFormPatient :nations="nations" :editMode="editMode" :applicant="applicant" /> 
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -80,9 +40,6 @@
                                         <td>
                                             <div class="btn btn-group">
                                                 <router-link :to="'/eservices/doctor/consultation/'+consultation.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
-                                                <button v-show="consultation.status == 0" class="btn btn-success btn-sm" @click="makePayment(consultation)"><i class="fa fa-credit-card"></i></button>
-                                                <button v-show="consultation.status == 1" class="btn btn-success btn-sm"><i class="fa fa-file-pdf"></i></button>
-                                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                                             </div> 
                                         </td>
                                     </tr>

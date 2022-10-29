@@ -204,7 +204,7 @@ class UserController extends Controller
             'departments' => $departments,
             'nok' => $nok,
             'states' => $states,
-            'patient' => Patient::where('user_id',  auth('api')->id())->first(),       
+            //'patient' => Patient::where('user_id',  auth('api')->id())->first(),       
         ]);
     }
     

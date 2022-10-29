@@ -4,16 +4,14 @@
         <h6>{{lesson.course !== null && typeof (lesson.course) !== 'undefined' ? lesson.course.name : ''}}</h6>
         <div class="row" style="text-align:center" v-if="((lesson.video !== null) && (typeof lesson !== 'undefined') &&(typeof lesson.video !== 'undefined'))"><youtube class="col-md-12" :video-id="lesson.video" ref="youtube" /></div>
         <div class="row" style="max-height: 500px; overflow: scroll;" v-if="lesson.file !== null">
-            <VuePdf class="col-md-12" :url="lesson.file != null ? lesson.file : 'null'" v-if="lesson.file !== null"></VuePdf>  
+            <vue-pdf-app :pdf="lesson.file != null? lesson.file : 'https://file-examples-com.github.io/uploads/2017/10/file-example_PDF_1MB.pdf'"></vue-pdf-app>
         </div>
         <div class="col-md-12">{{lesson.content}}</div>
     </div>
 </template>
 <script>
+
 export default {
-    computed: {
-        player() {return this.$refs.videoPlayer.player}
-        },
     data(){
         return {
             document: '',

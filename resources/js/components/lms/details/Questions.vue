@@ -89,19 +89,8 @@
 </div>
 </template>
 <script>
-import VueDocPreview from 'vue-doc-preview';
-import QuestionFrame from '../QuestionFrame.vue';
 
 export default {
-    components:{
-        VueDocPreview,
-        QuestionFrame
-    },
-    computed: {
-        player() {
-            return this.$refs.videoPlayer.player
-        }
-    },
     data(){
         return {
             course:{},

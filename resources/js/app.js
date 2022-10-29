@@ -5,20 +5,28 @@ window.Vue = require('vue');
 import Vue from 'vue';
 
 //Import Document Reader 
-import VueDocPreview from 'vue-doc-preview';
-Vue.component(VueDocPreview);
+//import VueDocPreview from 'vue-doc-preview';
+//Vue.component(VueDocPreview);
 
 //Import PDF Reader
 //import pdf from 'vue-pdf';
 //Vue.component(pdf);
 
 //Import PDF Reader
-import VuePdf from 'vue-pdf-reader';
-Vue.component(VuePdf);
+//import VuePdfReader from 'vue-pdf-reader';
+//import 'vue-pdf-reader/dist/vue-pdf-reader.min.css';
+//Vue.component(VuePdfReader);
+
+//import VuePdf from 'vue-pdf';
+//Vue.component(VuePdf);
+
+import VuePdfApp from "vue-pdf-app-snepsilon";
+import "vue-pdf-app-snepsilon/dist/icons/main.css";
+Vue.component(VuePdfApp);
 
 //Import Progress Bar
 import VueProgressBar from 'vue-progressbar';
-Vue.use(VueProgressBar, {color: 'rgb(255, 255, 19)', failedColor: 'red',height: '5px',});
+Vue.use(VueProgressBar, {color: 'rgb(255, 255, 19)', failedColor: 'red', height: '5px',});
 
 //Import Scroll Bar
 import vueCustomScrollbar from 'vue-custom-scrollbar';
@@ -54,14 +62,14 @@ window.toast = toast;
 import moment from 'moment';
 
 //Import Video Player
-import VueVideoPlayer from 'vue-video-player';
-import 'video.js/dist/video-js.css'
-import 'vue-video-player/src/custom-theme.css'
+//import VueVideoPlayer from 'vue-video-player';
+//import 'video.js/dist/video-js.css'
+//import 'vue-video-player/src/custom-theme.css'
 
-Vue.use(VueVideoPlayer, /* {
+/*Vue.use(VueVideoPlayer, /* {
     options: global default options,
-    events: global videojs events} */
-    );
+    events: global videojs events} 
+    );*/
 
 //Import VueRouter for SPA Routing
 import VueRouter from 'vue-router';
