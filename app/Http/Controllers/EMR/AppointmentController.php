@@ -11,7 +11,7 @@ class AppointmentController extends Controller
     public function index()
     {
         return response()->json([
-            'appointments'  => Appointment::whereNOTIN('status', [6, 7, 8, 9])->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
+            'appointments'  => Appointment::whereNOTIN('status', [6, 7, 8, 9])->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(30),
             'nations'       => Nations::orderBy('name', 'ASC')->get(),
             'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
             'services'      => Service::orderBy('name', 'ASC')->get(),

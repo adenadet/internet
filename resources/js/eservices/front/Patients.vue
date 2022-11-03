@@ -101,6 +101,12 @@ mounted() {
         this.refreshAppointments(response);
         $('#paymentModal').modal('hide');
     });
+    Fire.$on('searchInstance', ()=>{
+        let query = this.$parent.search;
+        axios.get('/api/emr/patients/search?q='+query)
+        .then((response ) => {this.applicants = response.data.applicants;})
+        .catch(()=>{});
+    });
 },
 methods: {
     addApplicant(){

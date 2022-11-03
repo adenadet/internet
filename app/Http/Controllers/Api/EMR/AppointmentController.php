@@ -118,4 +118,12 @@ class AppointmentController extends Controller
             'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee' ])->first(),
         ]);
     }
+
+    public function certificates(){
+        $appointments = Appointment::whereNotNull(['radiologist_id', 'doctor_id', 'front_office_id'])->where('status', '=', 7)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings'])->orderBy('date', 'DESC')->paginate(52);
+        
+        return response()->json([
+            'appointments' => $appointments,
+        ]);
+    }
 }

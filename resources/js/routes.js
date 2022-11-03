@@ -96,6 +96,7 @@ import EServiceCertificate           from './eservices/Certificate.vue';
 
 import EServiceFrontAppointment      from './eservices/front/Appointment.vue';
 import EServiceFrontAppointments     from './eservices/front/Appointments.vue';
+import EServiceFrontCertificates     from './eservices/front/Certificates.vue';
 import EServiceFrontPatients         from './eservices/front/Patients.vue';
 import EServicePayments              from './eservices/front/Payments.vue';
 
@@ -123,6 +124,7 @@ import EServiceRadReviews            from './eservices/radiologist/Reviews.vue';
 Vue.component('EServiceCertificate',             EServiceCertificate);
 Vue.component('EServiceFrontAppointment',        EServiceFrontAppointment);
 Vue.component('EServiceFrontAppointments',       EServiceFrontAppointments);
+Vue.component('EServiceFrontCertificates',       EServiceFrontCertificates);
 Vue.component('EServiceFrontPatients',           EServiceFrontPatients);
 Vue.component('EServicePayments',                EServicePayments);
 
@@ -467,6 +469,7 @@ let routes = [
     {path: '/eservices/front_office/appointments',      component:EServiceFrontAppointments},
     {path: '/eservices/front_office/appointment/:id',   component:EServiceFrontAppointment},
     {path: '/eservices/front_office/payments',          component:EServicePayments},
+    {path: '/eservices/front_office/Certificates',      component:EServiceFrontCertificates},
 
     {path: '/eservices/radiologist',                    component:EServiceRadReports},
     {path: '/eservices/radiologist/reports',            component:EServiceRadReports},

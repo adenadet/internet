@@ -126,4 +126,21 @@ class PatientController extends Controller
     {
         //
     }
+
+    public function search()
+    {
+        if ($search = \Request::get('q')){
+            $applicants = Patient::orderBy('first_name', 'ASC')->where(function($query) use ($search){
+                $query->where('first_name', 'LIKE', "%$search%")
+                ->orWhere('middle_name', 'LIKE', "%$search%")
+                ->orWhere('last_name', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%");
+                })->paginate(52);
+            }
+        else{
+            $applicants = Patient::orderBy('first_name', 'ASC')->paginate(52);
+        }
+        
+        return response()->json(['applicants' => $applicants,]);
+    }
 }

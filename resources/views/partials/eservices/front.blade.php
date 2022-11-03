@@ -13,6 +13,9 @@
             <li class="nav-item">
                 <router-link to="/eservices/front_office/applicants" class="nav-link"><i class="fas fa-users"></i> Applicants</router-link>
             </li>
+            <li class="nav-item">
+                <router-link to="/eservices/front_office/certificates" class="nav-link"><i class="fas fa-certificate"></i> Certificates</router-link>
+            </li>
         </ul>
     </div>
 </div>
