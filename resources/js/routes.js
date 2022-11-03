@@ -11,7 +11,7 @@ import ApplicantTicket            from './applicants/Ticket.vue';
 import ApplicantTickets           from './applicants/Tickets.vue';
 
     import ApplicantDetailsForm         from './applicants/forms/Details.vue';
-    import ApplicantFormPatient         from './eservices/front/forms/Patient.vue';
+    
     import ApplicantAppointmentForm     from './eservices/front/forms/Appointment.vue';
     import ApplicantPaymentForm         from './eservices/front/forms/Payment.vue';
 
@@ -22,7 +22,6 @@ Vue.component('ApplicantPayment',              ApplicantPayment);
 Vue.component('ApplicantPayments',             ApplicantPayments);
 Vue.component('ApplicantProfile',              ApplicantProfile);
     
-    Vue.component('ApplicantFormPatient',      ApplicantFormPatient);
     Vue.component('ApplicantDetailsForm',      ApplicantDetailsForm);
     Vue.component('ApplicantAppointmentForm',  ApplicantAppointmentForm);
     Vue.component('ApplicantPaymentForm',      ApplicantPaymentForm);
@@ -93,14 +92,18 @@ Vue.component('DepartmentAll',          DepartmentAll);
 Vue.component('DepartmentForm',         DepartmentForm);
 Vue.component('DepartmentSingle',       DepartmentSingle);
 
+import EServiceCertificate           from './eservices/Certificate.vue';
+
 import EServiceFrontAppointment      from './eservices/front/Appointment.vue';
 import EServiceFrontAppointments     from './eservices/front/Appointments.vue';
+import EServiceFrontPatients         from './eservices/front/Patients.vue';
 import EServicePayments              from './eservices/front/Payments.vue';
 
 import EServiceDocConsultation       from './eservices/doctor/Consultation.vue';
 import EServiceDocConsultations      from './eservices/doctor/Consultations.vue';
 import EServiceDocConsentView        from './eservices/doctor/ConsentView.vue';
 import EServiceDocConsultationView   from './eservices/doctor/ConsultationView.vue';
+import EServiceDocReportView         from './eservices/doctor/ReportView.vue';
 import EServiceDocReviews            from './eservices/doctor/Reviews.vue';
 import EServiceDocView               from './eservices/doctor/View.vue';
 
@@ -108,23 +111,26 @@ import EServiceRadReport             from './eservices/radiologist/Report.vue';
 import EServiceRadReports            from './eservices/radiologist/Reports.vue';
 import EServiceRadReviews            from './eservices/radiologist/Reviews.vue';
 
-    import EServiceFormApplicant        from './eservices/front/forms/Applicant.vue';
     import EServiceFormAppointment      from './eservices/front/forms/Appointment.vue';
-    import EServiceFormPayment      from './eservices/front/forms/Payment.vue';
+    import EServiceFormPayment          from './eservices/front/forms/Payment.vue';
+    import EserviceFormPatient          from './eservices/front/forms/Patient.vue';
 
     import EServiceDocFormConsent              from './eservices/doctor/forms/Consent.vue';
     import EServiceDocFormScreening            from './eservices/doctor/forms/Screening.vue';
 
     import EServiceRadFormReport            from './eservices/radiologist/forms/Report.vue';
 
+Vue.component('EServiceCertificate',             EServiceCertificate);
 Vue.component('EServiceFrontAppointment',        EServiceFrontAppointment);
 Vue.component('EServiceFrontAppointments',       EServiceFrontAppointments);
+Vue.component('EServiceFrontPatients',           EServiceFrontPatients);
 Vue.component('EServicePayments',                EServicePayments);
 
 Vue.component('EServiceDocConsultation',         EServiceDocConsultation);
 Vue.component('EServiceDocConsultations',        EServiceDocConsultations);
 Vue.component('EServiceDocConsentView',          EServiceDocConsentView);
 Vue.component('EServiceDocConsultationView',     EServiceDocConsultationView);
+Vue.component('EServiceDocReportView',           EServiceDocReportView); 
 Vue.component('EServiceDocReviews',              EServiceDocReviews);
 Vue.component('EServiceDocView',                 EServiceDocView);
 
@@ -132,8 +138,8 @@ Vue.component('EServiceRadReport',               EServiceRadReport);
 Vue.component('EServiceRadReports',              EServiceRadReports);
 Vue.component('EServiceRadReviews',              EServiceRadReviews);
 
-    Vue.component('EServiceFormApplicant',       EServiceFormApplicant);
     Vue.component('EServiceFormAppointment',     EServiceFormAppointment);
+    Vue.component('EServiceFormPatient',         EserviceFormPatient);
     Vue.component('EServiceFormPayment',         EServiceFormPayment);
 
     Vue.component('EServiceDocFormConsent',      EServiceDocFormConsent);
@@ -450,12 +456,14 @@ let routes = [
     {path: '/departments/:id',   component:DepartmentSingle},
 
 //EServices Links   
+    {path: '/eservices/certificate/:id',                component:EServiceCertificate},
     {path: '/eservices/doctor',                         component:EServiceDocConsultations},
     {path: '/eservices/doctor/consultations',           component:EServiceDocConsultations},
     {path: '/eservices/doctor/consultation/:id',        component:EServiceDocConsultation},
     {path: '/eservices/doctor/reviews',                 component:EServiceDocReviews},
     
     {path: '/eservices/front_office',                   component:EServiceFrontAppointments},
+    {path: '/eservices/front_office/applicants',        component:EServiceFrontPatients},
     {path: '/eservices/front_office/appointments',      component:EServiceFrontAppointments},
     {path: '/eservices/front_office/appointment/:id',   component:EServiceFrontAppointment},
     {path: '/eservices/front_office/payments',          component:EServicePayments},
@@ -558,9 +566,6 @@ let routes = [
     
 Vue.component('formcontact', FormContact);
 Vue.component('formbiodata', FormBioData);
-const router = new VueRouter({
-    mode: 'history',
-    routes
-})
+const router = new VueRouter({ mode: 'history', routes});
 
 export default router

@@ -119,7 +119,7 @@
         <div class="col-md-12 col-sm-12">
             <div class="form-group">
                 <label>Address in the UK*</label>
-                <wysiwyg rows="5" id="uk_address" name="uk_address" placeholder="Enter Address *" required v-model="ApplicantData.uk_address" :class="{'is-invalid' : ApplicantData.errors.has('street') }"></wysiwyg>
+                <wysiwyg rows="5" id="uk_address" name="uk_address" placeholder="Enter Address *" required v-model="ApplicantData.uk_address" :class="{'is-invalid' : ApplicantData.errors.has('uk_address') }"></wysiwyg>
             </div>
         </div>
     </div>
@@ -145,7 +145,7 @@ export default {
                 email:'',
                 id:'', 
                 image:'', 
-                nigeria_address:'', 
+                nigerian_address:'', 
                 uk_address:'',
                 accompanying_kids: 0,
                 visa_type: '',
@@ -154,7 +154,6 @@ export default {
         }
     },
     mounted() {
-        //this.getAllInitials();
         Fire.$on('ApplicantDataFill', user =>{
             this.ApplicantData.fill(user);
         });
@@ -168,10 +167,10 @@ export default {
             this.ApplicantData.post('/api/emr/patients')
             .then(response =>{
                 this.$Progress.finish();
-                Fire.$emit('reload', response);
+                Fire.$emit('refreshAppointment', response);
                 Swal.fire({
                     icon: 'success',
-                    title: 'The Profile details has been updated',
+                    title: 'The Profile details has been created',
                     showConfirmButton: false,
                     timer: 1500
                     });
@@ -192,7 +191,7 @@ export default {
             this.ApplicantData.put('/api/emr/patients/'+this.ApplicantData.id)
             .then(response =>{
                 this.$Progress.finish();
-                Fire.$emit('Reload', response);
+                Fire.$emit('refreshAppointment', response);
                 Swal.fire({
                     icon: 'success',
                     title: 'The Profile details has been updated',
@@ -231,29 +230,7 @@ export default {
                 })
             }
         },
-        getAllInitials(){
-            axios.get('/api/emr/applicants')
-            .then(response =>{
-                //this.user = response.data.user[0];
-                this.areas = response.data.areas;
-                this.states = response.data.states;
-                this.nations = response.data.nations;
-                this.$Progress.finish();
-                toast.fire({
-                    icon: 'success',
-                    title: 'Profile loaded successfully',
-                });
-                Fire.$emit('ApplicantDataFill', this.user);
-                Fire.$emit('NextOfKinFill', this.nok);
-            })
-            .catch(()=>{
-                this.$Progress.fail();
-                toast.fire({
-                    icon: 'error',
-                    title: 'Profile not loaded successfully',
-                })
-            });
-        },
+        
     },
     props:{
         applicant: Object,

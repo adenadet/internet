@@ -72,19 +72,19 @@
                 <label class="col-sm-12">For All Applicants</label>
                 <div class="col-sm-4">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="applicants[]" id="applicants[]">
+                        <input class="form-check-input" type="checkbox" name="all_previous_tb" id="all_previous_tb" v-model="consultationData.all_previous_tb">
                         <label class="form-check-label">Is there any history of previous TB?</label>
                     </div>
                 </div> 
                 <div class="col-sm-4">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="applicants[]" id="applicants[]">
+                        <input class="form-check-input" type="checkbox" name="all_household_tb" id="all_household_tb"  v-model="consultationData.all_household_tb">
                         <label class="form-check-label">has anyone in the household been diagnosed with TB in the last 2 years?</label>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="applicants[]" id="applicants[]">
+                        <input class="form-check-input" type="checkbox" name="all_recent_contact" id="all_recent_contact" v-model="consultationData.all_recent_contact">
                         <label class="form-check-label">Is there any history of recent contact with a case of active pulmonary TB (shared the same enclosed air space or household or other enclosed environmentfor a prolonged period for days or weeks)></label>
                     </div>
                 </div>

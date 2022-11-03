@@ -47,7 +47,6 @@
 export default {
     data(){
         return  {
-            editMode: true, 
             appointmentData: new Form({
                 patient_id: "",
                 schedule: "",
@@ -59,7 +58,15 @@ export default {
         }
     },
     mounted() {
-        Fire.$on('AppointmentDataFill', appointment =>{this.AppointmentData.fill(appointment);});
+        Fire.$on('AppointmentDataFill', appointment =>{
+            if (appointment != null){
+                this.AppointmentData.patient_id = appointment.patient_id;
+                this.AppointmentData.schedule = appointment.schedule;
+                this.AppointmentData.service_id = appointment.service_id;
+                this.AppointmentData.date = appointment.date;
+                this.AppointmentData.id = appointment.id;
+            }
+        });
     },
     methods:{
         createAppointment(){
@@ -67,7 +74,7 @@ export default {
             this.appointmentData.post('/api/emr/appointments')
             .then(response => {
                 this.$Progress.finish();
-                Fire.$emit('reloadAppointment', response);
+                Fire.$emit('refreshAppointment', response);
             })
             .close(()=>{
                 Swal.fire({
@@ -138,6 +145,7 @@ export default {
         },
     },
     props:{
+        editMode: Boolean,
         services: Array,
         patients: Array,
         appointment: Object,

@@ -15,6 +15,14 @@ class ServiceController extends Controller
         return view('eservices')->with($params);
     }
 
+    public function certificate()
+    {
+        $params = [
+            'page_title' => 'E-Services | Certificate',
+        ];
+        return view('eservices')->with($params);
+    }
+
     public function front()
     {
         $params = [

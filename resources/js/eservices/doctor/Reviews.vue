@@ -33,13 +33,14 @@
                                     <tr v-for="(consultation, index) in consultations.data" :key="consultation.id">
                                         <td>{{index | addOne}}</td>
                                         <td>{{consultation.service_id != null && consultation.service != null ? consultation.service.name : ''}}</td>
-                                        <td>{{consultation.patient_id != null && consultation.patient != null ? consultation.patient.first_name+' '+consultation.patient.other_name+' '+consultation.patient.last_name:'Deleted User'}}</td>
+                                        <td>{{consultation.patient_id != null && consultation.patient != null ? consultation.patient.first_name+' '+consultation.patient.middle_name+' '+consultation.patient.last_name:'Deleted User'}}</td>
                                         <td>{{consultation.date | excelDate}}</td>
                                         <td>{{consultation.schedule}}</td>
                                         <td><span class="tag tag-success">{{consultation.status == 0 ? 'Unpaid' :(consultation.status == 1 ? 'Paid' :(consultation.status == 2 ? 'Reschedule' :(consultation.status == 3 ? 'Cancelled' : (consultation.status == 8 ? 'Certificate Sent' :'Done'))))}}</span></td>
                                         <td>
                                             <div class="btn btn-group">
                                                 <router-link :to="'/eservices/doctor/consultation/'+consultation.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
+                                                <button class="btn btn-success btn-sm" @click="issueCertificate(consultation)"><i class="fa fa-certificate"></i></button>
                                             </div> 
                                         </td>
                                     </tr>
@@ -114,7 +115,13 @@ export default {
         refreshConsultations(response) {
             this.consultations = response.data.appointments;
             this.nations = response.data.nations;
-        }
+        },
+        issueCertificate(consultation){
+            this.$Progress.start();
+            this.consultation = consultation;
+            $('#certificateModal').modal('show');
+            this.$Progress.finish();
+        },
     },
     props: {}
 }

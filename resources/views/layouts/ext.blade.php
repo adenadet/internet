@@ -22,7 +22,7 @@
         <p>Sidebar content</p>
         </div>
     </aside>
-    <footer class="main-footer">
+    <footer class="main-footer no-print">
         <div class="float-right d-none d-sm-inline">Squarem Knight Prince Consultancy</div>
         <strong>Copyright &copy; 2014-<?= date('Y') ?> <a href="https://adminlte.io">St. Nicholas Hospital</a>.</strong> All rights reserved.
     </footer>

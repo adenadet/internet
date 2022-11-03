@@ -7,6 +7,7 @@
                     <ul class="nav nav-pills">
                     <li class="nav-item"><a class="nav-link active" href="#consent" data-toggle="tab">Consent Form</a></li>
                     <li class="nav-item"><a class="nav-link" href="#consultation" data-toggle="tab">Consultation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#report" data-toggle="tab">Report</a></li>
                     </ul>
                 </div>
                 <div class="card-body">
@@ -16,6 +17,9 @@
                         </div>
                         <div class="tab-pane" id="consultation">
                             <EServiceDocConsultationView  :consultation="consultation" :appointment="appointment" :patient="appointment.patient"/>
+                        </div>
+                        <div class="tab-pane" id="report">
+                            <EServiceDocReportView  :findings="findings" :consultation="appointment" :patient="appointment.patient" :report="appointment.report"/>
                         </div>
                         <div class="tab-pane" id="password">
                             <PMFormPassword />
@@ -32,7 +36,6 @@
 export default {
     data(){
         return  {
-            
         }
     },
     mounted() {
@@ -71,6 +74,7 @@ export default {
         patient: Object,
         appointment: Object,
         editMode: Boolean,
+        findings: Array,
     }
 }
 </script>

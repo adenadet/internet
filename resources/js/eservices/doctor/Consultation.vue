@@ -15,9 +15,9 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
-                    <EServiceDocFormConsent v-if="consultation.consent == null" :patient="patient" :consent="appointment.consent" :consultation="consultation" :editMode="editMode" :appointment="appointment"/>
-                    <EServiceDocFormScreening v-else-if="consultation.consultation == null" :consultation="consultation" :editMode="editMode" :appointment="appointment" />
-                    <EServiceDocView v-else :consultation="appointment.consultation" :appointment="appointment" :editMode="!editMode" :patient="patient"/>
+                    <EServiceDocFormConsent v-if="appointment.consent == null" :patient="patient" :consent="appointment.consent" :consultation="consultation" :editMode="editMode" :appointment="appointment"/>
+                    <EServiceDocFormScreening v-else-if="appointment.consultation == null" :consultation="consultation" :editMode="editMode" :appointment="appointment" />
+                    <EServiceDocView v-else :consultation="appointment.consultation" :appointment="appointment" :editMode="!editMode" :patient="patient" :findings="findings"/>
                 </div>
             </div>
         </div>
@@ -30,6 +30,7 @@ export default {
     data() {
         return {
             editMode: false,
+            findings: [],
             appointment: {},
             consultation: {},
             consultations: {},
@@ -72,6 +73,7 @@ export default {
             this.appointment = response.data.appointment;
             this.consultation = response.data.appointment;
             this.patient = this.consultation.patient;
+            this.findings = response.data.findings;
         },
     },
     components: { ConsentForm }

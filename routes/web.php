@@ -42,7 +42,8 @@ Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Co
     Route::get('/doctor',                 'ServiceController@medical');
     Route::get('/radiologist',            'ServiceController@radiologist');
 
-    Route::get('/administrator/{any}',    'ServiceController@administrator')->where('any', '.*'); 
+    Route::get('/administrator/{any}',    'ServiceController@administrator')->where('any', '.*');
+    Route::get('/certificate/{any}',      'ServiceController@certificate')->where('any', '.*'); 
     Route::get('/front_office/{any}',     'ServiceController@front')->where('any', '.*');
     Route::get('/doctor/{any}',           'ServiceController@medical')->where('any', '.*');
     Route::get('/radiologist/{any}',      'ServiceController@radiologist')->where('any', '.*'); 

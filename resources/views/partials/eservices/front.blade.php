@@ -10,6 +10,9 @@
             <li class="nav-item">
                 <router-link to="/eservices/front_office/payments" class="nav-link"><i class="fas fa-user-clock"></i> Payments</router-link>
             </li>
+            <li class="nav-item">
+                <router-link to="/eservices/front_office/applicants" class="nav-link"><i class="fas fa-users"></i> Applicants</router-link>
+            </li>
         </ul>
     </div>
 </div>

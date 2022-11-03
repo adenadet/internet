@@ -24,7 +24,7 @@
         <p>Sidebar content</p>
         </div>
     </aside>
-    <footer class="main-footer">
+    <footer class="main-footer no-print">
         <div class="float-right d-none d-sm-inline">St. Nicholas Hospital</div>
         <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
     </footer>

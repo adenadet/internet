@@ -36,7 +36,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                            <ApplicantFormPatient :editMode="editMode" :nations="nations" :applicant="applicant" /> 
+                            <EServiceFormPatient :editMode="editMode" :nations="nations" :applicant="applicant" /> 
                         </div>
                     </div>
                 </div>
@@ -89,6 +89,13 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <div class="card-footer">
+                            <pagination :data="appointments" @pagination-change-page="getAppointment">
+                                <span slot="prev-nav">&lt; Previous </span>
+                                <span slot="next-nav">Next &gt;</span>
+                            </pagination>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -113,6 +120,9 @@ export default {
         this.getInitials();
         Fire.$on('refreshAppointment', response => {
             this.refreshAppointments(response);
+            $('#paymentModal').modal('hide');
+            $('#patientModal').modal('hide');
+            $('#appointmentModal').modal('hide');
         });
         Fire.$on('refresh', response => {
             this.refreshAppointments(response);
@@ -148,6 +158,12 @@ export default {
             .catch(() => {
                 this.$Progress.fail();
                 toast.fire({icon: 'error', title: 'Your appointments did not loaded successfully',})
+            });
+        },
+        getAppointment(page=1){
+            axios.get('/api/emr/appointments?page='+page)
+            .then(response=>{
+                this.appointments = response.data.appointments;   
             });
         },
         makePayment(appointment){

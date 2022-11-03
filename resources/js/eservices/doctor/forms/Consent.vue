@@ -200,7 +200,7 @@ export default {
             this.consentForm.post('/api/emr/consents')
             .then(response =>{
                 this.$Progress.finish();
-                Fire.$emit('refresh', response);
+                Fire.$emit('refreshAppointment', response);
                 Swal.fire({
                     icon: 'success',
                     title: 'The Consent Form has been saved',

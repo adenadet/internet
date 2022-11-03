@@ -6,10 +6,6 @@
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">All Consultations</h3>
-                            <div class="card-tools">
-                                <button class="btn btn-sm btn-success" @click="addApplicant"><i class="fa fa-user-plus"></i> Create Applicant</button>
-                                <button class="btn btn-sm btn-primary" @click="addConsultation"><i class="fa fa-calendar-plus"></i> Book Consultation</button>
-                            </div>
                         </div>
                         <div class="card-body table-responsive p-0">
                             <table class="table table-hover text-nowrap">
@@ -33,7 +29,7 @@
                                     <tr v-for="(consultation, index) in consultations.data" :key="consultation.id">
                                         <td>{{index | addOne}}</td>
                                         <td>{{consultation.service_id != null && consultation.service != null ? consultation.service.name : ''}}</td>
-                                        <td>{{consultation.patient_id != null && consultation.patient != null ? consultation.patient.first_name+' '+consultation.patient.other_name+' '+consultation.patient.last_name:'Deleted User'}}</td>
+                                        <td>{{consultation.patient_id != null && consultation.patient != null ? consultation.patient.first_name+' '+consultation.patient.middle_name+' '+consultation.patient.last_name:'Deleted User'}}</td>
                                         <td>{{consultation.date | excelDate}}</td>
                                         <td>{{consultation.schedule}}</td>
                                         <td><span class="tag tag-success">{{consultation.status == 0 ? 'Unpaid' :(consultation.status == 1 ? 'Paid' :(consultation.status == 2 ? 'Reschedule' :(consultation.status == 3 ? 'Cancelled' : (consultation.status == 8 ? 'Certificate Sent' :'Done'))))}}</span></td>

@@ -26,7 +26,7 @@ class AppointmentController extends Controller
     public function show($id)
     {
         return response()->json([
-            'appointment' => Appointment::find($id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality' ])->first(),
+            'appointment' => Appointment::find($id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'report' ])->first(),
         ]);
     }
 

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\EMR\Appointment;
 use App\Models\EMR\Patient;
+use App\Models\EMR\RadFinding;
 use App\Models\EMR\Schedule;
 use App\Models\EMR\Service;
 use App\Models\Area;
@@ -20,10 +21,11 @@ class AppointmentController extends Controller
     {
         return response()->json([
             'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
-            'appointments' => Appointment::whereNotIn('status', [6, 7, 8, 9])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(10),
+            'appointments' => Appointment::whereNotIn('status', [6, 7, 8, 9])->whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(30),
             'nations' => Country::orderBy('name', 'ASC')->get(),   
             'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
             'services'      => Service::orderBy('name', 'ASC')->get(),   
+            'findings'      => RadFinding::all(),
         ]);
     }
 
@@ -71,7 +73,8 @@ class AppointmentController extends Controller
     public function show($id)
     {
         return response()->json([
-            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation'])->first(),
+            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings'])->first(),
+            'findings'    => RadFinding::all(),
         ]);
     }
 

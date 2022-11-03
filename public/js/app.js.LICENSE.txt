@@ -12,13 +12,6 @@
  */
 
 /*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-/*!
  * Signature Pad v3.0.0-beta.4 | https://github.com/szimek/signature_pad
  * (c) 2020 Szymon Nowak | Released under the MIT license
  */
@@ -32,13 +25,6 @@
  * https://js.foundation/
  *
  * Date: 2021-02-16
- */
-
-/*!
- * The buffer module from node.js, for the browser.
- *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
- * @license  MIT
  */
 
 /*!
@@ -80,8 +66,6 @@
  * Released under the MIT License.
  */
 
-/*! https://mths.be/punycode v1.4.1 by @mathias */
-
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
@@ -99,18 +83,6 @@
  * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
-
-/**
- * @license
- * Video.js 6.13.0 <http://videojs.com/>
- * Copyright Brightcove, Inc. <https://www.brightcove.com/>
- * Available under Apache License Version 2.0
- * <https://github.com/videojs/video.js/blob/master/LICENSE>
- *
- * Includes vtt.js <https://github.com/mozilla/vtt.js>
- * Available under Apache License Version 2.0
- * <https://github.com/mozilla/vtt.js/blob/master/LICENSE>
  */
 
 /**
