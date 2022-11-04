@@ -19,8 +19,8 @@
                 <select disabled class="form-control" id="summary" name="summary" v-model="report.summary">
                     <option value="">--Select Report Summary--</option>
                     <option value="normal">Normal</option>
-                    <option value="suggestive">Abnormal TB suggestive</option>
-                    <option value="not suggestive">Abnormal not TB suggestive</option>
+                    <option value="suggestive">Abnormal suggestive of TB</option>
+                    <option value="not suggestive">Abnormal not suggestive of TB</option>
                 </select>
             </div>
         </div>
