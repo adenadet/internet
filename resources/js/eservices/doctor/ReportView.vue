@@ -35,7 +35,7 @@
         <div class="col-md-12 col-sm-12">
             <div class="form-group">
                 <label>Detailed Report*</label>
-                <textarea class="form-control" disabled id="details" name="details" placeholder="Details *" required v-html="report.details"></textarea>
+                <div style="width:100%; padding: 2px; border: 1px solid #222; min-height:200px;" v-html="report.details"></div>
             </div>
         </div>
     </div>

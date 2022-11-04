@@ -30,14 +30,18 @@ class PatientController extends Controller
 
     public function store(Request $request)
     {
+
+        $image_url = $currentPhoto = $patient->image;
+        $passport_image_url = $currentPassportPhoto = $patient->passport_image;
+
         Patient::create([
             'last_name'     => $request->input('last_name'),
             'first_name'    => $request->input('first_name'),
             'middle_name'   => $request->input('middle_name'),
             'dob' => $request->input('dob'),
             'sex' => $request->input('sex'),
-            'image' => $request->input('image'),
-            'passport_page' => $request->input('passport_image'),
+            'image' => $image,
+            'passport_page' => $passport_image,
             'lmp' => $request->input('lmp'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
@@ -75,9 +79,9 @@ class PatientController extends Controller
 
         if (($request['image'] != $currentPhoto) && ($request['image'] != '')){
             $image = $request['id']."-".time().".".explode('/',explode(':', substr( $request['image'], 0, strpos($request['image'], ';')))[1])[1];
-            \Image::make($request['image'])->save(public_path('img/profile/').$image);
+            \Image::make($request['image'])->save(public_path('img/applicants/').$image);
             $image_url = $image;
-            $old_image = public_path('img/profile/').$currentPhoto;
+            $old_image = public_path('img/applicants/').$currentPhoto;
 
             if (file_exists($old_image)){ @unlink($old_image); }
         }

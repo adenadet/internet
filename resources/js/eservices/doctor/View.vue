@@ -8,6 +8,7 @@
                     <li class="nav-item"><a class="nav-link active" href="#consent" data-toggle="tab">Consent Form</a></li>
                     <li class="nav-item"><a class="nav-link" href="#consultation" data-toggle="tab">Consultation</a></li>
                     <li class="nav-item"><a class="nav-link" href="#report" data-toggle="tab">Report</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#certificate" data-toggle="tab">Issue Certificate</a></li>
                     </ul>
                 </div>
                 <div class="card-body">
@@ -21,8 +22,8 @@
                         <div class="tab-pane" id="report">
                             <EServiceDocReportView  :findings="findings" :consultation="appointment" :patient="appointment.patient" :report="appointment.report"/>
                         </div>
-                        <div class="tab-pane" id="password">
-                            <PMFormPassword />
+                        <div class="tab-pane" id="certificate">
+                            <EServiceDocFormIssue :appointment="appointment" />
                         </div>
                     </div>
                 </div>
@@ -46,27 +47,7 @@ export default {
         Fire.$on('reloadAppointment', response =>{this.refreshAppointment(response);});
     },
     methods:{
-        getInitials(){
-            axios.get('/api/emr/consultations/'+this.$route.params.id).then(response =>{
-                this.$Progress.finish();
-                this.reloadConsultation(response);
-                toast.fire({
-                    icon: 'success',
-                    title: 'Consultation loaded successfully',
-                });
-            })
-            .catch(()=>{
-                this.$Progress.fail();
-                toast.fire({
-                    icon: 'error',
-                    title: 'Consultation not loaded successfully',
-                })
-            });
-        },
-        getProfilePic(){
-            let  photo = (this.form.image.length >= 150) ? this.form.image : "./"+this.form.image;
-            return photo;
-        },
+        
     },
     props:{
         consent: Object,

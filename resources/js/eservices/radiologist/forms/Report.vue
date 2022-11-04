@@ -22,8 +22,8 @@
                 <select class="form-control" id="summary" name="summary" required v-model="ReportData.summary" :class="{'is-invalid' : ReportData.errors.has('summary') }">
                     <option value="">--Select Report Summary--</option>
                     <option value="normal">Normal</option>
-                    <option value="suggestive">Abnormal TB suggestive</option>
-                    <option value="not suggestive">Abnormal not TB suggestive</option>
+                    <option value="suggestive">Abnormal suggestive of TB</option>
+                    <option value="not suggestive">Abnormal not suggestive of TB</option>
                 </select>
             </div>
         </div>

@@ -21,7 +21,7 @@ class AppointmentController extends Controller
     {
         return response()->json([
             'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
-            'appointments' => Appointment::whereNotIn('status', [6, 7, 8, 9])->whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(30),
+            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(30),
             'nations' => Country::orderBy('name', 'ASC')->get(),   
             'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
             'services'      => Service::orderBy('name', 'ASC')->get(),   
@@ -64,7 +64,6 @@ class AppointmentController extends Controller
             'appointments' => Appointment::with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
-            'states' => State::orderBy('name', 'ASC')->get(),
             'nations' => Country::orderBy('name', 'ASC')->get(), 
             'patient' => User::find(auth('api')->id()),     
         ]);
@@ -75,6 +74,7 @@ class AppointmentController extends Controller
         return response()->json([
             'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings'])->first(),
             'findings'    => RadFinding::all(),
+            'nations' => Country::orderBy('name', 'ASC')->get(), 
         ]);
     }
 
@@ -120,10 +120,35 @@ class AppointmentController extends Controller
     }
 
     public function certificates(){
-        $appointments = Appointment::whereNotNull(['radiologist_id', 'doctor_id', 'front_office_id'])->where('status', '=', 7)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings'])->orderBy('date', 'DESC')->paginate(52);
+        $appointments = Appointment::whereNotNull(['radiologist_id', 'doctor_id', 'front_office_id', 'issuer'])->where('status', '=', 7)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(52);
         
         return response()->json([
             'appointments' => $appointments,
         ]);
+    }
+
+    public function issue(Request $request, $id)
+    {
+        $this->validate($request, [
+            'issue_action' => 'required',
+            'issue_detail' => 'required',
+        ]);
+
+        $appointment = Appointment::find($id);
+
+        $appointment->issuer = auth('api')->id();
+        $appointment->issue_action = $request->input('issue_action');
+        $appointment->issue_action = $request->input('issue_detail');
+        $appointment->issue_at =date('Y-m-d H:i:s');
+        $appointment->status = 8;
+
+        $appointment->save();
+
+        return response()->json([
+            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings'])->first(),
+            'findings'    => RadFinding::all(),
+            'nations' => Country::orderBy('name', 'ASC')->get(), 
+        ]);
+
     }
 }

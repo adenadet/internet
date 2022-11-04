@@ -20,7 +20,7 @@ class ConsultationController extends Controller
     public function index()
     {
         return response()->json([
-            'appointments' => Appointment::whereIn('status', [6, 7, 8, 9, 10, 11])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(10),
+            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->whereIn('status', [6, 7, 8, 9, 10, 11])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(30),
         ]);
     }
 

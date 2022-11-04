@@ -33,6 +33,10 @@ class Appointment extends Structure
         return $this->belongsTo('App\Models\EMR\Service', 'service_id', 'id');
     }
 
+    public function issuing_officer(){
+        return $this->belongsTo('App\Models\User', 'issuer', 'id');
+    }
+    
     public function radiologist(){
         return $this->belongsTo('App\Models\User', 'radiologist_id', 'id');
     }

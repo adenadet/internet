@@ -13,6 +13,19 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="applicantModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" v-html="editMode ? 'Edit Patient' : 'Create Patient'"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <EServiceFormPatient :editMode="editMode" :nations="nations" :applicant="applicant" /> 
+            </div>
+        </div>
+    </div>
+</div>
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Appointment Detail</h3>
@@ -88,14 +101,22 @@
             <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1" v-else>
                 <img class="img-fluid" src="/img/loading/1.gif"/>
             </div>
-            <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2" v-if="appointment.patient != null">
-                <h4 class="text-primary"><i class="fas fa-user"></i> {{appointment.patient.first_name+' '+appointment.patient.middle_name+' '+appointment.patient.last_name}}</h4>
-                <div class="text-muted">
-                    <p class="text-sm">Sex | Age: <b class="d-block">{{appointment.patient.sex}} | {{appointment.patient.dob | age}} years</b></p>
-                    <p class="text-sm">Registered at: <b class="d-block">{{appointment.patient.created_at | excelDate}}</b></p>
-                    <p class="text-sm">Nationality: <b class="d-block">{{appointment.patient.nationality != null && appointment.patient.nationality_id != null ? appointment.patient.nationality.name : 'None Given'}}</b></p>
-                    <p class="text-sm">Passport: <b class="d-block">{{appointment.patient.passport_no != null ? appointment.patient.passport_no :'Request Passport' }}</b>
-                    </p>
+            <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2 card">
+                <div class="card-header">
+                    <h6 class="card-title"><i class="fas fa-user"></i> Applicant Detail</h6>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-sm btn-primary" title="Edit Details" @click="editApplicant(appointment.patient)"><i class="fas fa-edit"></i></button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="text-muted">
+                        <img :src="(appointment.patient != null && appointment.patient.image != null) ? '/img/applicants/'+appointment.patient.image : '/img/profile/default.png'" class="img-fluid" :title="appointment.patient.last_name+' '+appointment.patient.first_name+' '+appointment.patient.middle_name" />
+                        <p class="text-sm">Surname | First Name Other Name: <b class="d-block">{{appointment.patient.last_name}} | {{appointment.patient.first_name}} {{appointment.patient.middle_name}}</b></p>
+                        <p class="text-sm">Sex | Age: <b class="d-block">{{appointment.patient.sex}} | {{appointment.patient.dob | age}} years</b></p>
+                        <p class="text-sm">Nationality: <b class="d-block">{{appointment.patient.nationality != null && appointment.patient.nationality_id != null ? appointment.patient.nationality.name : 'None Given'}}</b></p>
+                        <p class="text-sm">Passport No. | Visa Type: <b class="d-block">{{appointment.patient.passport_no != null ? appointment.patient.passport_no :'Request Passport' }} | {{appointment.patient.visa_type != null ? appointment.patient.visa_type :'Request Visa Type' }}</b></p>
+                        <p class="text-sm">Registered at: <b class="d-block">{{appointment.patient.created_at | excelDate}}</b></p>  
+                    </div>
                 </div>
             </div>
         </div>
@@ -107,9 +128,11 @@
 export default {
     data() {
         return {
+            applicant: {},
             appointment: {},
             appointments: {},
             editMode: true,
+            nations: [],
         }
     },
     mounted() {
@@ -129,6 +152,14 @@ export default {
             this.appointment = {};
             Fire.$emit('AppointmentDataFill', {});
             $('#appointmentModal').modal('show');
+            this.$Progress.finish();
+        },
+        editApplicant(patient){
+            this.$Progress.start();
+            this.editMode = true;
+            this.applicant = patient;
+            Fire.$emit('ApplicantDataFill', patient);
+            $('#applicantModal').modal('show');
             this.$Progress.finish();
         },
         getInitials() {
@@ -162,6 +193,10 @@ export default {
         },
         refreshAppointment(response) {
             this.appointment = response.data.appointment;
+            this.nations = response.data.nations;
+
+            $('#applicantModal').modal('hide');
+            $('#appointmentModal').modal('hide');
         },
         toDoctor(id){
             axios.get('/api/emr/appointments/to_doctor/'+this.$route.params.id)

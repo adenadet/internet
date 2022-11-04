@@ -99,7 +99,7 @@
         <div class="col-sm-9">
             <div class="form-group">
                 <label>Doctor's Remark:</label>
-                <textarea row="5" class="form-control" v-html="consultation.remarks" disabled></textarea>
+                <div style="width:100%; padding: 3px; border: 1px solid #222; min-height: 200px;" v-html="consultation.remarks"></div>
             </div>
         </div>
     </div>

@@ -14,7 +14,7 @@ class PolicyController extends Controller
 {
     public function index()
     {
-        $policies = Policy::orderBy('name', 'ASC')->with('depts.department')->with('category')->with('creator')->paginate(25);
+        $policies = Policy::orderBy('name', 'ASC')->with(['depts.department', 'category', 'creator'])->paginate(25);
 
         return response()->json([
             'policies'      => $policies,       
