@@ -38,7 +38,6 @@ class RadiologistController extends Controller
             'appointment_id' => 'required',
             'patient_id'     => 'required',
             'summary'        => 'required',
-            'findings'       => 'required',
             'details'         => 'required',
         ]);
 

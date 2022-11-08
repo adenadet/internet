@@ -1,51 +1,49 @@
 <template>
-    <section class="content">
-        <div class="container-fluid"
-            v-if="((appointment == null) && (appointment.report == null) && (appointment.patient == null))">
+    <section class="content p-10">
+        <div class="container-fluid" v-if="((appointment == null) && ((appointment.report == null) || (appointment.status == 8)) && (appointment.patient == null))">
             <div class="card">
                 <div class="card-header">Incomplete Appointment</div>
                 <div class="card-body"><p>This appointment is still been processed.</p></div>
             </div>
         </div>
-        <div class="container-fluid"
-            v-else-if="((appointment != null) &&(appointment.report != null) &&(appointment.patient != null))">
-            <div class="invoice p-3 mb-3">
+        <div class="container-fluid" v-else-if="((appointment != null) &&(appointment.report != null) &&(appointment.patient != null))">
+            <div class="invoice p-5 mb-3">
                 <div class="row">
-                    <div class="col-3 p-3">
+                    <div class="col-3 p-5">
                         <img :src="'/img/applicants/'+appointment.patient.image" class="img-fluid" />
                     </div>
                     <div class="col-9">
                         <div class="row">
-                            <div class="col-8"><h3 class="mt-3" style="font-family:Arial, Helvetica, sans-serif; font-size: 14px;"> UK Pre-Departure Tuberculosis Detection Programme</h3></div>
+                            <div class="col-9"><h4 class="mt-3">UK Pre-Departure Tuberculosis Detection Programme</h4></div>
                             <div class="col-2"><img src="/img/background/logo/uk-visa.png" class="img-fluid" /></div>
-                            <div class="col-2"><img src="/img/background/logo/snh-square.png" class="img-fluid" /></div>
+                            <div class="col-1"><img src="/img/background/logo/snh-square.png" class="img-fluid" /></div>
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-4 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Certificate No:</label>
+                                    <label for="inputEmail3" class="col-sm-4 col-form-label" style="font-weight:normal !important; ">Certificate No:</label>
                                     <div class="col-sm-8"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.unique_id"></div></div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputPassword3" class="col-sm-4 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">SP ID No:</label>
+                                    <label for="inputPassword3" class="col-sm-4 col-form-label" style="font-weight:normal !important; ">SP ID No:</label>
                                     <div class="col-sm-8"><div class="form-control form-control-sm" v-html="appointment.sp_id"></div></div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputPassword3" class="col-sm-4 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">City/Town:</label>
+                                    <label for="inputPassword3" class="col-sm-4 col-form-label" style="font-weight:normal !important; ">City/Town:</label>
                                     <div class="col-sm-8"><div class="form-control form-control-sm">LAGOS ISLAND</div></div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-4 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Issue Date:</label>
-                                    <div class="col-sm-8"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.issue_at"></div></div>
+                                    <label for="inputEmail3" class="col-sm-4 col-form-label" style="font-weight:normal !important; ">Issue Date:</label>
+                                    <div class="col-sm-8"><div class="form-control form-control-sm" id="inputEmail3">{{appointment.issue_at | excelDate}}</div></div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputPassword3" class="col-sm-4 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Expiry Date:</label>
-                                    <div class="col-sm-8"><div class="form-control form-control-sm" v-html="appointment.issue_at"></div></div>
+                                    <label for="inputPassword3" class="col-sm-4 col-form-label" style="font-weight:normal !important; ">Expiry Date:</label>
+                                    <div class="col-sm-8"><div class="form-control form-control-sm">{{appointment.issue_at | excel6Months}}</div></div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputPassword3" class="col-sm-4 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important;">Country:</label>
+                                    <label for="inputPassword3" class="col-sm-4 col-form-label" style="font-weight:normal !important;">Country:</label>
                                     <div class="col-sm-8"><div class="form-control form-control-sm">NIGERIA</div></div>
                                 </div>
                             </div>
@@ -55,87 +53,87 @@
                 <div class="row">
                     <div class="col-7">
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label text-small" style="font-size: 10px; font-family: Calibri; font-weight:normal !important;">Given name(s) (as shown in passport):</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label text-small" style="font-weight:normal !important;">Given name(s) (as shown in passport):</label>
                             <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.first_name+' '+appointment.patient.last_name"></div></div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label text-small" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Family name (as shown in passport):</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label text-small" style="font-weight:normal !important; ">Family name (as shown in passport):</label>
                             <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.last_name"></div></div>
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-4 col-form-label text-small" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Gender:</label>
-                                    <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.patient.sex == 'Male'"><label class="form-check-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Male</label></div></div>
-                                    <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.patient.sex == 'Female'"><label class="form-check-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Female</label></div></div>
+                                    <label for="inputEmail3" class="col-sm-4 col-form-label text-small" style="font-weight:normal !important; ">Gender:</label>
+                                    <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.patient.sex == 'Male'"><label class="form-check-label" style="font-weight:normal !important; ">Male</label></div></div>
+                                    <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.patient.sex == 'Female'"><label class="form-check-label" style="font-weight:normal !important; ">Female</label></div></div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-4 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Nationality:</label>
+                                    <label for="inputEmail3" class="col-sm-4 col-form-label" style="font-weight:normal !important; ">Nationality:</label>
                                     <div class="col-sm-8"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.nationality.name"></div></div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-4 pl-0 pr-0" style="font-size: 10px; font-family: Calibri; font-weight:normal !important;">Date of Birth:</label>
+                                    <label for="inputEmail3" class="col-sm-4 pl-0 pr-0" style="font-weight:normal !important;">Date of Birth:</label>
                                     <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.dob"></div></div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-4" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Passport No:</label>
+                                    <label for="inputEmail3" class="col-sm-4" style="font-weight:normal !important; ">Passport No:</label>
                                     <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.passport_no"></div></div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-8 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Number of accompanying children under 11 years of age:</label>
+                            <label for="inputEmail3" class="col-sm-8 col-form-label" style="font-weight:normal !important; ">Number of accompanying children under 11 years of age:</label>
                             <div class="col-sm-3"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.accompanying_kids"></div></div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Full residential address:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; ">Full residential address:</label>
                             <div class="col-sm-6"><textarea class="form-control" id="inputEmail3" v-html="appointment.patient.nigerian_address" rows="5"></textarea></div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Address in the UK:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; ">Address in the UK:</label>
                             <div class="col-sm-6"><textarea class="form-control" id="inputEmail3" v-html="appointment.patient.uk_address" rows="5"></textarea></div>
                         </div>
                     </div>
                     <div class="col-5">
                         <div class="col-12 p-3" style="border: 2px solid #222;">
                             <div class="form-group row">
-                                <label for="inputEmail3" class="col-sm-3 col-form-label" style="font-size: 9px; font-family: Calibri; font-weight:normal !important; ">Sputum Test:</label>
+                                <label for="inputEmail3" class="col-sm-3 col-form-label" style="font-weight:normal !important; ">Sputum Test:</label>
                                 <div class="col-sm-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.laboratory == 'null'">
-                                        <label class="form-check-label" style="font-size: 9px; font-family: Calibri; font-weight:normal !important; ">Not Done</label>
+                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.laboratory != 'null'">
+                                        <label class="form-check-label" style="font-weight:normal !important; ">Not Done</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.laboratory != 'null'">
-                                        <label class="form-check-label" style="font-size: 9px; font-family: Calibri; font-weight:normal !important; ">Negative</label>
+                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.laboratory == 'null'">
+                                        <label class="form-check-label" style="font-weight:normal !important; ">Negative</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="inputEmail3" class="col-sm-3" style="font-size: 9px; font-family: Calibri; font-weight:normal !important;">Chest X-Ray:</label>
+                                <label for="inputEmail3" class="col-sm-3" style="font-weight:normal !important;">Chest X-Ray:</label>
                                 <div class="col-sm-3">
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.report == 'null'"><label class="form-check-label" style="font-size: 9px; font-family: Calibri; font-weight:normal !important; ">Not Done</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.report == 'null'"><label class="form-check-label" style="font-weight:normal !important; ">Not Done</label></div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" disabled :checked="appointment.report != 'null' && appointment.report.summary == 'normal'">
-                                        <label class="form-check-label" style="font-size: 9px; font-family: Calibri; font-weight:normal !important;">Normal</label>
+                                        <label class="form-check-label" style="font-weight:normal !important;">Normal</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" disabled :checked="appointment.report != 'null' && appointment.report.summary != 'normal'">
-                                        <label class="form-check-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Abnormal</label>
+                                        <label class="form-check-label" style="font-weight:normal !important; ">Abnormal</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.report != 'null' && appointment.report.summary != 'normal'">
-                                        <label class="form-check-label" style="font-size: 9px; font-family: Calibri; font-weight:normal !important; ">No evidence of active pulmonary TB </label>
+                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.report != 'null' && appointment.report.summary == 'not suggestive'">
+                                        <label class="form-check-label" style="font-weight:normal !important; ">No evidence of active pulmonary TB </label>
                                     </div>
                                 </div>
                             </div>
@@ -145,40 +143,39 @@
                                 <div class="col-sm-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" disabled :checked="appointment.report == 'null'">
-                                        <label class="form-check-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; "> Family contact with tuberculosis</label>
+                                        <label class="form-check-label" style="font-weight:normal !important; "> Family contact with tuberculosis</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" disabled
                                             :checked="appointment.report == 'null'">
-                                        <label class="form-check-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; "> Pregnant</label>
+                                        <label class="form-check-label" style="font-weight:normal !important; "> Pregnant</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" disabled :checked="appointment.report == 'null'">
-                                        <label class="form-check-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; "> Under 11 years of age undergone health assessment</label>
+                                        <label class="form-check-label" style="font-weight:normal !important;" :checked="appointment.consultation.status == 8"> Under 11 years of age undergone health assessment</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.report == 'null'">
-                                        <label class="form-check-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; "> Chest X-ray & interaction with applicant</label>
+                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.report != 'null'">
+                                        <label class="form-check-label" style="font-weight:normal !important; "> Chest X-ray & interaction with applicant</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" disabled
-                                            :checked="appointment.report == 'null'">
-                                        <label class="form-check-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; "> Referral letter given to applicant</label>
+                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.issue_action != 'certificate'">
+                                        <label class="form-check-label" style="font-weight:normal !important; "> Referral letter given to applicant</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-12 p-3 mb-3" style="border: 2px solid #222;">
-                        <p style="font-size: 10px; font-family: Calibri; font-weight:normal !important; text-align: justify;"><b>IMPORTANT:</b> You must carry this certificate with you, in your hand luggage, when you
+                        <p style="font-weight:normal !important; text-align: justify;"><b>IMPORTANT:</b> You must carry this certificate with you, in your hand luggage, when you
                             travel to the UK and present it to the Immigration Officer on arrival. Failure to do so will
                             result in a delay to your journey as you <b><u>may be</u></b> required to undergo the tests
                             again. Upon arrival in the UK you should register with a General Practitioner (GP) and
@@ -188,34 +185,34 @@
                     </div>
                     <div class="col-6 mt-1">
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">SP Health Professional Name:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; ">SP Health Professional Name:</label>
                             <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.medical_officer.first_name+' '+appointment.medical_officer.last_name"></div></div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">SP Health Professional Signature:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; ">SP Health Professional Sign:</label>
                             <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.first_name+' '+appointment.patient.last_name"></div></div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">SP Health Professional Date:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; ">SP Health Professional Date:</label>
                             <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3">{{appointment.issued_at |excelDate}}</div></div>
                         </div>
                     </div>
                     <div class="col-6 mt-1">
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label"  style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Applicant's Signature:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label"  style="font-weight:normal !important; ">Applicant's Signature:</label>
                             <div class="col-sm-6"><div class="form-control form-control-sm"><img :src="'/img/consents/'+appointment.consent.signaturePad" class="img-fluid"/></div></div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Date:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; ">Date:</label>
                             <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3">{{appointment.consent.created_at | excelDate}}</div></div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-size: 10px; font-family: Calibri; font-weight:normal !important; ">Visa Category:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; ">Visa Category:</label>
                             <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.visa_type"></div></div>
                         </div>
                     </div>
                     <div class="col-12 mt-3">
-                        <p class="text-primary" style="font-size: 8px; font-family: Calibri; font-weight:normal !important;">The information contained within this document provides information in connection with your application for a United Kingdom visa <b><u>ONLY</u></b> and does not constitute a diagnosis or assurance of health for any other purpose. The issue of the certificate does not mean that your application for a visa will be successful.</p>
+                        <p class="text-primary" style="font-weight:normal !important;">The information contained within this document provides information in connection with your application for a United Kingdom visa <b><u>ONLY</u></b> and does not constitute a diagnosis or assurance of health for any other purpose. The issue of the certificate does not mean that your application for a visa will be successful.</p>
                     </div>
                 </div>
             </div>

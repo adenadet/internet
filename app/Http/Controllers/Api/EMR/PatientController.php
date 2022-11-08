@@ -31,17 +31,35 @@ class PatientController extends Controller
     public function store(Request $request)
     {
 
-        $image_url = $currentPhoto = $patient->image;
-        $passport_image_url = $currentPassportPhoto = $patient->passport_image;
+        $image_url = $currentPhoto = null;
+        $passport_image_url = $currentPassportPhoto = null;
 
+        if (($request['image'] != $currentPhoto) && ($request['image'] != '')){
+            $image = $request['id']."-".time().".".explode('/',explode(':', substr( $request['image'], 0, strpos($request['image'], ';')))[1])[1];
+            \Image::make($request['image'])->save(public_path('img/applicants/').$image);
+            $image_url = $image;
+            $old_image = public_path('img/applicants/').$currentPhoto;
+
+            if (file_exists($old_image)){ @unlink($old_image); }
+        }
+
+        if (($request['passport_image'] != $currentPhoto) && ($request['passport_image'] != '')){
+            $image = $request['id']."-".time().".".explode('/',explode(':', substr( $request['passport_image'], 0, strpos($request['passport_image'], ';')))[1])[1];
+            \Image::make($request['passport_image'])->save(public_path('img/passports/').$image);
+            $passport_image_url = $passport_image;
+            $old_image = public_path('img/passports/').$currentPassportPhoto;
+
+            if (file_exists($old_image)){ @unlink($old_image); }
+        }
+        
         Patient::create([
             'last_name'     => $request->input('last_name'),
             'first_name'    => $request->input('first_name'),
             'middle_name'   => $request->input('middle_name'),
             'dob' => $request->input('dob'),
             'sex' => $request->input('sex'),
-            'image' => $image,
-            'passport_page' => $passport_image,
+            'image' => $image_url,
+            'passport_page' => $passport_image_url,
             'lmp' => $request->input('lmp'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
@@ -52,6 +70,7 @@ class PatientController extends Controller
             'nationality_id' => $request->input('nationality_id'),
             'passport_no' => $request->input('passport_no'),
             'visa_type' => $request->input('visa_type'),
+            'created_by' => auth('api')->id(),
         ]);
 
         return response()->json([

@@ -40,12 +40,17 @@
                                         <td>
                                             <div class="btn btn-group">
                                                 <router-link :to="'/eservices/doctor/consultation/'+consultation.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
-                                                <button class="btn btn-success btn-sm" @click="issueCertificate(consultation)"><i class="fa fa-certificate"></i></button>
                                             </div> 
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="card-footer">
+                            <pagination :data="appointments" @pagination-change-page="getAppointment">
+                                <span slot="prev-nav">&lt; Previous </span>
+                                <span slot="next-nav">Next &gt;</span>
+                            </pagination>
                         </div>
                     </div>
                 </div>
@@ -70,9 +75,11 @@ export default {
         Fire.$on('refreshConsultation', response => {
             this.refreshConsultations(response);
         });
-        Fire.$on('refreshPayment', response => {
-            this.refreshConsultations(response);
-            $('#paymentModal').modal('hide');
+        Fire.$on('searchInstance', ()=>{
+            let query = this.$parent.search;
+            axios.get('/api/emr/appointments/search?q='+query)
+            .then((response ) => {this.applicants = response.data.applicants;})
+            .catch(()=>{});
         });
     },
     methods: {
@@ -91,6 +98,20 @@ export default {
             Fire.$emit('ConsultationDataFill', {});
             $('#consultationModal').modal('show');
             this.$Progress.finish();
+        },
+        getAppointment(page=1){
+            let query = this.$parent.search;
+            axios.get('/api/emr/consultations/?page='+page+'&search?q='+query)
+            .then(response=>{
+                this.appointments = response.data.appointments;   
+            })
+            .catch(() => {
+                this.$Progress.fail();
+                toast.fire({
+                    icon: 'error',
+                    title: 'Your consultations did not loaded successfully',
+                })
+            });
         },
         getInitials() {
             axios.get('/api/emr/consultations')

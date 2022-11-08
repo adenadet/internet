@@ -30,8 +30,8 @@
     <div class="card-header">
         <h3 class="card-title">Appointment Detail</h3>
         <div class="card-tools">
-            <button v-if="appointment.status == 0" type="button" class="btn btn-sm btn-success" title="Make Payment" @click="makePayment(appointment)"><i class="fas fa-credit-card"></i></button>
-            <button v-else-if="appointment.status == 1" @click="toDoctor(appointment.id)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button>
+            <button v-if="appointment.payment == null" type="button" class="btn btn-sm btn-success" title="Make Payment" @click="makePayment(appointment)"><i class="fas fa-credit-card"></i></button>
+            <button v-else-if="appointment.front_officer == null" @click="toDoctor(appointment.id)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button>
         </div>
     </div>
     <div class="card-body">
@@ -50,7 +50,7 @@
                         <div class="info-box bg-light bg-primary">
                             <div class="info-box-content">
                                 <span class="info-box-text text-center text-muted">Status</span>
-                                <span class="info-box-number text-center text-muted mb-0">{{appointment.status == 0 ? 'Unpaid' : (appointment == 9 ? 'Cancelled' : 'Paid')}}</span>
+                                <span class="info-box-number text-center text-muted mb-0">{{appointment.payment == null ? 'Unpaid' : (appointment == 9 ? 'Cancelled' : 'Paid')}}</span>
                             </div>
                         </div>
                     </div>
@@ -66,17 +66,20 @@
                 <div class="row">
                     <div class="col-12">
                         <h4>Recent Activity</h4>
-                        <div class="post" v-if="appointment.radiologist != null && appointment.radiologist_id != null">
+                        <!--<div class="post" v-if="appointment.radiologist != null && appointment.radiologist_id != null">
+                            <h6><b>Radiologist</b></h6>
                             <div class="user-block">
-                                <img class="img-circle img-bordered-sm" :src="appointment.radiologist != null ? '/img/profile/'+appointment.radiologist.image : '/img/profile/default.png'" alt="user image">
+                                <img class="img-circle img-bordered-sm" :src="appointment.radiologist != null ? '/img/profile/'+appointment.radiologist.image : '/img/profile/default.png'" :title="appointment.radiologist.first_name+' '+appointment.radiologist.last_name">
                                 <span class="username"><a href="#">{{appointment.radiologist != null ? appointment.radiologist.first_name+' '+appointment.radiologist.last_name : 'Radiologist Undefined'}}</a>
                                 </span>
                                 <span class="description">Posted: {{appointment.radiologist_at | excelDate}}</span>
                             </div>
+                            <p>{{appointment.appointment.summary}}</p>
                             <p>{{appointment.radiologist_remark}}</p>
-                        </div>
+                        </div>-->
 
                         <div class="post clearfix" v-if="appointment.medical_officer != null && appointment.doctor_id != null">
+                            <h6><b>Medical Officer</b></h6>
                             <div class="user-block">
                                 <img class="img-circle img-bordered-sm" :src="appointment.medical_officer != null && appointment.medical_officer.image != null ? '/img/profile/'+appointment.medical_officer.image : '/img/profile/default.png'" alt="user image">
                                 <span class="username"><a href="#">{{appointment.medical_officer != null ? appointment.medical_officer.first_name+' '+appointment.medical_officer.last_name : 'Radiologist Undefined'}}</a>
@@ -87,6 +90,7 @@
                         </div>
 
                         <div class="post clearfix" v-if="appointment.front_office_id != null">
+                            <h6><b>Front Officer</b></h6>
                             <div class="user-block">
                                 <img class="img-circle img-bordered-sm" :src="appointment.front_officer != null ? '/img/profile/'+appointment.front_officer.image : '/img/profile/default.png'" :title="appointment.front_officer != null ? appointment.front_officer.first_name+' '+appointment.front_officer.last_name : 'Undefined Officer'">
                                 <span class="username"><a href="#">{{appointment.front_officer != null ? appointment.front_officer.first_name+' '+appointment.front_officer.last_name : 'Undefined Officer'}}</a>
@@ -133,6 +137,7 @@ export default {
             appointments: {},
             editMode: true,
             nations: [],
+            report: {},
         }
     },
     mounted() {
@@ -169,10 +174,7 @@ export default {
             })
             .catch(() => {
                 this.$Progress.fail();
-                toast.fire({
-                    icon: 'error',
-                    title: 'Your appointments did not loaded successfully',
-                })
+                toast.fire({icon: 'error', title: 'Your appointments did not loaded successfully',})
             });
         },
         addPayment(){
@@ -194,6 +196,7 @@ export default {
         refreshAppointment(response) {
             this.appointment = response.data.appointment;
             this.nations = response.data.nations;
+            this.report = response.data.appointment.report;
 
             $('#applicantModal').modal('hide');
             $('#appointmentModal').modal('hide');

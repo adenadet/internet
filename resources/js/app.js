@@ -142,6 +142,10 @@ Vue.filter('ExcelDateMonth', function(text){
     return moment(text).format('MMM Do');
 });
 
+Vue.filter('Excel6Months', function(text){
+    return moment(text).add(6, 'M').format('MMM Do, YYYY');
+});
+
 Vue.filter('ExcelMonthYear', function(text){
     return moment(text).format('MMM, YYYY');
 });

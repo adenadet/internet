@@ -65,14 +65,14 @@ class AppointmentController extends Controller
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
             'nations' => Country::orderBy('name', 'ASC')->get(), 
-            'patient' => User::find(auth('api')->id()),     
+            'patients' => Patient::orderBy('last_name', 'ASC')->get()     
         ]);
     }
 
     public function show($id)
     {
         return response()->json([
-            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings'])->first(),
+            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first(),
             'findings'    => RadFinding::all(),
             'nations' => Country::orderBy('name', 'ASC')->get(), 
         ]);
@@ -85,13 +85,25 @@ class AppointmentController extends Controller
 
     public function destroy($id)
     {
-        //
+        $appointment = Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first();
+        if (!is_null($appointment->payment)){
+            $message = "Appointment has already been paid for, you can only reschedule.";
+        }
+        else if (!is_null(($appointment->report)) || !is_null(($appointment->consultation)) || !is_null(($appointment->consent)) || !is_null(($appointment->front_officer))){
+            $message = "Appointment has already been completed, you can not delete.";
+        }
+        else{
+            $appointment->status = -1;
+            $appointment->deleted_by = auth('api')->id();
+            $appointment->deleted_at = date('Y-m-d H:i:s');
+            $appointment->save();
+
+            $message = "Appointment was deleted successfully";
+        }
     }
 
     public function schedules()
     {
-        //$date = \Request::get('date');
-        //$service_id = \Request::get('service_id');
         if (($date = \Request::get('date')) && ($service_id = \Request::get('service_id'))){
             $taken = Appointment::select('schedule')->where([['date', '=', $date], ['service_id', '=', $service_id]])->get();
             $schedules = Schedule::select('schedule')->where('service_id', '=', $service_id)->whereNotIn('schedule', $taken)->get();
@@ -120,7 +132,7 @@ class AppointmentController extends Controller
     }
 
     public function certificates(){
-        $appointments = Appointment::whereNotNull(['radiologist_id', 'doctor_id', 'front_office_id', 'issuer'])->where('status', '=', 7)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(52);
+        $appointments = Appointment::whereNotNull(['radiologist_id', 'doctor_id', 'front_office_id', 'issuing_officer'])->orWhere('status', '>=', 7)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(52);
         
         return response()->json([
             'appointments' => $appointments,
@@ -138,17 +150,48 @@ class AppointmentController extends Controller
 
         $appointment->issuer = auth('api')->id();
         $appointment->issue_action = $request->input('issue_action');
-        $appointment->issue_action = $request->input('issue_detail');
+        $appointment->issue_detail = $request->input('issue_detail');
         $appointment->issue_at =date('Y-m-d H:i:s');
         $appointment->status = 8;
 
         $appointment->save();
 
         return response()->json([
-            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings'])->first(),
+            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first(),
             'findings'    => RadFinding::all(),
-            'nations' => Country::orderBy('name', 'ASC')->get(), 
+            'nations'   => Country::orderBy('name', 'ASC')->get(), 
         ]);
 
     }
+
+    public function missed(){
+        $appointments = Appointment::whereNull(['front_office_id',])->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(30);
+        
+        return response()->json([
+            'appointments' => $appointments,
+        ]);
+    }
+
+
+    public function search(){
+        if ($search = \Request::get('q')){
+            $patients = Patient::select('id')->orderBy('first_name', 'ASC')->where(function($query) use ($search){
+                $query->where('first_name', 'LIKE', "%$search%")
+                ->orWhere('middle_name', 'LIKE', "%$search%")
+                ->orWhere('last_name', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%")
+                ->orWhere('unique_id', 'LIKE', "%$search%");
+                })->get();
+            }
+        else{
+            $applicants = Patient::orderBy('first_name', 'ASC')->paginate(52);
+        }
+
+        $appointments = Appointment::whereNull(['front_office_id',])->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(30);
+        
+        return response()->json([
+            'appointments' => $appointments,
+        ]);
+    }
+
 }

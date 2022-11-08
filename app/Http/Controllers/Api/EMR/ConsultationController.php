@@ -20,7 +20,7 @@ class ConsultationController extends Controller
     public function index()
     {
         return response()->json([
-            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->whereIn('status', [6, 7, 8, 9, 10, 11])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(30),
+            'appointments' => Appointment::whereDate('date', '<=', date('Y-m-d'))->whereIn('status', [6, 7,])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(30),
         ]);
     }
 
@@ -62,7 +62,7 @@ class ConsultationController extends Controller
         $appointment->save();
 
         return response()->json([
-            'appointment' => Appointment::where('id',$request->input('appointment_id'))->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee' ])->first(),
+            'appointment' => Appointment::where('id',$request->input('appointment_id'))->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'report.findings', ])->first(),
         ]);
     }
 

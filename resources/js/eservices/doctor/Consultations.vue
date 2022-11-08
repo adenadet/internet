@@ -42,6 +42,12 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="card-footer">
+                            <pagination :data="appointments" @pagination-change-page="getAppointment">
+                                <span slot="prev-nav">&lt; Previous </span>
+                                <span slot="next-nav">Next &gt;</span>
+                            </pagination>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -87,8 +93,14 @@ export default {
             $('#consultationModal').modal('show');
             this.$Progress.finish();
         },
+        getAppointment(page=1){
+            axios.get('/api/emr/consultations/?page='+page)
+            .then(response=>{
+                this.appointments = response.data.appointments;   
+            });
+        },
         getInitials() {
-            axios.get('/api/emr/appointments')
+            axios.get('/api/emr/consultations')
             .then(response => {
                 this.refreshConsultations(response)
                 //Fire.$emit('refreshConsultation', response);

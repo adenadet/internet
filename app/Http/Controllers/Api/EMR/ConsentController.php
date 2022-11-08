@@ -82,7 +82,7 @@ class ConsentController extends Controller
         $appointment->save();
 
         return response()->json([
-            'appointment' => Appointment::where('id',$request->input('appointment_id'))->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee' ])->first(),
+            'appointment' => Appointment::where('id',$request->input('appointment_id'))->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consultation', 'report.findings', 'consent' ])->first(),
         ]);
     }
 

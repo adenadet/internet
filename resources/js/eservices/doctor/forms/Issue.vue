@@ -22,7 +22,7 @@
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label>Action*</label>
-                        <select class="form-control" id="summary" name="summary" required v-model="IssueData.summary" :class="{'is-invalid' : IssueData.errors.has('summary') }">
+                        <select class="form-control" id="summary" name="summary" required v-model="IssueData.issue_action" :class="{'is-invalid' : IssueData.errors.has('issue_action') }">
                             <option value="">--Select Action--</option>
                             <option value="certificate">Issue Certificate</option>
                             <option value="cert_ref">Issue Certificate + Referral</option>
@@ -33,7 +33,7 @@
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         <label>Details*</label>
-                        <wysiwyg id="details" name="details" placeholder="Details *" required v-model="IssueData.details" :class="{'is-invalid' : IssueData.errors.has('details') }" />
+                        <wysiwyg id="details" name="details" placeholder="Details *" required v-model="IssueData.issue_detail" :class="{'is-invalid' : IssueData.errors.has('issue_detail') }" />
                     </div>
                 </div>
             </div>
@@ -48,9 +48,8 @@ export default {
     data() {
         return {
             IssueData: new Form({
-                summary: "",
-                details: '',
-                appointment_id: 0,  
+                issue_action: "",
+                issue_detail: '',
             }),
         };
     },
@@ -58,7 +57,7 @@ export default {
         createIssueData(){
             this.$Progress.start();
             this.IssueData.appointment_id = this.appointment.id;
-            this.IssueData.post('/api/emr/appointments/issue').then(response =>{
+            this.IssueData.put('/api/emr/appointments/issue/'+this.appointment.id).then(response =>{
                 this.$Progress.finish();
                 Fire.$emit('reportReload', response);
                 Swal.fire({

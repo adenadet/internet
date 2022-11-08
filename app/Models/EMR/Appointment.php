@@ -11,7 +11,7 @@ class Appointment extends Structure
 {
     protected $primaryKey = 'id';
     protected $table = 'emr_appointments';
-    protected $fillable = array('patient_id', 'service_id', 'date', 'schedule', 'status', 'arrived_at', 'payment_channel', 'paid_by', 'created_at', 'deleted_by', 'deleted_at');
+    protected $fillable = array('patient_id', 'service_id', 'date', 'schedule', 'unique_id', 'sp_id', 'issuer', 'issue_action', 'issue_detail', 'issue_at', 'radiologist_id', 'radiologist_at', 'doctor_id', 'doctor_at', 'front_office_id', 'status', 'arrived_at', 'payment_channel', 'front_office_remark', 'medical_officer_remark', 'radiologist_remark', 'paid_by', 'created_at', 'updated_at', 'deleted_by', 'deleted_at');
 
     public function patient(){
         return $this->belongsTo('App\Models\EMR\Patient', 'patient_id', 'id');

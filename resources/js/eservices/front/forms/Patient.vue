@@ -83,12 +83,6 @@
             </div>
         </div>
         <div class="col-md-4 col-sm-12">
-            <label>Passport Page</label>
-            <div class="form-group">
-                <input type="file" class="form-control" placeholder="Birth Date">
-            </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
             <div class="form-group">
                 <label>Phone Number</label>
                 <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number *" required v-model="ApplicantData.phone" :class="{'is-invalid' : ApplicantData.errors.has('phone') }">
@@ -109,7 +103,6 @@
         <input type="hidden" name="id" id="id" v-model="ApplicantData.id">
     </div>
     <div class="row">
-        <!-- Get Address -->
         <div class="col-md-12 col-sm-12">
             <div class="form-group">
                 <label>Address in Nigeria*</label>

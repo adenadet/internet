@@ -27,8 +27,10 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label>Findings <span><small>You can choose multiple</small></span></label>
-                <div disabled class="form-control" id="findings" name="findings[]">
-                    <span v-for="finding in report.findings" v-html="finding.code+': '+finding.name"></span>
+                <div style="width:100%; padding:5px; border: 1px solid #666;" id="findings" name="findings[]">
+                    <p v-for="finding in report.findings">
+                    <span v-html="finding.code+': '+finding.name"></span><br />
+                    </p>
                 </div>
             </div>
         </div>

@@ -18,7 +18,7 @@
             <div class="form-group">
                 <label for="exampleInputEmail1">Patient</label>
                 <div class="form-control" id="patient" name="patient" disabled :class="{'is-invalid' : PaymentData.errors.has('patient_id') }">
-                    {{appointment != null && appointment.patient != null ? appointment.patient.first_name+' '+appointment.patient.other_name+' '+appointment.patient.last_name : 'Unknown Applicant'}}
+                    {{appointment != null && appointment.patient != null ? appointment.patient.first_name+' '+appointment.patient.middle_name+' '+appointment.patient.last_name : 'Unknown Applicant'}}
                 </div>
                 <input type="hidden" name="patient_id" id="patient_id" v-model="PaymentData.patient_id" />
                 
@@ -37,6 +37,7 @@
                     <option value="POS">POS</option>
                     <option value="Cash">Cash</option>
                     <option value="Transfer">Transfer</option>
+                    <option value="Transfer">Paystack</option>
                 </select>
             </div>
             <div class="form-group">

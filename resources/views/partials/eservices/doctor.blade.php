@@ -10,9 +10,6 @@
             <li class="nav-item">
                 <router-link to="/eservices/doctor/reviews" class="nav-link"><i class="fa fa-file"></i> Review Results</router-link>
             </li>
-            <li class="nav-item">
-                <router-link to="/eservices/doctor/certificate" class="nav-link"><i class="fa fa-certificate"></i> Issue Certificate</router-link>
-            </li>
         </ul>
     </div>
 </div>

@@ -96,7 +96,8 @@
                         <select class="form-control" id="decision" name="decision" required v-model="consultationData.decision" :class="{'is-invalid' : consultationData.errors.has('decision') }">
                             <option value="">--Select Decision--</option>
                             <option value="6">Send to Xray for CXR</option>
-                            <option value="8">Send to Lab for Sputum Test</option>
+                            <option value="7">Send to Lab for Sputum Test</option>
+                            <option value="8">Kid under 11 years</option>
                             <option value="10">Patient Postponed</option>
                             <option value="11">Patient Cancelled</option>
                         </select>

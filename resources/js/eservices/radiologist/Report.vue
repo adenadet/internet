@@ -63,7 +63,7 @@
                                 <span class="description">Posted: {{report.radiologist_at | excelDate}}</span>
                             </div>
                             <p>{{report.report.summary}}</p>
-                            <p>{{report.radiologist_remark}}</p>
+                            <div style="width: 100%; padding:5px; border: 1px solid #666;" v-html="report.radiologist_remark"></div>
                         </div>
 
                         <div class="post clearfix" v-if="report.medical_officer != null && report.doctor_id != null">
