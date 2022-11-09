@@ -54,7 +54,7 @@
                         @endif
                         @if(Auth::user()->hasRole('E-Services Admin') || Auth::user()->hasRole('Super Admin'))
                         <li class="nav-item">
-                            <a href="/eservices/admin_area" class="nav-link">
+                            <a href="/eservices/administrator" class="nav-link">
                             <i class="fa fa-user-cog nav-icon"></i>
                             <p>Administrator</p>
                             </a>

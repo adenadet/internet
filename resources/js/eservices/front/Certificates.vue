@@ -31,7 +31,7 @@
                                     <td>{{appointment.date | excelDate}} <br /><small>{{appointment.schedule}}</small></td>
                                     <td>{{appointment.front_officer.first_name+' '+appointment.front_officer.last_name}}</td>
                                     <td>{{appointment.medical_officer.first_name+' '+appointment.medical_officer.last_name}}</td>
-                                    <td>{{appointment.radiologist.first_name+' '+appointment.radiologist.last_name}}</td>
+                                    <td>{{appointment.radiologist != null ? appointment.radiologist.first_name+' '+appointment.radiologist.last_name : 'No Xray was done'}}</td>
                                     <td><span class="tag tag-success">{{appointment.status == 0 ? 'Unpaid' :(appointment.status == 1 ? 'Paid' :(appointment.status == 2 ? 'Reschedule' :(appointment.status == 3 ? 'Cancelled' : (appointment.status == 8 ? 'Certificate Sent' :'Done'))))}}</span></td>
                                     <td>
                                         <div class="btn btn-group">
