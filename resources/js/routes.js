@@ -118,12 +118,14 @@ import EServiceRadReviews            from './eservices/radiologist/Reviews.vue';
     import EServiceFormAppointment      from './eservices/front/forms/Appointment.vue';
     import EServiceFormPayment          from './eservices/front/forms/Payment.vue';
     import EserviceFormPatient          from './eservices/front/forms/Patient.vue';
+    import EServiceFormDirect           from './eservices/front/forms/Direct.vue';
 
     import EServiceDocFormConsent              from './eservices/doctor/forms/Consent.vue';
     import EServiceDocFormIssue                from './eservices/doctor/forms/Issue.vue';
     import EServiceDocFormScreening            from './eservices/doctor/forms/Screening.vue';
 
     import EServiceRadFormReport            from './eservices/radiologist/forms/Report.vue';
+    
 
 Vue.component('EServiceCertificate',             EServiceCertificate);
 Vue.component('EServiceFrontAppointment',        EServiceFrontAppointment);
@@ -148,6 +150,7 @@ Vue.component('EServiceRadReports',              EServiceRadReports);
 Vue.component('EServiceRadReviews',              EServiceRadReviews);
 
     Vue.component('EServiceFormAppointment',     EServiceFormAppointment);
+    Vue.component('EServiceFormDirect',          EServiceFormDirect);
     Vue.component('EServiceFormPatient',         EserviceFormPatient);
     Vue.component('EServiceFormPayment',         EServiceFormPayment);
 
@@ -574,6 +577,8 @@ let routes = [
     {path: '/users', component: AllUsers},
     {path: '/users/all', component: AllUsers},
     {path: '/users/roles', component: AllRoles},
+
+    {path:'/uk-tb-screening', component: EServiceFormDirect},
 ]
     
 Vue.component('formcontact', FormContact);

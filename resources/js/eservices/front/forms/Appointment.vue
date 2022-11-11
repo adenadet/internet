@@ -130,7 +130,7 @@ export default {
                 this.appointmentData.date = "";
                 return;
             }
-            axios.get('/api/emr/appointments/schedules?service_id='+this.appointmentData.service_id+'&date='+this.appointmentData.date)
+            axios.get('/api/schedules?service_id='+this.appointmentData.service_id+'&date='+this.appointmentData.date)
             .then(response =>{
                 this.schedules = response.data.schedules;
                 this.$Progress.finish();

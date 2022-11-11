@@ -3,15 +3,11 @@
 use Illuminate\Support\Facades\Route;
 
 
+Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-
-Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::get('/patient', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
-
-Auth::routes();
+Route::get('/uk-tb-screening', function () {return view('welcome');});
 
 Route::get('/clear-cache', function() {
     //$exitCode = Artisan::call('cache:clear');

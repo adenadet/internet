@@ -13,6 +13,7 @@ Route::namespace('App\Http\Controllers\Api\Ticketing')->middleware('auth:api')->
 Route::namespace('App\Http\Controllers\Api\Ums')->middleware('auth:api')->name('api.ums.')->group(base_path('routes/api/ums.php'));
 
 Route::get('dashboard/applicant',  'App\Http\Controllers\Api\DashboardController@applicant')->name('api.dashboard.applicant');
+Route::get('schedules', 'App\Http\Controllers\Api\EMR\RegistrationController@schedules')->name('appointments.schedules');
 Route::post('notices/modify',    'App\Http\Controllers\Api\NoticeController@modify')->name('api.notices.modify');
 Route::get('policies/all/{id}',  'App\Http\Controllers\Api\PolicyController@all')->name('api.policies.all');
 Route::post('policies/assign',   'App\Http\Controllers\Api\PolicyController@assign')->name('api.policies.assign');
@@ -22,5 +23,5 @@ Route::apiResources([
     'member'        => 'App\Http\Controllers\Api\MemberController',
     'notices'       => 'App\Http\Controllers\Api\NoticeController',
     'policies'      => 'App\Http\Controllers\Api\PolicyController',
+    'scheduler'     => 'App\Http\Controllers\Api\EMR\RegistrationController',
 ]);
-
