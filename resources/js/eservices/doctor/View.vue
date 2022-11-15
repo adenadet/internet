@@ -23,7 +23,7 @@
                             <EServiceDocReportView  :findings="findings" :consultation="appointment" :patient="appointment.patient" :report="appointment.report"/>
                         </div>
                         <div class="tab-pane" id="certificate">
-                            <div class="card" v-if="appointment.report == null">
+                            <div class="card" v-if="(appointment.report == null) && (appointment.status != 8)">
                                 <div class="card-header">Awaiting Report</div>
                                 <div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div>
                             </div>

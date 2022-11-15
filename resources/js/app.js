@@ -100,6 +100,10 @@ window.Fire = new Vue();
 import Multiselect from 'vue-multiselect';
 Vue.component('multiselect', Multiselect);
 
+//Import Paystack 
+import paystack from 'vue-paystack';
+Vue.use(paystack);
+
 //Import WYSIWYG
 import wysiwyg from "vue-wysiwyg";
 import "vue-wysiwyg/dist/vueWysiwyg.css";

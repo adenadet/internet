@@ -5,6 +5,32 @@
         <form>
             <alert-error :form="ApplicantData"></alert-error> 
             <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label>Service</label>
+                        <select class="form-control" id="service_id" name="service_id" v-model="ApplicantData.service_id" required>
+                            <option value="">--Select Service--</option>
+                            <option v-for="service in services" :key="service.id" :value="service.id">{{service.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label>Appointment Date</label>
+                        <input class="form-control" type="date" name="date" id="date" v-model="ApplicantData.date" @change="searchSchedule()"/>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="form-group">
+                        <label>Schedule</label>
+                        <select class="form-control" id="schedule" name="schedule" v-model="ApplicantData.schedule" required>
+                            <option value=''>--Select Available Time--</option>
+                            <option v-for="(schedule, index) in schedules" :key="index" :value="schedule.schedule">{{schedule.schedule}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Last Name*</label>
@@ -28,14 +54,14 @@
             </div>
             <div class="row">
                 <div class="col-md-4 col-sm-12">
-                    <label>Date of Birth</label>
+                    <label>Date of Birth *</label>
                     <div class="form-group">
-                        <input name="dob" id="dob" type="date" data-provide="datepicker" data-date-autoclose="true" class="form-control" placeholder="Birth Date" v-model="ApplicantData.dob" :class="{'is-invalid' : ApplicantData.errors.has('dob') }">
+                        <input name="dob" id="dob" type="date" data-provide="datepicker" data-date-autoclose="true" class="form-control" required placeholder="Birth Date" v-model="ApplicantData.dob" :class="{'is-invalid' : ApplicantData.errors.has('dob') }" @change="updateAmount()" >
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
-                        <label>Sex</label>
+                        <label>Sex *</label>
                         <select class="form-control" id="sex" name="sex" required v-model="ApplicantData.sex" :class="{'is-invalid' : ApplicantData.errors.has('sex') }">
                             <option value=''>---Select Sex---</option>
                             <option value="Female">Female</option>
@@ -46,7 +72,7 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label>Last Menstrual Period (Females only)</label>
-                        <input type="date" class="form-control" id="lmp" name="lmp" placeholder="Enter Last Menstrual Period *" required v-model="ApplicantData.lmp" :class="{'is-invalid' : ApplicantData.errors.has('lmp') }" />
+                        <input type="date" class="form-control" id="lmp" name="lmp" placeholder="Enter Last Menstrual Period *" v-model="ApplicantData.lmp" :class="{'is-invalid' : ApplicantData.errors.has('lmp') }" v-show="ApplicantData.sex == 'Female'"/>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12">
@@ -118,52 +144,38 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 col-sm-12">
-                    <div class="form-group">
-                        <label>Service</label>
-                        <select class="form-control" id="service_id" name="service_id" v-model="ApplicantData.service_id" required>
-                            <option value="">--Select Service--</option>
-                            <option v-for="service in services" :key="service.id" :value="service.id">{{service.name}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                    <div class="form-group">
-                        <label>Date</label>
-                        <input class="form-control" type="date" name="date" id="date" v-model="ApplicantData.date" @change="searchSchedule()"/>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                    <div class="form-group">
-                        <label>Schedule</label>
-                        <select class="form-control" id="schedule" name="schedule" v-model="ApplicantData.schedule" required>
-                            <option value=''>--Select Available Time--</option>
-                            <option v-for="(schedule, index) in schedules" :key="index" :value="schedule.schedule">{{schedule.schedule}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                    <div class="form-group">
-                        <label>Payment Type</label>
-                        <select class="form-control" id="payment_method" name="payment_method" v-model="ApplicantData.payment_method" required>
-                            <option value="">--Select Method--</option>
-                            <option value="paystack">Card</option>
-                            <option value="transfer">Transfer</option>
-                            <option value="cash">On Site</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <button @click.prevent="editMode ? updateApplicantData() : createApplicant()" type="submit" name="submit" class="submit btn btn-success">Submit</button>
+            <paystack style="margin-auto;" class="btn btn-primary" type="button"  
+                        :amount="this.ApplicantData.amount * 100"
+                        :email="ApplicantData.email"
+                        :paystackkey="PUBLIC_KEY"
+                        :callback="processAppointment"
+                        :reference="genRef()"
+                        :close="close"
+                        :embed="false"  
+                    >PAY NGN {{this.ApplicantData.amount}} Online</paystack>
+            <paystack style="margin-auto;" class="btn btn-warning" type="button" 
+                :amount="100000"
+                :email="ApplicantData.email"
+                :paystackkey="PUBLIC_KEY"
+                :callback="processBooking"
+                :reference="genRef()"
+                :close="close"
+                :embed="false"  
+            >PAY NGN 1000 for Holding</paystack>
         </form>
     </div>
 </div>
 </template>
 <script>
+import paystack from 'vue-paystack';
 export default {
+    components: {
+        paystack
+    },
     data(){
         return  {
+            PUBLIC_KEY: "pk_test_a598743a2527b186e293b76fb39bcfa6834eb153",
+            amount: 0,
             nations: [],
             schedules: [],
             services: [], 
@@ -171,6 +183,7 @@ export default {
                 first_name: '', 
                 middle_name:'', 
                 last_name:'', 
+                amount: 0,
                 dob: '',
                 sex:'',
                 lmp:'', 
@@ -202,6 +215,12 @@ export default {
         });
     },
     methods:{
+        callback: function(response){
+            console.log(response)
+        },
+        close: function(){
+            console.log("Payment closed")
+        },
         createApplicant(){
             this.$Progress.start();
             this.ApplicantData.post('/api/scheduler')
@@ -225,29 +244,8 @@ export default {
             this.$Progress.fail();
             });  
         },
-        updateApplicantData(){
-            console.log("Tested");
-            this.$Progress.start();
-            this.ApplicantData.put('/api/scheduler/'+this.ApplicantData.id)
-            .then(response =>{
-                this.$Progress.finish();
-                Fire.$emit('refreshAppointment', response);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'The Profile details has been updated',
-                    showConfirmButton: false,
-                    timer: 1500
-                    });
-                })
-            .catch(()=>{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!',
-                    footer: 'Please try again later!'
-                    });
-                this.$Progress.fail();
-            });          
+        genRef(){
+            return "Task1";
         },
         getInitials(){
             axios.get('/api/scheduler')
@@ -264,6 +262,16 @@ export default {
         refreshScheduler(response){
             this.services = response.data.services;
             this.nations = response.data.nations;
+        },
+        processAppointment(response){
+            console.log(response);
+            this.ApplicantData.payment_method = "Paid";
+            //this.createApplicant();
+        },
+        processBooking(){
+            console.log(response);
+            this.ApplicantData.payment_method = "Holding";
+            //this.createApplicant();
         },
         searchSchedule(){
             if (this.ApplicantData.service_id == ""){
@@ -284,6 +292,16 @@ export default {
                 })
             });
         },
+        updateAmount(){
+            var dob = new Date(this.ApplicantData.dob);
+            var month_diff = Date.now() - dob.getTime();  
+            var age_dt = new Date(month_diff);   
+            var year = age_dt.getUTCFullYear();  
+            var age = Math.abs(year - 1970);  
+            
+            if (age >= 11){this.ApplicantData.amount = 60000;}
+            else {this.ApplicantData.amount = 30000;}
+        },
         updateProfilePic(e){
             let file = e.target.files[0];
             let reader = new FileReader();
@@ -300,6 +318,7 @@ export default {
                 })
             }
         },
+        
         
     },
     props:{

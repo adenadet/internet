@@ -20,7 +20,7 @@ class ConsultationController extends Controller
     public function index()
     {
         return response()->json([
-            'appointments' => Appointment::whereDate('date', '<=', date('Y-m-d'))->whereIn('status', [4, 5, 6, 7, 8,])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(30),
+            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->whereIn('status', [4, 5, 6, 7, 8, 9])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(30),
         ]);
     }
 
@@ -79,5 +79,32 @@ class ConsultationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function reviews(){
+        return response()->json([
+            'appointments' => Appointment::whereDate('date', '<=', date('Y-m-d'))->whereIn('status', [4, 5, 6, 7, 8, 9])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(30),
+        ]);
+    }
+
+    public function search(){
+        if ($search = \Request::get('q')){
+            $patients = Patient::select('id')->orderBy('first_name', 'ASC')->where(function($query) use ($search){
+                $query->where('first_name', 'LIKE', "%$search%")
+                ->orWhere('middle_name', 'LIKE', "%$search%")
+                ->orWhere('last_name', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%")
+                ->orWhere('unique_id', 'LIKE', "%$search%");
+                })->get();
+
+            $consultations = Appointment::whereIn('patient_id', $patients)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(30);
+        }
+        else{
+            $consultations = Appointment::whereNull(['front_office_id',])->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(30);        
+        }
+
+        return response()->json([
+            'appointments' => $consultations,
+        ]);
     }
 }

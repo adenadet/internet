@@ -7,8 +7,6 @@
                         <div class="card-header">
                             <h3 class="card-title">All Consultations</h3>
                             <div class="card-tools">
-                                <button class="btn btn-sm btn-success" @click="addApplicant"><i class="fa fa-user-plus"></i> Create Applicant</button>
-                                <button class="btn btn-sm btn-primary" @click="addConsultation"><i class="fa fa-calendar-plus"></i> Book Consultation</button>
                             </div>
                         </div>
                         <div class="card-body table-responsive p-0">
@@ -47,7 +45,7 @@
                             </table>
                         </div>
                         <div class="card-footer">
-                            <pagination :data="appointments" @pagination-change-page="getAppointment">
+                            <pagination :data="consultations" @pagination-change-page="getAppointment">
                                 <span slot="prev-nav">&lt; Previous </span>
                                 <span slot="next-nav">Next &gt;</span>
                             </pagination>
@@ -77,33 +75,17 @@ export default {
         });
         Fire.$on('searchInstance', ()=>{
             let query = this.$parent.search;
-            axios.get('/api/emr/appointments/search?q='+query)
+            axios.get('/api/emr/consultations/search?q='+query)
             .then((response ) => {this.applicants = response.data.applicants;})
             .catch(()=>{});
         });
     },
     methods: {
-        addApplicant(){
-            this.$Progress.start();
-            this.editMode = false;
-            //this.applicant = {};
-            Fire.$emit('ApplicantDataFill', {});
-            $('#applicantModal').modal('show');
-            this.$Progress.finish();
-        },
-        addConsultation(){
-            this.$Progress.start();
-            this.editMode = false;
-            this.consultation = {};
-            Fire.$emit('ConsultationDataFill', {});
-            $('#consultationModal').modal('show');
-            this.$Progress.finish();
-        },
         getAppointment(page=1){
             let query = this.$parent.search;
-            axios.get('/api/emr/consultations/?page='+page+'&search?q='+query)
+            axios.get('/api/emr/consultations/reviews?page='+page)
             .then(response=>{
-                this.appointments = response.data.appointments;   
+                this.refreshConsultations(response)   
             })
             .catch(() => {
                 this.$Progress.fail();
@@ -114,7 +96,7 @@ export default {
             });
         },
         getInitials() {
-            axios.get('/api/emr/consultations')
+            axios.get('/api/emr/consultations/reviews')
             .then(response => {
                 this.refreshConsultations(response)
             })
@@ -125,13 +107,6 @@ export default {
                     title: 'Your consultations did not loaded successfully',
                 })
             });
-        },
-        makePayment(consultation){
-            this.$Progress.start();
-            this.paySpecific = true;
-            Fire.$emit('PaymentDataFill', consultation);
-            $('#paymentModal').modal('show');
-            this.$Progress.finish();
         },
         refreshConsultations(response) {
             this.consultations = response.data.appointments;

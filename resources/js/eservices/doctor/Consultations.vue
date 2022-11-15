@@ -43,7 +43,7 @@
                             </table>
                         </div>
                         <div class="card-footer">
-                            <pagination :data="appointments" @pagination-change-page="getAppointment">
+                            <pagination :data="consultations" @pagination-change-page="getAppointment">
                                 <span slot="prev-nav">&lt; Previous </span>
                                 <span slot="next-nav">Next &gt;</span>
                             </pagination>
@@ -96,7 +96,7 @@ export default {
         getAppointment(page=1){
             axios.get('/api/emr/consultations/?page='+page)
             .then(response=>{
-                this.appointments = response.data.appointments;   
+                this.refreshConsultations(response);   
             });
         },
         getInitials() {
