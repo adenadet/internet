@@ -4,14 +4,17 @@
         <h6>{{lesson.course !== null && typeof (lesson.course) !== 'undefined' ? lesson.course.name : ''}}</h6>
         <div class="row" style="text-align:center" v-if="((lesson.video !== null) && (typeof lesson !== 'undefined') &&(typeof lesson.video !== 'undefined'))"><youtube class="col-md-12" :video-id="lesson.video" ref="youtube" /></div>
         <div class="row" style="max-height: 500px; overflow: scroll;" v-if="lesson.file !== null">
-            <vue-pdf-app :pdf="lesson.file != null? lesson.file : 'https://file-examples-com.github.io/uploads/2017/10/file-example_PDF_1MB.pdf'"></vue-pdf-app>
+            <vue-pdf-embed :source="lesson.file != null ? 'https://intranet.saintnicholashospital.com'+lesson.file : 'http://localhost:8000/upload/lessons/1666686506.pdf'" width="900"/>
         </div>
         <div class="col-md-12">{{lesson.content}}</div>
     </div>
 </template>
 <script>
-
+import VuePdfEmbed from 'vue-pdf-embed/dist/vue2-pdf-embed'
 export default {
+    components: {
+        VuePdfEmbed
+    },
     data(){
         return {
             document: '',
@@ -22,6 +25,7 @@ export default {
                 height: '400', muted: false, language: 'en', playbackRates: [0.7, 1.0, 1.5, 2.0],
                 sources: [{type: "video/mp4", src: "/"}],
             },
+            scale: 100,
         }
     },
     methods:{

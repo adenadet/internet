@@ -29,8 +29,8 @@
                                     <td>{{index | addOne}}</td>
                                     <td>{{appointment.patient_id != null && appointment.patient != null ? appointment.patient.first_name+' '+appointment.patient.middle_name+' '+appointment.patient.last_name:'Deleted User'}} <br /><small>{{appointment.service_id != null && appointment.service != null ? appointment.service.name : ''}}</small></td>
                                     <td>{{appointment.date | excelDate}} <br /><small>{{appointment.schedule}}</small></td>
-                                    <td>{{appointment.front_officer.first_name+' '+appointment.front_officer.last_name}}</td>
-                                    <td>{{appointment.medical_officer.first_name+' '+appointment.medical_officer.last_name}}</td>
+                                    <td>{{appointment.front_officer != null ? appointment.front_officer.first_name+' '+appointment.front_officer.last_name: 'Not yet attended to'}}</td>
+                                    <td>{{appointment.medical_officer != null ? appointment.medical_officer.first_name+' '+appointment.medical_officer.last_name: 'Not yet seen by consultant'}}</td>
                                     <td>{{appointment.radiologist != null ? appointment.radiologist.first_name+' '+appointment.radiologist.last_name : 'No Xray was done'}}</td>
                                     <td><span class="tag tag-success">{{appointment.status == 0 ? 'Unpaid' :(appointment.status == 1 ? 'Paid' :(appointment.status == 2 ? 'Reschedule' :(appointment.status == 3 ? 'Cancelled' : (appointment.status == 8 ? 'Certificate Sent' :'Done'))))}}</span></td>
                                     <td>
@@ -80,7 +80,7 @@ export default {
             });
         },
         getAppointment(page=1){
-            axios.get('/api/emr/appointments?page='+page)
+            axios.get('/api/emr/appointments/certificates?page='+page)
             .then(response=>{
                 this.appointments = response.data.appointments;   
             });

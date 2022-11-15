@@ -13,16 +13,12 @@ import Vue from 'vue';
 //Vue.component(pdf);
 
 //Import PDF Reader
-//import VuePdfReader from 'vue-pdf-reader';
-//import 'vue-pdf-reader/dist/vue-pdf-reader.min.css';
-//Vue.component(VuePdfReader);
+import VuePdfReader from 'vue-pdf-reader';
+import 'vue-pdf-reader/dist/vue-pdf-reader.min.css';
+Vue.component(VuePdfReader);
 
 //import VuePdf from 'vue-pdf';
 //Vue.component(VuePdf);
-
-import VuePdfApp from "vue-pdf-app-snepsilon";
-import "vue-pdf-app-snepsilon/dist/icons/main.css";
-Vue.component(VuePdfApp);
 
 //Import Progress Bar
 import VueProgressBar from 'vue-progressbar';

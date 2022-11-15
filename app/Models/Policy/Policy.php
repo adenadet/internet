@@ -10,7 +10,7 @@ class Policy extends Structure {
     protected $fillable = array('name', 'file', 'category_id', 'description', 'created_by', 'updated_by', 'deleted_by', 'deleted_at');
     
     public function category(){
-    	return $this->belongsTo('App\Models\Category', 'category_id', 'id'); 
+    	return $this->belongsTo('App\Models\PolicyCategory', 'category_id', 'id'); 
 	}
     
     public function creator(){

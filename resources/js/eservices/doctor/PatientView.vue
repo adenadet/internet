@@ -2,7 +2,7 @@
 <section>
     <div class="row">
         <div class="col-sm-4">
-            <img class="img-fluid" :src="patient.image != null ? '/img/applicants/'+patient.image : '/img/profile/default.png'"/>
+            <img class="img-fluid" :src="(patient.image != null && patient != null) ? '/img/applicants/'+patient.image : '/img/profile/default.png'"/>
         </div>
     </div>
     <div class="row">

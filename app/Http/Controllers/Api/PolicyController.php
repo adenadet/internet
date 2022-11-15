@@ -14,11 +14,10 @@ class PolicyController extends Controller
 {
     public function index()
     {
-        $policies = Policy::orderBy('name', 'ASC')->with(['depts.department', 'category', 'creator'])->paginate(25);
+        $policies = Policy::orderBy('name', 'ASC')->with(['depts.department', 'creator'])->paginate(25);
 
         return response()->json([
             'policies'      => $policies,       
-            'categories'    => Category::all(),       
             'departments'   => Department::all(),       
         ]);
     }
@@ -182,7 +181,7 @@ class PolicyController extends Controller
 
         //$policy->delete();
 
-        $policies = Policy::orderBy('name', 'ASC')->with('depts')->with('category')->with('creator')->paginate(25);
+        $policies = Policy::orderBy('name', 'ASC')->with(['depts', 'creator'])->paginate(25);
 
         return response()->json([
             'policies'      => $policies,       

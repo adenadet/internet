@@ -119,8 +119,8 @@ class PatientController extends Controller
         $patient->middle_name   = $request->input('middle_name');
         $patient->dob = $request->input('dob');
         $patient->sex = $request->input('sex');
-        $patient->image = $request->input('image');
-        $patient->passport_page = $request->input('passport_image');
+        $patient->image = $image_url;
+        $patient->passport_page = $passport_image_url;
         $patient->lmp = $request->input('lmp');
         $patient->email = $request->input('email');
         $patient->phone = $request->input('phone');
