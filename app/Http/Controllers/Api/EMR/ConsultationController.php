@@ -46,6 +46,7 @@ class ConsultationController extends Controller
             'sym_haemoptysis'=> $request->input('sym_haemoptysis') ?? false,
             'sym_night_sweats'=> $request->input('sym_night_sweats') ?? false,
             'sym_weight_loss'=> $request->input('sym_weight_loss') ?? false,
+            'women_pregnant'=> $request->input('women_pregnant') ?? false,
             'decision'=> $request->input('decision'),
             'remarks'=> $request->input('remarks'),
             'created_by'=> auth('api')->id(),
@@ -105,6 +106,33 @@ class ConsultationController extends Controller
 
         return response()->json([
             'appointments' => $consultations,
+        ]);
+    }
+
+    public function search_appointment(Request $request)
+    {
+        $this->validate($request, [
+            'patient' => 'required',
+            'start_date' => 'nullable | sometimes | date',
+            'end_date' => 'nullable | sometimes | date',
+        ]);
+        //Search for Patients
+        $search = $request->input('patient');
+
+        $patients = Patient::select('id')->orderBy('first_name', 'ASC')->where(function($query) use ($search){
+            $query->where('first_name', 'LIKE', "%$search%")
+            ->orWhere('middle_name', 'LIKE', "%$search%")
+            ->orWhere('last_name', 'LIKE', "%$search%")
+            ->orWhere('email', 'LIKE', "%$search%");
+        })->get();
+
+        $app_query = Appointment::whereIn('patient_id', $patients)->whereIn('status', [4, 5, 6, 7, 8, 9]);
+        if (!is_null($request->input('start_date'))){$app_query->whereDate('date', '>=', $request->input('start_date'));}
+        if (!is_null($request->input('end_date'))){$app_query->whereDate('date', '<=', $request->input('end_date'));}
+        $appointments = $app_query->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->paginate(30);
+        //echo $search;
+        return response()->json([
+            'appointments' => $appointments,
         ]);
     }
 }

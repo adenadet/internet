@@ -3,6 +3,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
+                    <EServiceFormSearch search_type="consultations" />
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">All Consultations</h3>
@@ -74,6 +75,9 @@ export default {
         Fire.$on('refreshPayment', response => {
             this.refreshConsultations(response);
             $('#paymentModal').modal('hide');
+        });
+        Fire.$on('refreshAppointment', response => {
+            this.refreshConsultations(response);
         });
     },
     methods: {

@@ -69,6 +69,16 @@
             </div>
             <div class="clear"></div>
             <div class="row">
+                <label class="col-sm-12">For Women only:</label>
+                <div class="col-sm-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="women_pregnant" id="women_pregnant" v-model="consultationData.women_pregnant">
+                        <label class="form-check-label">Pregnant</label>
+                    </div>
+                </div> 
+            </div>
+            <div class="clear"></div>
+            <div class="row">
                 <label class="col-sm-12">For All Applicants</label>
                 <div class="col-sm-4">
                     <div class="form-check">
@@ -131,6 +141,7 @@ export default {
                 kid_throaic_surgery: '',
                 kid_cyanosis: '', 
                 kid_respiratory_insufficiency: '',
+                women_pregnant: '',
                 sym_cough: '',
                 sym_fever: '',
                 sym_haemoptysis: '',

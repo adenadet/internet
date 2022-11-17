@@ -93,6 +93,16 @@ class RegistrationController extends Controller
             'status'     => 0,
         ]);
 
+        $payment = Payment::create([
+            'service_id' => $request->input('service_id'), 
+            'patient_id' => $patient->id, 
+            'appointment_id' => $appointment->id,
+            'amount' => $request->input('amount'), 
+            'employee_id' => 0,
+            'channel' => "Paystack", 
+            'details' => $request->input('payment_transaction').' | '.$request->input('payment_reference'),    
+        ]);
+
         return response()->json([
             'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
             'appointments' => Appointment::with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),

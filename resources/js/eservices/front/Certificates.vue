@@ -1,9 +1,11 @@
 <template>
 <section class="content-header">
     <div class="container-fluid">
+        <EServiceFormSearch />
+        
         <div class="row">
             <div class="col-12">
-                <div class="card">
+                <div class="card card-success">
                     <div class="card-header"><h3 class="card-title">Certificates</h3></div>
                     <div class="card-body table-responsive p-0">
                         <table class="table table-hover text-nowrap">
@@ -65,15 +67,14 @@ export default {
     },
     mounted() {
         this.getInitials();
-        Fire.$on('refreshPayment', response => {
-            this.refreshAppointments(response);
-            $('#paymentModal').modal('hide');
+        Fire.$on('refreshAppointment', response => {
+            this.refreshAppointment(response);
         });
     },
     methods: {
         getInitials() {
             axios.get('/api/emr/appointments/certificates')
-            .then(response => {this.refreshAppointments(response)})
+            .then(response => {this.refreshAppointment(response)})
             .catch(() => {
                 this.$Progress.fail();
                 toast.fire({icon: 'error', title: 'List of Certificates did not loaded successfully',})
@@ -85,11 +86,11 @@ export default {
                 this.appointments = response.data.appointments;   
             });
         },
-        refreshAppointments(response) {
+        refreshAppointment(response) {
             this.appointments = response.data.appointments;
-            this.services = response.data.services;
-            this.nations = response.data.nations;
-            this.patients = response.data.patients;
+            //this.services = response.data.services;
+            //this.nations = response.data.nations;
+            //this.patients = response.data.patients;
         }
     },
     props: {}

@@ -119,6 +119,7 @@ import EServiceRadReviews            from './eservices/radiologist/Reviews.vue';
     import EServiceFormPayment          from './eservices/front/forms/Payment.vue';
     import EserviceFormPatient          from './eservices/front/forms/Patient.vue';
     import EServiceFormDirect           from './eservices/front/forms/Direct.vue';
+    import EServiceFormSearch           from './eservices/front/forms/Search.vue';
 
     import EServiceDocFormConsent              from './eservices/doctor/forms/Consent.vue';
     import EServiceDocFormIssue                from './eservices/doctor/forms/Issue.vue';
@@ -153,6 +154,7 @@ Vue.component('EServiceRadReviews',              EServiceRadReviews);
     Vue.component('EServiceFormDirect',          EServiceFormDirect);
     Vue.component('EServiceFormPatient',         EserviceFormPatient);
     Vue.component('EServiceFormPayment',         EServiceFormPayment);
+    Vue.component('EServiceFormSearch',          EServiceFormSearch);
 
     Vue.component('EServiceDocFormConsent',      EServiceDocFormConsent);
     Vue.component('EServiceDocFormIssue',        EServiceDocFormIssue);

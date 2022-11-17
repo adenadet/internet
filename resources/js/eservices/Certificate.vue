@@ -1,9 +1,9 @@
 <template>
     <section class="content p-10">
-        <div class="container-fluid" v-if="((appointment == null) && ((appointment.report == null) || (appointment.status == 8)) && (appointment.patient == null))">
+        <div class="container-fluid" v-if="(appointment == null) || (appointment.issuing_officer == null)">
             <div class="card">
                 <div class="card-header">Incomplete Appointment</div>
-                <div class="card-body"><p>This appointment is still been processed.</p></div>
+                <div class="card-body"><p>This certificate is still been processed.</p></div>
             </div>
         </div>
         <div class="container-fluid" v-else-if="((appointment != null) &&(appointment.report != null) &&(appointment.patient != null))">
@@ -54,7 +54,7 @@
                     <div class="col-7">
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-5 col-form-label text-small" style="font-weight:normal !important;"><small>Given name(s) (as shown in passport):</small></label>
-                            <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.first_name+' '+appointment.patient.last_name"></div></div>
+                            <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.first_name+' '+appointment.patient.middle_name"></div></div>
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-5 col-form-label text-small" style="font-weight:normal !important; "><small>Family name (as shown in passport):</small></label>
@@ -64,8 +64,8 @@
                             <div class="col-6">
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-4 col-form-label text-small" style="font-weight:normal !important; "><small>Gender:</small></label>
-                                    <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.patient.sex == 'Male'"><label class="form-check-label" style="font-weight:normal !important; "><small>Male</small></label></div></div>
-                                    <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.patient.sex == 'Female'"><label class="form-check-label" style="font-weight:normal !important; "><small>Female</small></label></div></div>
+                                    <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.patient.sex == 'Male'"><label class="form-check-label" style="font-weight:normal !important; color: #222;"><small>Male</small></label></div></div>
+                                    <div class="col-sm-4"><div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.patient.sex == 'Female'"><label class="form-check-label" style="font-weight:normal !important; color: #222;"><small>Female</small></label></div></div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="inputEmail3" class="col-sm-4 col-form-label" style="font-weight:normal !important; "><small>Nationality:</small></label>
@@ -88,11 +88,11 @@
                             <div class="col-sm-3"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.accompanying_kids"></div></div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; ">Full residential address:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>Full residential address:</small></label>
                             <div class="col-sm-6" v-html="appointment.patient.nigerian_address" width="100%" min-height="200px" style="border: 1px solid #222; color: #222;"></div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; ">Address in the UK:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>Address in the UK:</small></label>
                             <div class="col-sm-6" v-html="appointment.patient.uk_address" width="100%" min-height="200px" style="border: 1px solid #222; color: #222;"></div>
                         </div>
                     </div>
@@ -109,31 +109,31 @@
                                 <div class="col-sm-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" disabled :checked="appointment.laboratory == 'null'">
-                                        <label class="form-check-label" style="font-weight:normal !important; "><small>Negative</small></label>
+                                        <label class="form-check-label" style="font-weight:normal !important; color: #222;" ><small>Negative</small></label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="inputEmail3" class="col-sm-3" style="font-weight:normal !important;"><small>Chest X-Ray:</small></label>
+                                <label for="inputEmail3" class="col-sm-3" style="font-weight:normal !important; color: #222;"><small>Chest X-Ray:</small></label>
                                 <div class="col-sm-3">
-                                    <div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.report == 'null'"><label class="form-check-label" style="font-weight:normal !important; "><small>Not Done</small></label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" disabled :checked="appointment.report == 'null'"><label class="form-check-label" style="font-weight:normal !important; color: #222;"><small>Not Done</small></label></div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" disabled :checked="appointment.report != 'null' && appointment.report.summary == 'normal'">
-                                        <label class="form-check-label" style="font-weight:normal !important;"><small>Normal</small></label>
+                                        <label class="form-check-label" style="font-weight:normal !important; color: #222;"><small>Normal</small></label>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" disabled :checked="appointment.report != 'null' && appointment.report.summary != 'normal'">
-                                        <label class="form-check-label" style="font-weight:normal !important; "><small>Abnormal</small></label>
+                                        <label class="form-check-label" style="font-weight:normal !important; color: #222;"><small>Abnormal</small></label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.report != 'null' && appointment.report.summary == 'not suggestive'">
-                                        <label class="form-check-label" style="font-weight:normal !important; "><small>No evidence of active pulmonary TB </small></label>
+                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.report.summary == 'normal' || (appointment.report != 'null' && appointment.report.summary == 'not suggestive')">
+                                        <label class="form-check-label" style="font-weight:normal !important; color: #222;"><small>No evidence of active pulmonary TB </small></label>
                                     </div>
                                 </div>
                             </div>
@@ -142,33 +142,33 @@
                             <div class="form-group row">
                                 <div class="col-sm-12">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.report == 'null'">
-                                        <label class="form-check-label" style="font-weight:normal !important; "> Family contact with tuberculosis</label>
+                                        <input class="form-check-input" type="checkbox" disabled :checked="(appointment.consultation.all_household_tb == 1) || (appointment.consultation.all_recent_contact == 1)">
+                                        <label class="form-check-label" style="font-weight:normal !important; color: #222;"> Family contact with tuberculosis</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" disabled
-                                            :checked="appointment.report == 'null'">
-                                        <label class="form-check-label" style="font-weight:normal !important; "> Pregnant</label>
+                                            :checked="(appointment.consultation != null) && (appointment.consultation.women_pregnant == 1)">
+                                        <label class="form-check-label" style="font-weight:normal !important; color: #222;"> Pregnant</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" disabled :checked="appointment.report == 'null'">
-                                        <label class="form-check-label" style="font-weight:normal !important;" :checked="appointment.consultation.status == 8"> Under 11 years of age undergone health assessment</label>
+                                        <input class="form-check-input" type="checkbox" disabled :checked="age(appointment.patient.dob) <= 11">
+                                        <label class="form-check-label" style="font-weight:normal !important; color: #222;"> Under 11 years of age undergone health assessment</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" disabled :checked="appointment.report != 'null'">
-                                        <label class="form-check-label" style="font-weight:normal !important; "> Chest X-ray & interaction with applicant</label>
+                                        <label class="form-check-label" style="font-weight:normal !important; color: #222; "> Chest X-ray & interaction with applicant</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" disabled :checked="appointment.issue_action != 'certificate'">
-                                        <label class="form-check-label" style="font-weight:normal !important; "> Referral letter given to applicant</label>
+                                        <label class="form-check-label" style="font-weight:normal !important; color: #222;"> Referral letter given to applicant</label>
                                     </div>
                                 </div>
                             </div>
@@ -186,11 +186,11 @@
                     <div class="col-6 mt-1">
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>SP Health Professional Name:</small></label>
-                            <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="'Dr. '+appointment.medical_officer.first_name+' '+appointment.medical_officer.last_name"></div></div>
+                            <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="'Dr. '+appointment.issuing_officer.first_name+' '+appointment.issuing_officer.last_name"></div></div>
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>SP Health Professional Sign:</small></label>
-                            <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3"><img :src="appointment.medical_officer.id == 56 ? '/img/consents/rusman.png' : '/img/consents/101-1667818422.png'" class="img-fluid" /></div></div>
+                            <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3"><img :src="appointment.issuing_officer.id == 56 ? '/img/consents/rusman.png' : '/img/consents/101-1667818422.png'" class="img-fluid" /></div></div>
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>SP Health Professional Date:</small></label>
@@ -199,15 +199,15 @@
                     </div>
                     <div class="col-6 mt-1">
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label"  style="font-weight:normal !important; ">Applicant's Signature:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label"  style="font-weight:normal !important; "><small>Applicant's Signature:</small></label>
                             <div class="col-sm-6"><div class="form-control form-control-sm"><img :src="'/img/consents/'+appointment.consent.signaturePad" class="img-fluid"/></div></div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; ">Date:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>Date:</small></label>
                             <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3">{{appointment.consent.created_at | excelDate}}</div></div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; ">Visa Category:</label>
+                            <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>Visa Category:</small></label>
                             <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3" v-html="appointment.patient.visa_type"></div></div>
                         </div>
                     </div>
@@ -227,6 +227,15 @@ export default {
         };
     },
     methods: {
+        age(date){
+            var dob = new Date(date);
+            var month_diff = Date.now() - dob.getTime();  
+            var age_dt = new Date(month_diff);   
+            var year = age_dt.getUTCFullYear();  
+            var age = Math.abs(year - 1970);  
+            
+            return age;
+        },
         getInitials() {
             axios.get('/api/emr/appointments/' + this.$route.params.id)
                 .then(response => {

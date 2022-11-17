@@ -13,7 +13,7 @@ class PaymentController extends Controller
     public function index()
     {
         return response()->json([
-            'payments' => Payment::with(['service', 'patient', 'appointment', 'employee'])->latest()->paginate(10),
+            'payments' => Payment::with(['service', 'patient', 'appointment', 'employee'])->latest()->paginate(30),
             'unpaid_appointments' => Appointment::where('status', 0)->with(['service', 'patient'])->orderBy('date', 'ASC')->get(),
         ]);
     }

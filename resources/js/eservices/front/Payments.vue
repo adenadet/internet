@@ -60,6 +60,12 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="card-footer">    
+                            <pagination :data="payments" @pagination-change-page="getPayments">
+                                <span slot="prev-nav">&lt; Previous </span>
+                                <span slot="next-nav">Next &gt;</span>
+                            </pagination>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,10 +111,15 @@ export default {
                     })
                 });
         },
+        getPayments(page=1){
+            axios.get('/api/emr/payments?page='+page)
+            .then(response=>{this.payments = response.data.payments;});
+        },
         refreshPayments(response) {
             this.payments = response.data.payments;
             this.unpaid_apppointments = response.data.unpaid_appointments;
-        }
+        },
+
     },
     props: {}
 }

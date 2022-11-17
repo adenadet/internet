@@ -145,23 +145,7 @@
                 </div>
             </div>
             <paystack style="margin-auto;" class="btn btn-primary" type="button"  
-                        :amount="this.ApplicantData.amount * 100"
-                        :email="ApplicantData.email"
-                        :paystackkey="PUBLIC_KEY"
-                        :callback="processAppointment"
-                        :reference="genRef()"
-                        :close="close"
-                        :embed="false"  
-                    >PAY NGN {{this.ApplicantData.amount}} Online</paystack>
-            <paystack style="margin-auto;" class="btn btn-warning" type="button" 
-                :amount="100000"
-                :email="ApplicantData.email"
-                :paystackkey="PUBLIC_KEY"
-                :callback="processBooking"
-                :reference="genRef()"
-                :close="close"
-                :embed="false"  
-            >PAY NGN 1000 for Holding</paystack>
+                :amount="this.ApplicantData.amount * 100" :email="ApplicantData.email" :paystackkey="PUBLIC_KEY" :callback="processAppointment" :close="close" :reference="genRef()" :embed="false">PAY NGN {{this.ApplicantData.amount}} Online</paystack>
         </form>
     </div>
 </div>
@@ -174,7 +158,7 @@ export default {
     },
     data(){
         return  {
-            PUBLIC_KEY: "pk_test_a598743a2527b186e293b76fb39bcfa6834eb153",
+            PUBLIC_KEY: "pk_live_9e3c92567f7ad310ae7c28e248b8edb67ca2661a",
             amount: 0,
             nations: [],
             schedules: [],
@@ -202,6 +186,8 @@ export default {
                 service_id: "",
                 date: "",
                 payment_method:"",
+                payment_reference: '',
+                payment_transaction: '',
             }),
         }
     },
@@ -227,13 +213,9 @@ export default {
             .then(response =>{
                 this.$Progress.finish();
                 Fire.$emit('refreshAppointment', response);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'The Profile details has been created',
-                    showConfirmButton: false,
-                    timer: 1500
-                    });
-                })
+                this.ApplicantData.reset();
+                Swal.fire({icon: 'success', title: 'The Profile details has been created', showConfirmButton: false, timer: 1500});
+            })
             .catch(()=>{
                 Swal.fire({
                     icon: 'error',
@@ -245,11 +227,11 @@ export default {
             });  
         },
         genRef(){
-            return "Task1";
+            return "Task_"+ new Date().valueOf();
         },
         getInitials(){
             axios.get('/api/scheduler')
-            .then(response => {this.refreshScheduler(response)})
+            .then(response => {this.refreshScheduler(response); })
             .catch(() => {
                 this.$Progress.fail();
                 toast.fire({icon: 'error', title: 'Your appointments did not loaded successfully',})
@@ -264,8 +246,18 @@ export default {
             this.nations = response.data.nations;
         },
         processAppointment(response){
-            console.log(response);
-            this.ApplicantData.payment_method = "Paid";
+            console.log(response.data);
+            if (response.message == "Approved"){
+                alert("Payment was successful");
+                this.ApplicantData.payment_method = "Paystack";
+                this.ApplicantData.payment_reference= response.reference;
+                this.ApplicantData.payment_transaction = response.transaction;
+
+                this.createApplicant();
+            }
+            else{
+                alert("Payment has to be made to confirm booking");
+            }
             //this.createApplicant();
         },
         processBooking(){

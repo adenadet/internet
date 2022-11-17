@@ -3,6 +3,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
+                    <EServiceFormSearch search_type="consultations" />
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">All Consultations</h3>
@@ -78,6 +79,9 @@ export default {
             axios.get('/api/emr/consultations/search?q='+query)
             .then((response ) => {this.applicants = response.data.applicants;})
             .catch(()=>{});
+        });
+        Fire.$on('refreshAppointment', response => {
+            this.refreshConsultations(response);
         });
     },
     methods: {

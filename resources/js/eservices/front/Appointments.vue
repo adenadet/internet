@@ -1,6 +1,5 @@
 <template>
     <section class="content-header">
-        <div class="container-fluid">
             <div class="modal fade" id="appointmentModal">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -43,6 +42,7 @@
             </div>
             <div class="row">
                 <div class="col-12">
+                    <EServiceFormSearch />
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">All Appointments</h3>
@@ -89,7 +89,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                         <div class="card-footer">
                             <pagination :data="appointments" @pagination-change-page="getAppointment">
                                 <span slot="prev-nav">&lt; Previous </span>
@@ -99,7 +98,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 </template>
 <script>
