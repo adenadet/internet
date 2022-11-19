@@ -31,15 +31,15 @@ class RegistrationController extends Controller
         $this->validate($request, [
             'last_name' => 'required',
             'first_name' => 'required',
-            'phone' => 'required',
+            //'phone' => 'required',
             'email' => 'required',
-            'nigerian_address' => 'required',
-            'uk_address' => 'required',
+            //'nigerian_address' => 'required',
+            //'uk_address' => 'required',
             'service_id' => 'required',
             'date' => 'required | date',
             'schedule' => 'sometimes',
-            'passport_no' => 'required',
-            'visa_type' => 'required',
+            //'passport_no' => 'required',
+            //'visa_type' => 'required',
         ]);
 
 
@@ -90,7 +90,7 @@ class RegistrationController extends Controller
             'service_id' => $request->input('service_id'),
             'date'       => $request->input('date'),
             'schedule'   => $request->input('schedule'),
-            'status'     => 0,
+            'status'     => 1,
         ]);
 
         $payment = Payment::create([
@@ -111,8 +111,6 @@ class RegistrationController extends Controller
             'nations' => Country::orderBy('name', 'ASC')->get(), 
             'patients' => Patient::orderBy('last_name', 'ASC')->get()     
         ]);
-
-
     }
 
     public function show($id)

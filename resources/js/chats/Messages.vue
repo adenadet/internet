@@ -1,6 +1,6 @@
 <template>
 <section>
-<div v-if="this.nogo == ''" class="direct-chat-messages" id="messageDiv">
+<div v-if="this.nogo == ''" class="direct-chat-messages" id="messageDiv" style="min-height: !important; max-height: 600px !important;">
     <div v-for="message in chat.messages" :key="message.id">    
         <div class="direct-chat-msg" v-show="message.user_id != user.id">
             <div class="direct-chat-infos clearfix">

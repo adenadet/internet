@@ -17,7 +17,7 @@
                 <div class="col-md-4 col-sm-12">
                     <div class="form-group">
                         <label>Appointment Date</label>
-                        <input class="form-control" type="date" name="date" id="date" v-model="ApplicantData.date" @change="searchSchedule()"/>
+                        <input class="form-control" type="date" name="date" id="date" :min="today" v-model="ApplicantData.date" @change="searchSchedule()"/>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12">
@@ -144,8 +144,7 @@
                     </div>
                 </div>
             </div>
-            <paystack style="margin-auto;" class="btn btn-primary" type="button"  
-                :amount="this.ApplicantData.amount * 100" :email="ApplicantData.email" :paystackkey="PUBLIC_KEY" :callback="processAppointment" :close="close" :reference="genRef()" :embed="false">PAY NGN {{this.ApplicantData.amount}} Online</paystack>
+            <paystack style="margin-auto;" class="btn btn-primary" type="button" :amount="this.ApplicantData.amount * 100" :email="ApplicantData.email" :paystackkey="PUBLIC_KEY" :callback="processAppointment" :close="close" :reference="genRef()" :embed="false" :disabled="ApplicantData.email == '' || ApplicantData.first_name == '' || ApplicantData.last_name == '' || ApplicantData.schedule == ''">PAY NGN {{this.ApplicantData.amount}} Online</paystack>
         </form>
     </div>
 </div>
@@ -158,6 +157,7 @@ export default {
     },
     data(){
         return  {
+            today: '',
             PUBLIC_KEY: "pk_live_9e3c92567f7ad310ae7c28e248b8edb67ca2661a",
             amount: 0,
             nations: [],
@@ -182,10 +182,10 @@ export default {
                 accompanying_kids: 0,
                 visa_type: '',
                 passport_number: '',
-                schedule: "",
-                service_id: "",
-                date: "",
-                payment_method:"",
+                schedule: '',
+                service_id: '',
+                date: '',
+                payment_method:'',
                 payment_reference: '',
                 payment_transaction: '',
             }),
@@ -193,6 +193,7 @@ export default {
     },
     mounted() {
         this.getInitials();
+            
         Fire.$on('ApplicantDataFill', user =>{
             this.ApplicantData.fill(user);
         });
@@ -231,7 +232,18 @@ export default {
         },
         getInitials(){
             axios.get('/api/scheduler')
-            .then(response => {this.refreshScheduler(response); })
+            .then(response => {;
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth()+1; 
+                var yyyy = today.getFullYear();
+                if(dd<10){dd='0'+dd;} 
+                if(mm<10){mm='0'+mm;} 
+                today = yyyy+'-'+mm+'-'+dd;
+                console.log(today);
+            this.today = today;
+            this.refreshScheduler(response)
+            })
             .catch(() => {
                 this.$Progress.fail();
                 toast.fire({icon: 'error', title: 'Your appointments did not loaded successfully',})
@@ -241,12 +253,17 @@ export default {
             let photo = (this.ApplicantData.image.length >= 150) ? this.ApplicantData.image : "./"+this.ApplicantData.image;
             return photo;
         },
+        isWeekend(date){
+            var cast = new Date(date)
+            console.log(cast);
+            console.log(cast.getDay() === 6 || cast.getDay() === 0);
+            return cast.getDay() === 6 || cast.getDay() === 0;
+        },
         refreshScheduler(response){
             this.services = response.data.services;
             this.nations = response.data.nations;
         },
         processAppointment(response){
-            console.log(response.data);
             if (response.message == "Approved"){
                 alert("Payment was successful");
                 this.ApplicantData.payment_method = "Paystack";
@@ -269,6 +286,10 @@ export default {
             if (this.ApplicantData.service_id == ""){
                 alert("Please select the service type");
                 this.ApplicantData.date = "";
+                return;
+            }
+            else if (this.isWeekend(this.ApplicantData.date)){
+                alert("Weekend not available for selection");
                 return;
             }
             axios.get('/api/schedules?service_id='+this.ApplicantData.service_id+'&date='+this.ApplicantData.date)
@@ -310,8 +331,6 @@ export default {
                 })
             }
         },
-        
-        
     },
     props:{
     }
