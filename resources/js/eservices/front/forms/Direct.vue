@@ -56,7 +56,7 @@
                 <div class="col-md-4 col-sm-12">
                     <label>Date of Birth *</label>
                     <div class="form-group">
-                        <input name="dob" id="dob" type="date" data-provide="datepicker" data-date-autoclose="true" class="form-control" required placeholder="Birth Date" v-model="ApplicantData.dob" :class="{'is-invalid' : ApplicantData.errors.has('dob') }" @change="updateAmount()" >
+                        <input name="dob" id="dob" type="date" :max="today" data-provide="datepicker" data-date-autoclose="true" class="form-control" required placeholder="Birth Date" v-model="ApplicantData.dob" :class="{'is-invalid' : ApplicantData.errors.has('dob') }" @change="updateAmount()" >
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12">

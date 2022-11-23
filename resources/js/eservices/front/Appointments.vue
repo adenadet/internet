@@ -82,7 +82,8 @@
                                                 <router-link :to="'/eservices/front_office/appointment/'+appointment.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
                                                 <button v-show="appointment.status == 0" class="btn btn-success btn-sm" @click="makePayment(appointment)"><i class="fa fa-credit-card"></i></button>
                                                 <button v-show="appointment.status == 1" class="btn btn-success btn-sm"><i class="fa fa-file-pdf"></i></button>
-                                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                                <button v-show="appointment.status <= 1 || appointment.status == null" class="btn btn-default btn-sm" @click="rescheduleAppointment(appointment)"><i class="fa fa-calendar"></i></button>
+                                                <button v-show="appointment.status == 0" class="btn btn-danger btn-sm" @click="deleteAppointment(appointment.id)"><i class="fa fa-trash"></i></button>
                                             </div> 
                                         </td>
                                     </tr>
@@ -108,6 +109,7 @@ export default {
             appointment: {},
             appointments: {},
             editMode: true,
+            form: new Form({}),
             nations: [],
             patients: [],
             services: [],
@@ -150,6 +152,30 @@ export default {
             $('#appointmentModal').modal('show');
             this.$Progress.finish();
         },
+        deleteAppointment(id){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                })
+            .then((result) => {
+                //Send Delete request
+                if(result.value){
+                    this.form.delete('/api/emr/appointments/'+id)
+                    .then(response=>{
+                    Swal.fire('Deleted!', 'Appointment has been deleted.', 'success');
+                    this.refreshAppointments(response);   
+                    })
+                    .catch(()=>{
+                    Swal.fire({icon: 'error', title: 'Oops...', text: 'Something went wrong!', footer: '<a href>Why do I have this issue?</a>'});
+                    });
+                }
+            });
+        },
         getInitials() {
             axios.get('/api/emr/appointments')
             .then(response => {this.refreshAppointments(response)})
@@ -176,7 +202,15 @@ export default {
             this.services = response.data.services;
             this.nations = response.data.nations;
             this.patients = response.data.patients;
-        }
+        },
+        rescheduleAppointment(appointment) {
+            this.$Progress.start();
+            this.editMode = true;
+            this.appointment = appointment;
+            Fire.$emit('AppointmentDataFill', this.appointment);
+            $('#appointmentModal').modal('show');
+            this.$Progress.finish();
+        },
     },
     props: {}
 }

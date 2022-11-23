@@ -85,7 +85,8 @@ class AppointmentController extends Controller
 
     public function destroy($id)
     {
-        $appointment = Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first();
+        $appointment = Appointment::where('id','=',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first();
+        
         if (!is_null($appointment->payment)){
             $message = "Appointment has already been paid for, you can only reschedule.";
         }
@@ -99,6 +100,24 @@ class AppointmentController extends Controller
             $appointment->save();
 
             $message = "Appointment was deleted successfully";
+
+            //$appointment = Appointment::find($id);
+
+            //$appointment->deleted_by = auth('api')->id();
+            //$appointment->deleted_at = date('Y-m-d H:i:s');
+
+            //$appointment->save();
+
+            return response()->json([
+                'applicants' => Patient::orderBy('created_at', 'DESC')->with(['nationality',])->paginate(100),
+                'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
+                'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
+                'services' => Service::orderBy('name', 'ASC')->get(),
+                'states' => State::orderBy('name', 'ASC')->get(),
+                'nations' => Country::orderBy('name', 'ASC')->get(), 
+                'patients' => Patient::orderBy('first_name', 'ASC')->get(), 
+                'message' => $message,    
+            ]);
         }
     }
 

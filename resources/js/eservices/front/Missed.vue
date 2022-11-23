@@ -7,10 +7,12 @@
                         <div class="modal-header">
                             <h4 class="modal-title" v-show="editMode">Edit Appointment</h4>
                             <h4 class="modal-title" v-show="!editMode">New Appointment</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                            <EServiceFormAppointment :editMode="editMode" :appointment="appointment" :patients="patients" :services="services"/>
+                            <EServiceFormAppointment :editMode="editMode" :appointment="appointment"
+                                :patients="patients" :services="services" />
                         </div>
                     </div>
                 </div>
@@ -20,7 +22,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">Make Payment</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
                             <EServiceFormPayment />
@@ -33,10 +36,11 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">Create Patient</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                            <EServiceFormPatient :editMode="editMode" :nations="nations" :applicant="applicant" /> 
+                            <EServiceFormPatient :editMode="editMode" :nations="nations" :applicant="applicant" />
                         </div>
                     </div>
                 </div>
@@ -47,8 +51,10 @@
                         <div class="card-header">
                             <h3 class="card-title">All Appointments</h3>
                             <div class="card-tools">
-                                <button class="btn btn-sm btn-success" @click="addApplicant"><i class="fa fa-user-plus"></i> Create Applicant</button>
-                                <button class="btn btn-sm btn-primary" @click="addAppointment"><i class="fa fa-calendar-plus"></i> Book Appointment</button>
+                                <button class="btn btn-sm btn-success" @click="addApplicant"><i
+                                        class="fa fa-user-plus"></i> Create Applicant</button>
+                                <button class="btn btn-sm btn-primary" @click="addAppointment"><i
+                                        class="fa fa-calendar-plus"></i> Book Appointment</button>
                             </div>
                         </div>
                         <div class="card-body table-responsive p-0">
@@ -71,19 +77,35 @@
                                 </tbody>
                                 <tbody v-else>
                                     <tr v-for="(appointment, index) in appointments.data" :key="appointment.id">
-                                        <td>{{index | addOne}}</td>
-                                        <td>{{appointment.service_id != null && appointment.service != null ? appointment.service.name : ''}}</td>
-                                        <td>{{appointment.patient_id != null && appointment.patient != null ? appointment.patient.first_name+' '+appointment.patient.middle_name+' '+appointment.patient.last_name:'Deleted User'}}</td>
-                                        <td>{{appointment.date | excelDate}}</td>
-                                        <td>{{appointment.schedule}}</td>
-                                        <td><span class="tag tag-success">{{appointment.status == 0 ? 'Unpaid' :(appointment.status == 1 ? 'Paid' :(appointment.status == 2 ? 'Reschedule' :(appointment.status == 3 ? 'Cancelled' : (appointment.status == 8 ? 'Certificate Sent' :'Done'))))}}</span></td>
+                                        <td>{{ index | addOne }}</td>
+                                        <td>{{ appointment.service_id != null && appointment.service != null ?
+                                                appointment.service.name : ''
+                                        }}</td>
+                                        <td>{{ appointment.patient_id != null && appointment.patient != null ? appointment.patient.first_name + ' ' + appointment.patient.middle_name +' '+appointment.patient.last_name:'Deleted User'}}</td>
+                                        <td>{{ appointment.date | excelDate }}</td>
+                                        <td>{{ appointment.schedule }}</td>
+                                        <td><span class="tag tag-success">{{ appointment.status == 0 ? 'Unpaid'
+                                                : (appointment.status == 1 ? 'Paid' : (appointment.status == 2 ?
+                                                    'Reschedule' : (appointment.status == 3 ? 'Cancelled' :
+                                                        (appointment.status == 8 ? 'Certificate Sent' : 'Done'))))
+                                        }}</span></td>
                                         <td>
                                             <div class="btn btn-group">
-                                                <router-link :to="'/eservices/front_office/appointment/'+appointment.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
-                                                <button v-show="appointment.status == 0" class="btn btn-success btn-sm" @click="makePayment(appointment)"><i class="fa fa-credit-card"></i></button>
-                                                <button v-show="appointment.status == 1" class="btn btn-success btn-sm"><i class="fa fa-file-pdf"></i></button>
-                                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                                            </div> 
+                                                <router-link
+                                                    :to="'/eservices/front_office/appointment/' + appointment.id"><button
+                                                        class="btn btn-primary btn-sm"><i
+                                                            class="fa fa-eye"></i></button></router-link>
+                                                <button v-show="appointment.status == 0" class="btn btn-success btn-sm"
+                                                    @click="makePayment(appointment)"><i
+                                                        class="fa fa-credit-card"></i></button>
+                                                <button v-show="appointment.status > 0"
+                                                    class="btn btn-success btn-sm"><i
+                                                        class="fa fa-file-pdf"></i></button>
+                                                <button v-show="appointment.status <= 1 || appointment.status == null" class="btn btn-warning btn-sm" @click="rescheduleAppointment(appointment)"><i class="fa fa-calendar"></i></button>
+                                                <button v-show="appointment.status == 0" class="btn btn-danger btn-sm"
+                                                    @click="deleteAppointment(appointment.id)"><i
+                                                        class="fa fa-trash"></i></button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -110,6 +132,7 @@ export default {
             appointment: {},
             appointments: {},
             editMode: true,
+            form: new Form({}),
             nations: [],
             patients: [],
             services: [],
@@ -136,7 +159,7 @@ export default {
         });
     },
     methods: {
-        addApplicant(){
+        addApplicant() {
             this.$Progress.start();
             this.editMode = false;
             //this.applicant = {};
@@ -144,7 +167,7 @@ export default {
             $('#applicantModal').modal('show');
             this.$Progress.finish();
         },
-        addAppointment(){
+        addAppointment() {
             this.$Progress.start();
             this.editMode = false;
             this.appointment = {};
@@ -152,21 +175,45 @@ export default {
             $('#appointmentModal').modal('show');
             this.$Progress.finish();
         },
+        deleteAppointment(id){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+                })
+            .then((result) => {
+                //Send Delete request
+                if(result.value){
+                    this.form.delete('/api/emr/appointments/'+id)
+                    .then(response=>{
+                    Swal.fire('Deleted!', 'Category has been deleted.', 'success');
+                    Fire.$emit('CatRefresh', response);   
+                    })
+                    .catch(()=>{
+                    Swal.fire({icon: 'error', title: 'Oops...', text: 'Something went wrong!', footer: '<a href>Why do I have this issue?</a>'});
+                    });
+                }
+            });
+        },
         getInitials() {
             axios.get('/api/emr/appointments/missed')
-            .then(response => {this.refreshAppointments(response)})
-            .catch(() => {
-                this.$Progress.fail();
-                toast.fire({icon: 'error', title: 'Your appointments did not loaded successfully',})
-            });
+                .then(response => { this.refreshAppointments(response) })
+                .catch(() => {
+                    this.$Progress.fail();
+                    toast.fire({ icon: 'error', title: 'Your appointments did not loaded successfully', })
+                });
         },
-        getAppointment(page=1){
-            axios.get('/api/emr/appointments/missed?page='+page)
-            .then(response=>{
-                this.appointments = response.data.appointments;   
-            });
+        getAppointment(page = 1) {
+            axios.get('/api/emr/appointments/missed?page=' + page)
+                .then(response => {
+                    this.appointments = response.data.appointments;
+                });
         },
-        makePayment(appointment){
+        makePayment(appointment) {
             this.$Progress.start();
             this.paySpecific = true;
             Fire.$emit('PaymentDataFill', appointment);
@@ -178,7 +225,15 @@ export default {
             this.services = response.data.services;
             this.nations = response.data.nations;
             this.patients = response.data.patients;
-        }
+        },
+        rescheduleAppointment(appointment) {
+            this.$Progress.start();
+            this.editMode = true;
+            this.appointment = appointment;
+            Fire.$emit('AppointmentDataFill', this.appointment);
+            $('#appointmentModal').modal('show');
+            this.$Progress.finish();
+        },
     },
     props: {}
 }

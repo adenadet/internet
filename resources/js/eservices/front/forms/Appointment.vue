@@ -60,11 +60,11 @@ export default {
     mounted() {
         Fire.$on('AppointmentDataFill', appointment =>{
             if (appointment != null){
-                this.AppointmentData.patient_id = appointment.patient_id;
-                this.AppointmentData.schedule = appointment.schedule;
-                this.AppointmentData.service_id = appointment.service_id;
-                this.AppointmentData.date = appointment.date;
-                this.AppointmentData.id = appointment.id;
+                this.appointmentData.patient_id = appointment.patient_id;
+                this.appointmentData.schedule = appointment.schedule;
+                this.appointmentData.service_id = appointment.service_id;
+                this.appointmentData.date = appointment.date;
+                this.appointmentData.id = appointment.id;
             }
         });
     },

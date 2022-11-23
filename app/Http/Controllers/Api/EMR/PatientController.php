@@ -18,7 +18,7 @@ class PatientController extends Controller
     public function index()
     {
         return response()->json([
-            'applicants' => Patient::orderBy('created_at', 'DESC')->with('nationality')->paginate(25), 
+            'applicants' => Patient::orderBy('created_at', 'DESC')->with('nationality')->paginate(100), 
             'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
@@ -135,7 +135,7 @@ class PatientController extends Controller
         $patient->save();
 
         return response()->json([
-            'applicants' => Patient::orderBy('created_at', 'DESC')->with(['nationality',])->paginate(25),
+            'applicants' => Patient::orderBy('created_at', 'DESC')->with(['nationality',])->paginate(100),
             'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
@@ -147,7 +147,8 @@ class PatientController extends Controller
 
     public function destroy($id)
     {
-        //
+        
+
     }
 
     public function search()
@@ -158,10 +159,10 @@ class PatientController extends Controller
                 ->orWhere('middle_name', 'LIKE', "%$search%")
                 ->orWhere('last_name', 'LIKE', "%$search%")
                 ->orWhere('email', 'LIKE', "%$search%");
-                })->paginate(52);
+                })->paginate(100);
             }
         else{
-            $applicants = Patient::orderBy('first_name', 'ASC')->paginate(52);
+            $applicants = Patient::orderBy('first_name', 'ASC')->paginate(100);
         }
         
         return response()->json(['applicants' => $applicants,]);
