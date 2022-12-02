@@ -27,21 +27,14 @@ class RegistrationController extends Controller
 
     public function store(Request $request)
     {
-
         $this->validate($request, [
             'last_name' => 'required',
             'first_name' => 'required',
-            //'phone' => 'required',
             'email' => 'required',
-            //'nigerian_address' => 'required',
-            //'uk_address' => 'required',
             'service_id' => 'required',
             'date' => 'required | date',
             'schedule' => 'sometimes',
-            //'passport_no' => 'required',
-            //'visa_type' => 'required',
         ]);
-
 
         $image_url = $currentPhoto = null;
         $passport_image_url = $currentPassportPhoto = null;

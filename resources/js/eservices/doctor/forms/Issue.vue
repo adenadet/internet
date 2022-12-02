@@ -1,6 +1,6 @@
 <template>
 <section>
-<form v-if="((appointment.consent != null) && (appointment.consultation != null) && (appointment.report != null))">
+<form v-if="((appointment.consent != null) && (appointment.consultation != null))">
 	<alert-error :form="IssueData"></alert-error> 
 	<div class="card row">
         <div class="card-header">Issue Certificate</div>

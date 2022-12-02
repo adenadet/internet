@@ -27,9 +27,11 @@
                                 <div class="card-header">Awaiting Report</div>
                                 <div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div>
                             </div>
+                            <EServiceDocFormIssue v-else-if="appointment.consultation.decision == 8" :appointment="appointment" />    
+    
                             <EServiceDocFormIssue :appointment="appointment" v-else-if="appointment.issuer == null" />
                             <EServiceDocIssueView :appointment="appointment" v-else-if="appointment.issuer != null" />
-                            <div class="card" v-else-if="appointment.status == null">
+                            <div class="card" v-else>
                                 <div class="card-header">Awaiting Report</div>
                                 <div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div>
                             </div>

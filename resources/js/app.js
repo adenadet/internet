@@ -4,38 +4,18 @@ import router from './routes';
 window.Vue = require('vue');
 import Vue from 'vue';
 
-//Import Document Reader 
-//import VueDocPreview from 'vue-doc-preview';
-//Vue.component(VueDocPreview);
-
 //Import PDF Reader
-//import pdf from 'vue-pdf';
-//Vue.component(pdf);
-
-//Import PDF Reader
-import VuePdfReader from 'vue-pdf-reader';
-import 'vue-pdf-reader/dist/vue-pdf-reader.min.css';
-Vue.component(VuePdfReader);
-
-//import VuePdf from 'vue-pdf';
-//Vue.component(VuePdf);
+//import VuePdfReader from 'vue-pdf-reader';
+//import 'vue-pdf-reader/dist/vue-pdf-reader.min.css';
+//Vue.component(VuePdfReader);
 
 //Import Progress Bar
 import VueProgressBar from 'vue-progressbar';
 Vue.use(VueProgressBar, {color: 'rgb(255, 255, 19)', failedColor: 'red', height: '5px',});
 
-//Import Scroll Bar
-import vueCustomScrollbar from 'vue-custom-scrollbar';
-import "vue-custom-scrollbar/dist/vueScrollbar.css";
-Vue.use(vueCustomScrollbar);
-
 //Import Horizontal Slider
 import VueHorizontalList from 'vue-horizontal-list';
 Vue.use(VueHorizontalList);
-
-//Import MultiStepform for Exam
-import VueStepWizard from 'vue-step-wizard';
-Vue.use(VueStepWizard);
 
 //Import Sweet Alert
 import Swal from 'sweetalert2'
@@ -91,10 +71,6 @@ Vue.use(Chartkick.use(Chart));
 
 //Import Emit for all components
 window.Fire = new Vue();
-
-//Import Multiselect Option
-import Multiselect from 'vue-multiselect';
-Vue.component('multiselect', Multiselect);
 
 //Import Paystack 
 import paystack from 'vue-paystack';

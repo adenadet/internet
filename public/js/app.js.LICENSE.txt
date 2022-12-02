@@ -30,13 +30,6 @@
 /*!
  * The buffer module from node.js, for the browser.
  *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
- * @license  MIT
- */
-
-/*!
- * The buffer module from node.js, for the browser.
- *
  * @author   Feross Aboukhadijeh <http://feross.org>
  * @license  MIT
  */
@@ -62,18 +55,10 @@
  */
 
 /*!
- * perfect-scrollbar v1.5.3
- * Copyright 2021 Hyunje Jun, MDBootstrap and Contributors
- * Licensed under MIT
- */
-
-/*!
  * vue-youtube v1.4.0
  * (c) 2019 Antério Vieira
  * Released under the MIT License.
  */
-
-/*! https://mths.be/punycode v1.4.1 by @mathias */
 
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
