@@ -1,5 +1,47 @@
 <template>
 <div class="card card-primary ">
+    <div class="modal fade" id="termsModal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header"><h4 class="modal-title">Terms and Conditions</h4><button type="button" class="close"  @click="closeModal"><span aria-hidden="true">&times;</span></button></div>
+                <div class="modal-body">
+                    <h2>UK TB SCREENING REFUND POLICY FOR CANCELLATION AND RESCHEDULING</h2>
+<small>Updated at 2022-12-06</small>
+<h2>Definitions and key terms</h2>
+<p>
+To help explain things as clearly as possible in this Rescheduling & Refund Policy, every time any of these terms are referenced, are strictly defined as: 
+<ul><li>Company: when this policy mentions "Company," "we," "us," or "our," it refers to St Nicholas Hospital, 57 Campbell Street, Lagos Island, Lagos. that is responsible for your information under this Rescheduling & Refund Policy.
+</li><li>Customer: refers to the company; organization or person that registers to use the St Nicholas Hospital for UK TB Visa Screening. 
+</li><li> Device: any internet connected device such as a phone; tablet; computer or any other device that can be used to register to use the St Nicholas Hospital for UK TB Visa Screening. 
+</li><li> Service: refers to UK TB Visa Screening provided by St Nicholas Hospital 
+</li><li> Website: St Nicholas Hospital's site; which can be accessed via this URL: 
+https://intranet.saintnicholashospital.com/uk-tb-screening.
+</li><li> You: a person or entity that is registered to use the St Nicholas Hospital for UK TB Visa Screening.</li>
+</ul>
+</p>
+<h2>Rescheduling & Refund Policy</h2> 
+<p>Thanks for booking your appointment at St Nicholas Hospital for the UK TB Visa Screening. We appreciate the fact that you made us your first choice for this vital step in your journey. We also want to make sure you have a smooth experience. 
+As with any of the services we offer; there are terms and conditions that apply to all transactions at St. Nicholas Hospital. We'll be as brief as legally permissible. The main thing to remember is that by booking an appointment for the UK TB Visa screening at St Nicholas Hospital, you agree to the terms set forth below along with St Nicholas Hospital's Privacy Policy. 
+</p>
+
+
+<p>If there's something wrong with the service we provided, or if you are not happy about anything, this policy below will help resolve your complaint. 
+    <ol type="1"><li>Cancellation of an appointment will come at a cost of 50% of the amount paid.
+    </li><li>Rescheduling of an appointment will come at a cost of 25% of the amount paid.
+    </li><li>An appointment can only be rescheduled a maximum of 2 times.</li></ol></p>
+    
+<h2>Your Consent.</h2>
+<p>By booking an appointment for the UK TB Screening, you hereby consent to our Rescheduling & Refund Policy and agree to its terms. </p> 
+
+<h2>Changes to Our Return & Refund Policy</h2>
+<p>Should we update; amend or make any changes to this document so that they accurately reflect our Service and policies. Unless otherwise required by law, those changes will be prominently posted here. Then, if you continue to use the Service, you will be bound by the updated Rescheduling & Refund Policy 
+If you do not want to agree to this or any updated Rescheduling & Refund Policy, we kindly as that you should not book the appointment with us.</p>
+<h2>Contact Us</h2>
+<p>If, for any reason, you are not completely satisfied with any service that we provide; don't hesitate to contact us and we will discuss any of the issues you are going through with our services.</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card-header bg-navy">Schedule An Appointment</div>
     <div class="card-body">
         <form>
@@ -99,12 +141,6 @@
             </div>
             <div class="row">
                 <div class="col-md-4 col-sm-12">
-                    <div class="form-group">
-                        <label>No of accompanying children less than 11 years</label>
-                        <input type="number" class="form-control" id="accompanying_kids" name="accompanying_kids" placeholder="Enter Number of Accompanying Kids *" required v-model="ApplicantData.accompanying_kids" :class="{'is-invalid' : ApplicantData.errors.has('accompanying_kids') }">
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-12">
                     <label>Profile Picture</label>
                     <div class="form-group">
                         <input type="file" class="form-control" placeholder="Birth Date" @change="updateProfilePic">
@@ -114,12 +150,6 @@
                     <div class="form-group">
                         <label>Phone Number</label>
                         <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number *" required v-model="ApplicantData.phone" :class="{'is-invalid' : ApplicantData.errors.has('phone') }">
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-12">
-                    <div class="form-group">
-                        <label>Alternate Phone</label>
-                        <input type="text" class="form-control" id="alt_phone" name="alt_phone" placeholder="Alternate Phone Number" v-model="ApplicantData.alt_phone" :class="{'is-invalid' : ApplicantData.errors.has('alt_phone') }">
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-12">
@@ -144,8 +174,19 @@
                     </div>
                 </div>
             </div>
-            <paystack style="margin-auto;" class="btn btn-primary" type="button" :amount="this.ApplicantData.amount * 100" :email="ApplicantData.email" :paystackkey="PUBLIC_KEY" :callback="processAppointment" :close="close" :reference="genRef()" :embed="false" :disabled="ApplicantData.email == '' || ApplicantData.first_name == '' || ApplicantData.last_name == '' || ApplicantData.schedule == ''">PAY NGN {{this.ApplicantData.amount}} Online</paystack>
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" name="terms" id="terms" v-model="terms">
+                        <label class="form-check-label">I have read and accepted the <a href="#" @click.prevent="viewTerms()">Terms and conditions</a> of St. Nicholas Hospital as well as the United Kingdom Home office.</label>
+                    </div>
+                </div>
+            </div>
+            <paystack style="margin-auto;" class="btn btn-primary" type="button" :amount="this.ApplicantData.amount * 100" :email="ApplicantData.email" :paystackkey="PUBLIC_KEY" :callback="processAppointment" :close="close" :reference="genRef()" :embed="false" :disabled="terms == 0 || ApplicantData.email == '' || ApplicantData.first_name == '' || ApplicantData.last_name == '' || ApplicantData.schedule == ''">PAY NGN {{this.ApplicantData.amount}} Online</paystack>
         </form>
+    </div>
+    <div class="card-footer">
+        Kindly note that terms 
     </div>
 </div>
 </template>
@@ -157,6 +198,7 @@ export default {
     },
     data(){
         return  {
+            terms: 0,
             today: '',
             PUBLIC_KEY: "pk_live_9e3c92567f7ad310ae7c28e248b8edb67ca2661a",
             amount: 0,
@@ -204,6 +246,9 @@ export default {
     methods:{
         callback: function(response){
             console.log(response)
+        },
+        closeModal(){
+            $('#termsModal').modal('hide');
         },
         close: function(){
             console.log("Payment closed")
@@ -331,6 +376,9 @@ export default {
                 })
             }
         },
+        viewTerms(){
+            $('#termsModal').modal('show');
+        }
     },
     props:{
     }

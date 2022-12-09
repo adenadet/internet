@@ -57,6 +57,7 @@ class AppointmentController extends Controller
             'date'       => $request->input('date'),
             'schedule'   => $request->input('schedule'),
             'status'     => 0,
+            'created_by' => 0,
         ]);
 
         return response()->json([

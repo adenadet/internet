@@ -84,6 +84,7 @@ class RegistrationController extends Controller
             'date'       => $request->input('date'),
             'schedule'   => $request->input('schedule'),
             'status'     => 1,
+            'created_by' => 0,
         ]);
 
         $payment = Payment::create([

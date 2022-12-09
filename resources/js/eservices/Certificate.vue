@@ -191,7 +191,7 @@
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>SP Health Professional Sign:</small></label>
-                            <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3"><img :src="appointment.issuing_officer.id == 56 ? '/img/consents/rusman.png' : '/img/consents/101-1667818422.png'" class="img-fluid" /></div></div>
+                            <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3"><img :src="appointment.issuing_officer.id == 56 ? '/img/consents/rusman.png' : (appointment.issuing_officer.id == 57 ? '/img/consents/rabudah.png' :(appointment.issuing_officer.id == 55 ? '/img/consents/bsalami.png' :(appointment.issuing_officer.id == 331 ? '/img/consents/mnwachukwu.png' :'/img/consents/bsalami.png')))" class="img-fluid" /></div></div>
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>SP Health Professional Date:</small></label>
@@ -403,7 +403,7 @@
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>SP Health Professional Sign:</small></label>
-                            <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3"><img :src="appointment.issuing_officer.id == 56 ? '/img/consents/rusman.png' : (appointment.issuing_officer.id == 57 ? '/img/consents/rabudah.png' :(appointment.issuing_officer.id == 55 ? '/img/consents/bsalami.png' :(appointment.issuing_officer.id == 331 ? '/img/consents/mnwachukwu.png' :'/img/consents/101-1667818422.png')))" class="img-fluid" /></div></div>
+                            <div class="col-sm-6"><div class="form-control form-control-sm" id="inputEmail3"><img :src="appointment.issuing_officer.id == 56 ? '/img/consents/rusman.png' : (appointment.issuing_officer.id == 57 ? '/img/consents/rabudah.png' :(appointment.issuing_officer.id == 55 ? '/img/consents/bsalami.png' :(appointment.issuing_officer.id == 331 ? '/img/consents/mnwachukwu.png' :'/img/consents/bsalami.png')))" class="img-fluid" /></div></div>
                         </div>
                         <div class="form-group row">
                             <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>SP Health Professional Date:</small></label>
