@@ -76,6 +76,10 @@ window.Fire = new Vue();
 import paystack from 'vue-paystack';
 Vue.use(paystack);
 
+//Import QR Code
+import VueQRCodeComponent from 'vue-qrcode-component';
+Vue.component('qr-code', VueQRCodeComponent);
+
 //Import WYSIWYG
 import wysiwyg from "vue-wysiwyg";
 import "vue-wysiwyg/dist/vueWysiwyg.css";

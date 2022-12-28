@@ -67,9 +67,7 @@
                 <li class="nav-item">
                     <a href="/users" class="nav-link"><i class="nav-icon fas fa-users"></i><p>Users</p></a>
                 </li>
-                <li class="nav-item">
-                    <a href="/departments" class="nav-link"><i class="nav-icon fas fa-boxes"></i><p>Departments</p></a>
-                </li>
+                
                 @endif
                 <li class="nav-item">
                     <a href="/chats" class="nav-link"><i class="nav-icon fas fa-comments"></i><p>Chats </p></a>
@@ -119,17 +117,20 @@
                 <li class="nav-item">
                     <a href="/ticketing" class="nav-link"><i class="nav-icon fas fa-tags"></i><p>Tickets</p></a>
                 </li>
-                @if(Auth::user()->hasRole('Information Technology') || Auth::user()->hasRole('Super Admin'))
-                <li class="nav-item">
-                    <a href="/internet" class="nav-link"><i class="nav-icon fas fa-network-wired"></i><p>Internet Checker</p></a>
-                </li>
-                @endif
-                @if(Auth::user()->hasRole('Super Admin'))
-                <li class="nav-item">
-                    <a href="/settings" class="nav-link"><i class="nav-icon fas fa-cogs"></i><p>Settings</p>
+                
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-cogs"></i><p>System <i class="right fas fa-angle-left"></i></p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item"><a href="/branches" class="nav-link"><i class="fas fa-boxes nav-icon"></i><p>Branches</p></a></li>
+                        <li class="nav-item"><a href="/departments" class="nav-link"><i class="nav-icon fas fa-boxes"></i><p>Departments</p></a></li>
+                        @if(Auth::user()->hasRole('Information Technology') || Auth::user()->hasRole('Super Admin'))
+                        <li class="nav-item"><a href="/internet" class="nav-link"><i class="nav-icon fas fa-network-wired"></i><p>Internet Checker</p></a></li>
+                        @endif
+                        @if(Auth::user()->hasRole('Super Admin'))<li class="nav-item"><a href="/settings" class="nav-link"><i class="nav-icon fas fa-cogs"></i><p>Settings</p></a></li>@endif
+                    </ul>
                 </li>
-                @endif
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link"><i class="nav-icon fas fa-power-off"></i><p>Log Out </p></a>
                 </li>

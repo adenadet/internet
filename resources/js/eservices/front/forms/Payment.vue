@@ -37,7 +37,7 @@
                     <option value="POS">POS</option>
                     <option value="Cash">Cash</option>
                     <option value="Transfer">Transfer</option>
-                    <option value="Transfer">Paystack</option>
+                    <option value="Paystack">Paystack</option>
                 </select>
             </div>
             <div class="form-group">
@@ -133,6 +133,9 @@ export default {
             this.PaymentData.patient_id = appointment.patient_id;
             this.PaymentData.service_id = appointment.service_id;
             this.PaymentData.appointment_id = appointment.id;
+            this.PaymentData.channel= '';
+            this.PaymentData.amount= '0.00'; 
+            this.PaymentData.details = '';
         },
         selectedAppointment(){
             this.refreshHolder(this.appointments[this.appointment_id])

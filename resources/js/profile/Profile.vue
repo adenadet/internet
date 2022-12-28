@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-xl-4 col-lg-6 col-md-5 col-sm-12 layout-top-spacing">
             <div class="user-profile layout-spacing">
