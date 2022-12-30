@@ -26,15 +26,15 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="applicantModal">
+<div class="modal fade" id="arrivalModal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" v-html="editMode ? 'Edit Patient' : 'Create Patient'"></h4>
+                <h4 class="modal-title" v-html="'Confirm Arrival'"></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <EServiceFormConfirm /> 
+                <EServiceFormArrival /> 
             </div>
         </div>
     </div>
@@ -44,7 +44,8 @@
         <h3 class="card-title">Appointment Detail</h3>
         <div class="card-tools">
             <button v-if="appointment.payment == null" type="button" class="btn btn-sm btn-success" title="Make Payment" @click="makePayment(appointment)"><i class="fas fa-credit-card"></i></button>
-            <button v-else-if="appointment.front_officer == null" @click="toDoctor(appointment.id)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button>
+            <!--<button v-else-if="appointment.front_officer == null" @click="to_doctor(appointment)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button>
+            --><button v-else @click="to_doctor(appointment)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button>
         </div>
     </div>
     <div class="card-body">
@@ -164,14 +165,6 @@ export default {
         });
     },
     methods: {
-        addAppointment(){
-            this.$Progress.start();
-            this.editMode = false;
-            this.appointment = {};
-            Fire.$emit('AppointmentDataFill', {});
-            $('#appointmentModal').modal('show');
-            this.$Progress.finish();
-        },
         editApplicant(patient){
             this.$Progress.start();
             this.editMode = true;
@@ -213,8 +206,17 @@ export default {
 
             $('#applicantModal').modal('hide');
             $('#appointmentModal').modal('hide');
+            $('#arrivalModal').modal('hide');
         },
-        toDoctor(id){
+        to_doctor(appointment){
+            this.$Progress.start();
+            //this.editMode = false;
+            this.appointment = appointment;
+            Fire.$emit('ArrivalDataFill', appointment);
+            $('#arrivalModal').modal('show');
+            this.$Progress.finish();
+        },
+        /*toDoctor(id){
             axios.get('/api/emr/appointments/to_doctor/'+this.$route.params.id)
             .then(response => {
                 Fire.$emit('refreshAppointment', response);
@@ -226,7 +228,7 @@ export default {
                     title: 'Your appointments did not loaded successfully',
                 })
             });
-        },
+        },*/
     },
 }
 </script>

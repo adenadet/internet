@@ -152,7 +152,7 @@ class AppointmentController extends Controller
     }
 
     public function certificates(){
-        $appointments = Appointment::whereDate('date', '<=', date('Y-m-d'))->whereNotNull(['doctor_id', 'front_office_id',])->orWhere('status', '>=', 7)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(20);
+        $appointments = Appointment::whereDate('date', '<=', date('Y-m-d'))->whereNotNull(['doctor_id', 'front_office_id',])->orWhere('status', '>=', 7)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(50);
         
         return response()->json([
             'appointments' => $appointments,
@@ -172,7 +172,7 @@ class AppointmentController extends Controller
         $appointment->issue_action = $request->input('issue_action');
         $appointment->issue_detail = $request->input('issue_detail');
         $appointment->issue_at =date('Y-m-d H:i:s');
-        $appointment->status = 8;
+        $appointment->status = 10;
 
         $appointment->save();
 
@@ -238,6 +238,28 @@ class AppointmentController extends Controller
 
         return response()->json([
             'appointments' => $appointments,
+        ]);
+    }
+
+    public function toDoctor(Request $request, $id){
+
+        $this->validate($request, [
+            'unique_id' => 'required',
+            'details' => 'required',
+        ]);
+
+        $appointment = Appointment::findOrfail($id);
+
+        $appointment->status = 4;
+        $appointment->arrived_at = date('Y-m-d H:i:s');
+        $appointment->front_office_id = auth('api')->id();
+        $appointment->front_office_remark = $request->input('details');
+        $appointment->unique_id = $request->input('unique_id');
+        
+        $appointment->save();
+
+        return response()->json([
+            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee' ])->first(),
         ]);
     }
 }

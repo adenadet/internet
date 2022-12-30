@@ -6,9 +6,10 @@ Route::group(['prefix'=>'emr'], function () {
     Route::get('/appointments/missed', 'AppointmentController@missed')->name('appointments.missed');
     Route::get('/appointments/to_doctor/{id}', 'AppointmentController@to_doctor')->name('appointments.to_doctor');
     Route::get('/appointments/certificates', 'AppointmentController@certificates')->name('appointments.certificates');
+    Route::put('/appointments/issue/{id}', 'AppointmentController@issue')->name('appointments.certificate_issue');
+    Route::put('/appointments/toDoctor/{id}', 'AppointmentController@toDoctor')->name('appointments.toDoctor');
     Route::get('/consultations/reviews', 'ConsultationController@reviews')->name('consultations.reviews');
     Route::get('/consultations/search', 'ConsultationController@search')->name('consultations.search');
-    Route::put('/appointments/issue/{id}', 'AppointmentController@issue')->name('appointments.certificate_issue');
     Route::get('/radiologists/reviews', 'RadiologistController@reviews')->name('radiologists.reviews');
     Route::get('/patients/search', 'PatientController@search')->name('patients.search');
     Route::post('/appointments/search', 'AppointmentController@search_appointment')->name('appointments.search');

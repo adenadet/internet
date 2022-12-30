@@ -8,6 +8,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/patient', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
 Route::get('/uk-tb-screening', function () {return view('welcome');});
+Route::get('/certificate/{id}', function () {return view('welcome');});
 
 Route::get('/clear-cache', function() {
     //$exitCode = Artisan::call('cache:clear');

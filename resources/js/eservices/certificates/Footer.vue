@@ -1,5 +1,5 @@
 <template>
-<section>
+<section class="mt-3">
     <div class="row">
         <div class="col-sm-10 p-3 mb-3" style="border: 2px solid #222;">
             <p style="font-weight:normal !important; text-align: justify;"><b>IMPORTANT:</b> You must carry this certificate with you, in your hand luggage, when you
@@ -11,8 +11,7 @@
                 and this should also be supplied.
             </p>
         </div>
-        <div class="col-sm-1 text-center">&nbsp;</div>
-        <div class="col-sm-1 text-center">
+        <div class="col-sm-1 text-center p-5">
             <qr-code :text="'https://intranet.saintnicholashospital.com/certificates/'+appointment.id" size=75 color="#000" bg-color="#fff" error-level="L"></qr-code>
         </div>
         <div class="col-6 mt-1">

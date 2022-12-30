@@ -25,28 +25,18 @@
                 <input type="hidden" name="service_id" id="service_id" v-model="ArrivalData.service_id" />
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Payment Type</label>
-                <select class="form-control" id="channel" name="channel" required  v-model="ArrivalData.channel">
-                    <option value="">--Select Payment Type---</option>
-                    <option value="POS">POS</option>
-                    <option value="Cash">Cash</option>
-                    <option value="Transfer">Transfer</option>
-                    <option value="Paystack">Paystack</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Amount</label>
-                <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount Paid"  v-model="ArrivalData.amount">
+                <label for="exampleInputPassword1">Unique ID</label>
+                <input type="text" class="form-control" id="unique_id" name="unique_id" placeholder="Amount Paid"  v-model="ArrivalData.unique_id">
             </div>
             <div class="form-group">
                 <label for="exampleInputPassword1">Details</label>
-                <textarea rows=5 class="form-control" id="details" name="details" placeholder="POS/Transfer ID"  v-model="ArrivalData.details">
+                <textarea rows=5 class="form-control" id="details" name="details" placeholder="Arrival Details"  v-model="ArrivalData.details">
                 </textarea>
             </div>
         </div>
         
         <div class="card-footer">
-            <button @click.prevent="makePayment" type="submit" class="btn btn-primary">Submit</button>
+            <button @click.prevent="confirmArrival" type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
 </div>
@@ -63,9 +53,8 @@ export default {
                 patient_id:'', 
                 service_id:'', 
                 appointment_id:'',
-                channel: '',
-                amount: '0.00', 
-                details: ''
+                unique_id: '', 
+                remarks: ''
             }),
         }
     },
@@ -82,9 +71,9 @@ export default {
         });
     },
     methods:{
-        makePayment(){
+        confirmArrival(){
             this.$Progress.start();
-            this.ArrivalData.post('/api/emr/payments')
+            this.ArrivalData.put('/api/emr/appointments/toDoctor/'+this.appointment.id)
             .then(response =>{
                 this.$Progress.finish();
                 Fire.$emit('refreshPayment', response);
@@ -109,10 +98,6 @@ export default {
             this.ArrivalData.amount= '0.00'; 
             this.ArrivalData.details = '';
         },
-        selectedAppointment(){
-            this.refreshHolder(this.appointments[this.appointment_id])
-        },
-        
     },
 }
 </script>

@@ -2,10 +2,13 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 //import applicant from './applicant';
+
 import chats from './chats';
 import contacts from './contacts';
+import dashboard from './dashboard';
 //import domiciliary from './domiciliary';
 import eservices from './eservices';
+import external from './external';
 //import hims from './hims';
 //import hr from './hr';
 import learn from './learn';
@@ -22,7 +25,9 @@ const baseRoutes = [];
 const routes = baseRoutes.concat(
     chats,
     contacts,
+    dashboard,
     eservices,
+    external,
     //hims, 
     //hr, 
     learn,

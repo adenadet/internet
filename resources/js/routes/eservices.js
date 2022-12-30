@@ -30,6 +30,7 @@ import EServiceRadReports            from '../eservices/radiologist/Reports.vue'
 import EServiceRadReviews            from '../eservices/radiologist/Reviews.vue';
 
     import EServiceFormAppointment      from '../eservices/front/forms/Appointment.vue';
+    import EServiceFormArrival          from '../eservices/front/forms/Arrival.vue';
     import EServiceFormPayment          from '../eservices/front/forms/Payment.vue';
     import EserviceFormPatient          from '../eservices/front/forms/Patient.vue';
     import EServiceFormDirect           from '../eservices/front/forms/Direct.vue';
@@ -72,6 +73,7 @@ Vue.component('EServiceRadReports',              EServiceRadReports);
 Vue.component('EServiceRadReviews',              EServiceRadReviews);
 
     Vue.component('EServiceFormAppointment',     EServiceFormAppointment);
+    Vue.component('EServiceFormArrival',         EServiceFormArrival);
     Vue.component('EServiceFormDirect',          EServiceFormDirect);
     Vue.component('EServiceFormPatient',         EserviceFormPatient);
     Vue.component('EServiceFormPayment',         EServiceFormPayment);
