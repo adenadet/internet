@@ -15,6 +15,8 @@ use App\Models\Country;
 use App\Models\User;
 use App\Models\EMR\Payment;
 
+use App\Mail\RegistrationMail as RegMail;
+
 class RegistrationController extends Controller
 {
     public function index()
@@ -97,6 +99,10 @@ class RegistrationController extends Controller
             'details' => $request->input('payment_transaction').' | '.$request->input('payment_reference'),    
         ]);
 
+        $consultation = Appointment::where('id', '=', $appointment->id)->with(['service', 'patient', 'payment'])->first();
+
+        \Mail::to($patient->email)
+        ->send(new RegMail($consultation));
         return response()->json([
             'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
             'appointments' => Appointment::with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
@@ -124,7 +130,12 @@ class RegistrationController extends Controller
 
     public function schedules()
     {
-        if (($date = \Request::get('date')) && ($service_id = \Request::get('service_id'))){
+      	$date = \Request::get('date');
+      	$public_holidays = ['2023-01-02', '2023-12-25', '2023-12-26', '2023-12-27'];
+        if (in_array($date, $public_holidays)){
+        	$schedules = [];
+        }
+        else if (($date = \Request::get('date')) && ($service_id = \Request::get('service_id'))){
             $taken = Appointment::select('schedule')->where([['date', '=', $date], ['service_id', '=', $service_id]])->get();
             $schedules = Schedule::select('schedule')->where('service_id', '=', $service_id)->whereNotIn('schedule', $taken)->get();
             }

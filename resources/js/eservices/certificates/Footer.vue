@@ -25,7 +25,7 @@
             </div>
             <div class="form-group row">
                 <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>SP Health Professional Date:</small></label>
-                <div class="col-sm-6"><div width="100%" class="pl-2 rounded" style="border: 1px solid #222; color: #222;" id="inputEmail3">{{appointment.issued_at |excelDate}}</div></div>
+                <div class="col-sm-6"><div width="100%" class="pl-2 rounded" style="border: 1px solid #222; color: #222;" id="inputEmail3">{{appointment.issue_at |excelDate}}</div></div>
             </div>
         </div>
         <div class="col-6 mt-1">

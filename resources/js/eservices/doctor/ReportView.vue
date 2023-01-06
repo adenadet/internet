@@ -1,6 +1,9 @@
 <template>
 <section>
-    <div class="card">
+    <div v-if="consultation.consultation.decision == 7 || consultation.consultation.decision == 8" class="card">
+        <div class="card-body">{{consultation.consultation.decision == 7 ? 'Patient sent for Sputum': (consultation.consultation.decision == 8 ? 'Kid under the age of 11 years': 'Awaiting report')}}</div>
+    </div>
+    <div v-else class="card">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-12">

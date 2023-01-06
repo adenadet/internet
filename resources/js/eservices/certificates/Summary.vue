@@ -5,13 +5,13 @@
             <label for="inputEmail3" class="col-sm-3 col-form-label" style="font-weight:normal !important; "><small>Sputum Test:</small></label>
             <div class="col-sm-3">
                 <div class="form-check">
-                    <i class="mr-1" :class="appointment.laboratory != 'null' ? 'fa fa-check': 'far fa-square'"></i>
+                    <i class="mr-1" :class="appointment.laboratory != null ? 'fa fa-check': 'far fa-square'"></i>
                     <label class="form-check-label" style="font-weight:normal !important; color: #222; "><small>Not Done</small></label>
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="form-check">
-                    <i class="mr-1" :class="appointment.laboratory == 'null' ? 'fa fa-check': 'far fa-square'"></i>
+                    <i class="mr-1" :class="appointment.laboratory == null ? 'fa fa-check': 'far fa-square'"></i>
                     <label class="form-check-label" style="font-weight:normal !important; color: #222;" ><small>Negative</small></label>
                 </div>
             </div>
@@ -20,19 +20,19 @@
             <label for="inputEmail3" class="col-sm-3" style="font-weight:normal !important; color: #222;"><small>Chest X-Ray:</small></label>
             <div class="col-sm-3">
                 <div class="form-check">
-                    <i class="mr-1" :class="appointment.report == 'null' ? 'fa fa-check': 'far fa-square'"></i>
+                    <i class="mr-1" :class="appointment.report == null ? 'fa fa-check': 'far fa-square'"></i>
                     <label class="form-check-label" style="font-weight:normal !important; color: #222;"><small>Not Done</small></label>
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="form-check">
-                    <i class="mr-1" :class="appointment.report != 'null' && appointment.report.summary == 'normal' ? 'fa fa-check': 'far fa-square'"></i>
+                    <i class="mr-1" :class="appointment.report != null && appointment.report.summary == 'normal' ? 'fa fa-check': 'far fa-square'"></i>
                     <label class="form-check-label" style="font-weight:normal !important; color: #222;"><small>Normal</small></label>
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="form-check">
-                    <i class="mr-1" :class="appointment.report != 'null' && appointment.report.summary != 'normal' ? 'fa fa-check': 'far fa-square'"></i>
+                    <i class="mr-1" :class="appointment.report != null && appointment.report.summary != 'normal' ? 'fa fa-check': 'far fa-square'"></i>
                     <label class="form-check-label" style="font-weight:normal !important; color: #222;"><small>Abnormal</small></label>
                 </div>
             </div>

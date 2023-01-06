@@ -1,28 +1,37 @@
 <template>
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Running</h3>
-    </div>
-    <div class="card-body p-0">
-        <table class="table table-striped">
-            <thead><tr><th>#</th><th>Task</th><th>Progress</th><th></th></tr></thead>
-            <tbody>
-                <tr v-for="task in tasks" :key="task.id">
-                    <td>1.</td>
-                    <td>{{task.name}}</td>
-                    <td>{{task.return}} nominations</td>
-                    <td><button class="btn btn-success" @click="closeNomination">End Nominations</button></td>
-                </tr>
-                <tr v-for="task in tasks" :key="task.id">
-                    <td>1.</td>
-                    <td>{{task.name}}</td>
-                    <td>{{task.return}} votes</td>
-                    <td><button class="btn btn-success" @click="closeNomination">End Nominations</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+<section class="row">
+    <div class="col-12 col-md-12 col-sm-6">
+        <div class="card card-primary card-tabs">
+            <div class="card-header p-0 pt-1">
+                <ul class="nav nav-tabs" id="custom-tabs-five-tab" role="tablist">
+                    <li class="nav-item">
+                    <a class="nav-link active" id="custom-tabs-five-overlay-tab" data-toggle="pill" href="#custom-tabs-five-overlay" role="tab" aria-controls="custom-tabs-five-overlay" aria-selected="true">Overlay</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-five-overlay-dark-tab" data-toggle="pill" href="#custom-tabs-five-overlay-dark" role="tab" aria-controls="custom-tabs-five-overlay-dark" aria-selected="false">Overlay Dark</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" id="custom-tabs-five-normal-tab" data-toggle="pill" href="#custom-tabs-five-normal" role="tab" aria-controls="custom-tabs-five-normal" aria-selected="false">Normal Tab</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="custom-tabs-five-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-five-overlay" role="tabpanel" aria-labelledby="custom-tabs-five-overlay-tab">
+                        <SOMCloseNominations />
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-five-overlay-dark" role="tabpanel" aria-labelledby="custom-tabs-five-overlay-dark-tab">
+                        <SOMCloseNominations />
+                        
+                    </div>
+                    <div class="tab-pane fade" id="custom-tabs-five-normal" role="tabpanel" aria-labelledby="custom-tabs-five-normal-tab">
+                    Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam.
+                    </div>
+                </div>
+            </div>  
+        </div>  
+    </div>  
+</section>
 </template>
 <script>
 import moment from 'moment'

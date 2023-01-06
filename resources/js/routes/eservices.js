@@ -6,7 +6,8 @@ import EServiceCertificateBioData    from '../eservices/certificates/BioData.vue
 import EServiceCertificateFooter     from '../eservices/certificates/Footer.vue';
 import EServiceCertificateHeader     from '../eservices/certificates/Header.vue';
 import EServiceCertificateSummary    from '../eservices/certificates/Summary.vue';
-import EServiceCertificateSummaryKids from '../eservices/certificates/SummaryKids.vue';
+import EServiceCertificateSummaryKid from '../eservices/certificates/SummaryKid.vue';
+import EServiceCertificateSummaryLab from '../eservices/certificates/SummaryLab.vue';
 
 import EServiceFrontAppointment      from '../eservices/front/Appointment.vue';
 import EServiceFrontAppointments     from '../eservices/front/Appointments.vue';
@@ -20,6 +21,7 @@ import EServiceDocConsultations      from '../eservices/doctor/Consultations.vue
 import EServiceDocConsentView        from '../eservices/doctor/ConsentView.vue';
 import EServiceDocConsultationView   from '../eservices/doctor/ConsultationView.vue';
 import EServiceDocIssueView          from '../eservices/doctor/IssueView.vue';
+import EServiceDocLaboratoryView     from '../eservices/doctor/LaboratoryView.vue';
 import EServiceDocPatientView        from '../eservices/doctor/PatientView.vue';
 import EServiceDocReportView         from '../eservices/doctor/ReportView.vue';
 import EServiceDocReviews            from '../eservices/doctor/Reviews.vue';
@@ -48,7 +50,8 @@ Vue.component('EServiceCertificateBioData',      EServiceCertificateBioData);
 Vue.component('EServiceCertificateHeader',       EServiceCertificateHeader);
 Vue.component('EServiceCertificateFooter',       EServiceCertificateFooter);
 Vue.component('EServiceCertificateSummary',      EServiceCertificateSummary);
-Vue.component('EServiceCertificateSummaryKids',  EServiceCertificateSummaryKids);
+Vue.component('EServiceCertificateSummaryKid',   EServiceCertificateSummaryKid);
+Vue.component('EServiceCertificateSummaryLab',   EServiceCertificateSummaryLab);
 
 
 Vue.component('EServiceFrontAppointment',        EServiceFrontAppointment);
@@ -63,6 +66,7 @@ Vue.component('EServiceDocConsultations',        EServiceDocConsultations);
 Vue.component('EServiceDocConsentView',          EServiceDocConsentView);
 Vue.component('EServiceDocConsultationView',     EServiceDocConsultationView);
 Vue.component('EServiceDocIssueView',            EServiceDocIssueView);
+Vue.component('EServiceDocLaboratoryView',       EServiceDocLaboratoryView); 
 Vue.component('EServiceDocPatientView',          EServiceDocPatientView); 
 Vue.component('EServiceDocReportView',           EServiceDocReportView); 
 Vue.component('EServiceDocReviews',              EServiceDocReviews);

@@ -23,7 +23,7 @@
                         @endif
                         @if(Auth::user()->hasRole('Human Resource') || Auth::user()->hasRole('Super Admin'))
                         <li class="nav-item">
-                            <router-link to="/staff_month/close_vote" class="nav-link"><i class="fas fa-poll"></i> Close Voting</router-link>
+                            <router-link to="/staff_month/close" class="nav-link"><i class="fas fa-poll"></i> Closing</router-link>
                         </li>
                         @endif
                     </ul>

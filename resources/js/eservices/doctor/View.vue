@@ -8,6 +8,7 @@
                     <li class="nav-item"><a class="nav-link active" href="#consent" data-toggle="tab">Consent Form</a></li>
                     <li class="nav-item"><a class="nav-link" href="#consultation" data-toggle="tab">Consultation</a></li>
                     <li class="nav-item"><a class="nav-link" href="#report" data-toggle="tab">Report</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#laboratory" data-toggle="tab">Laboratory</a></li>
                     <li class="nav-item"><a class="nav-link" href="#certificate" data-toggle="tab">Issue Certificate</a></li>
                     </ul>
                 </div>
@@ -22,19 +23,15 @@
                         <div class="tab-pane" id="report">
                             <EServiceDocReportView  :findings="findings" :consultation="appointment" :patient="appointment.patient" :report="appointment.report"/>
                         </div>
+                        <div class="tab-pane" id="laboratory">
+                            <EServiceDocLaboratoryView  :findings="findings" :consultation="appointment" :patient="appointment.patient" :laboratory="appointment.laboratory"/>
+                        </div>
                         <div class="tab-pane" id="certificate">
-                            <div class="card" v-if="(appointment.report == null) && (appointment.status != 8)">
-                                <div class="card-header">Awaiting Report</div>
-                                <div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div>
-                            </div>
-                            <EServiceDocFormIssue v-else-if="appointment.consultation.decision == 8" :appointment="appointment" />    
-    
-                            <EServiceDocFormIssue :appointment="appointment" v-else-if="appointment.issuer == null" />
+                            <div class="card" v-if="((appointment.report == null) && (appointment.laboratory == null)) && (appointment.status != 8)"><div class="card-header">Awaiting Report</div><div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div></div>
                             <EServiceDocIssueView :appointment="appointment" v-else-if="appointment.issuer != null" />
-                            <div class="card" v-else>
-                                <div class="card-header">Awaiting Report</div>
-                                <div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div>
-                            </div>
+                            <!--EServiceDocFormIssue :appointment="appointment" v-else-if="" /-->
+                            <EServiceDocFormIssue v-else-if="(appointment.consultation.decision == 8 || appointment.issuer == null)" :appointment="appointment" />    
+                            <div class="card" v-else><div class="card-header">Awaiting Report</div><div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div></div>
                         </div>
                     </div>
                 </div>

@@ -19,6 +19,7 @@ Route::get('policies/all/{id}',  'App\Http\Controllers\Api\PolicyController@all'
 Route::post('policies/assign',   'App\Http\Controllers\Api\PolicyController@assign')->name('api.policies.assign');
 
 Route::apiResources([
+    'certificates'  => 'App\Http\Controllers\Api\EMR\CertificateController',
     'dashboard'     => 'App\Http\Controllers\Api\DashboardController',
     'member'        => 'App\Http\Controllers\Api\MemberController',
     'notices'       => 'App\Http\Controllers\Api\NoticeController',

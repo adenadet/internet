@@ -18,6 +18,7 @@ import notices from './notices';
 import policies from './policies';
 import profile from './profile';
 import settings from './settings';
+import som from './som';
 import ticketing from './ticketing';
 import ums from './ums';
 
@@ -35,6 +36,7 @@ const routes = baseRoutes.concat(
     policies,
     profile,
     settings,
+    som,
     ticketing,
     ums,
     );
