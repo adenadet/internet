@@ -14,12 +14,29 @@ use App\Models\SOM\Month;
 class NominationController extends Controller
 {
     public function close(Request $request, $id){
-        $month = Month::find($id);
+        $month = Month::where('month', '=', $id.'-01')->first();
+        $month->nomination_end = date('Y-m-d H:i:s');
+        $month->nomination_end_id = auth('api')->id();
+        $month->save();
+
+        return response()->json([
+            'staff_month'   => Month::where('month', '=', $id.'-01')->first(),
+            'nominations'    => Nomination::where('month', '=', $id)->with(['branch', 'nominee', 'nominator'])->get(),
+            'previous'      => 0,
+        ]);
     }
     
     public function index()
     {
         $date = date("Y-m",strtotime("-1 month"));
+        $staff_month = Month::where('month', '=', $date)->count();
+        if ($staff_month == 0){
+            $already = 0; 
+            $dept_users = [];
+            $nomination = [];
+        
+            return response()->json(['open' => $staff_month, 'previous' => $already, 'dept_users' => $dept_users, 'nomination' => $nomination,]); 
+        }
         $nomination = Nomination::where('created_by', '=', auth('api')->id())->where('month', '=', $date)->with('nominee')->first(); 
         if ($nomination){$already = 1;}
         else{$already = 0;}
@@ -49,7 +66,36 @@ class NominationController extends Controller
             $dept_users = User::where('department_id', '=', auth('api')->user()->department_id)->get();
         }
         
-        return response()->json(['previous' => $already, 'dept_users' => $dept_users, 'nomination' => $nomination,]);
+        return response()->json(['open' => $staff_month, 'previous' => $already, 'dept_users' => $dept_users, 'nomination' => $nomination,]);
+    }
+
+    public function open($id)
+    {
+        $month = Month::where('month', '=', $id.'-01')->count();
+        if ($month == 0){
+            Month::create([
+                'month' => $id.'-01',
+                'nomination_start' => date('Y-m-d H:i:s'),
+                'nominate_initiate_id' => auth('api')->id(), 
+            ]);
+            $message = "Nominating is now open";
+        }
+        else{
+            $staff_month = Month::where('month', '=', $id.'-01')->first();
+            if ($staff_month->nomination_start == null){
+                $staff_month->nomination_start = date('Y-m-d H:i:s');
+                $staff_month->nominate_initiate_id = auth('api')->id();
+                $staff_month->save();
+
+                $message = "Nominating is now open";
+            }
+            else{
+                $message = "Nominating had been previously opened";
+            }
+        }
+        
+
+        return response()->json(['message' => $message,]);
     }
 
     public function store(Request $request)
@@ -81,7 +127,11 @@ class NominationController extends Controller
 
     public function show($id)
     {
-        //
+        return response()->json([
+            'staff_month'   => Month::where('month', '=', $id.'-01')->first(),
+            'nominations'    => Nomination::where('month', '=', $id)->with(['branch', 'nominee', 'nominator'])->get(),
+            'previous'      => 0,
+        ]);
     }
 
     public function update(Request $request, $id)

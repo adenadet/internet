@@ -130,6 +130,11 @@ Vue.filter('ExcelMonthYear', function(text){
     return moment(text).format('MMM, YYYY');
 });
     
+Vue.filter('FullName', function(text){
+    if (text == null){return 'Old User/Staff';}
+    return text.last_name+', '+text.first_name+ (text.middle_name != null ? ' '+text.middle_name : '');
+});
+
 Vue.filter('FullDate', function(text){
     return moment(text).format('LLLL');
 });

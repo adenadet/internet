@@ -11,10 +11,10 @@
         <div class="card bg-light">
             <div class="card-header text-muted border-bottom-0">
                 <div class="row">
-                <div class="form-group">
-                    <input type="radio" id="som_month"  name="voted_for" :value="nomination.user_id" v-model="voteData.user_id"/>
-                    <label for="exampleInputEmail1">{{nomination.nominee.first_name+' '+nomination.nominee.middle_name+' '+nomination.nominee.last_name}}</label>
-                </div>  
+                    <div class="form-group">
+                        <input type="radio" id="som_month"  name="voted_for" :value="nomination.id" v-model="voteData.nomination_id"/>
+                        <label for="exampleInputEmail1">{{nomination.nominee.first_name+' '+nomination.nominee.middle_name+' '+nomination.nominee.last_name}}</label>
+                    </div>  
                 </div>
             </div>
             <div class="card-body pt-0">
@@ -37,13 +37,13 @@ import moment from 'moment'
 export default {
     data(){
         return {
-            dept_users: [],
             editMode: false,
             nominations: [],
             voteData: new Form({
                 id: '',
                 user_id: 0,
                 month: '',
+                nomination_id: 0,
             }),   
         }
     },

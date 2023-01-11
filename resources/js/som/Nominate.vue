@@ -5,8 +5,11 @@
     <div class="card-header">
         <h3 class="card-title">Nominate Staff</h3>
     </div>
-    <div class="card-body">
-        
+    <div class="card-body" v-if="open == 0">
+        <h3>Nominations is closed!</h3>
+        <p>The nominations for this month is closed. Kindly check back later.</p>
+    </div>
+    <div class="card-body" v-if="open != 0">  
         <div class="form-group">
             <label for="exampleInputEmail1">Month</label>
             <input type="month" disabled class="form-control" id="som_month" placeholder="Month" v-model="nominateData.month">
@@ -22,8 +25,6 @@
             <label for="exampleInputPassword1">Description</label>
             <textarea class="form-control" rows="5" id="description" name="description" placeholder="Explain why this person deserves to be Staff of the Month" v-model="nominateData.description"></textarea>
         </div>
-    </div>
-    <div class="card-footer">
         <button type="button" class="btn btn-primary" @click="editMode ? editNomination() : addNomination() ">{{editMode ? 'Update' : 'Submit'}} </button>
     </div>
 </div>
@@ -38,7 +39,8 @@ export default {
             dept_users: [],
             editMode: false,
             month: '',
-            nominateData: new Form({id: '', user_id: 0, month: '', description: '',}),   
+            nominateData: new Form({id: '', user_id: 0, month: '', description: '',}),  
+            open: 0, 
         }
     },
     methods:{
@@ -78,10 +80,15 @@ export default {
 
             axios.get('/api/som/nominations')
             .then(response =>{
+                if (response.data.open == 0){
+                    Swal.fire({icon: 'warning', title: 'Nominating for the month '+futureMonth.format('YYYY-MM')+' is closed, check again later'});
+                    this.open = response.data.open;
+
+                }
                 if (response.data.previous == 1){
                     Swal.fire({icon: 'warning', title: 'You have previously nominate for '+futureMonth.format('YYYY-MM')+', you would be modifying your record',});
                     this.nominateData.id            = response.data.nomination.id;
-                    this.nominateData.user_id       = response.data.nomination.user_id;
+                    this.nominateData.nomination_id = response.data.nomination.nomination_id;
                     this.nominateData.description   = response.data.nomination.description;
                     this.nominateData.month         = response.data.nomination.month;
                     this.editMode                   = true;
@@ -90,7 +97,7 @@ export default {
                 else{
                     this.nominateData.id            = '';
                     this.nominateData.description   = '';
-                    this.nominateData.user_id       = 0;
+                    this.nominateData.nomination_id       = 0;
                     this.nominateData.month         = futureMonth.format('YYYY-MM');
                     this.editMode                   = false;
                 }

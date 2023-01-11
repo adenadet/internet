@@ -131,7 +131,7 @@ class RadiologistController extends Controller
         return response()->json([
             'applicants'    => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
             'findings'      => RadFinding::orderBy('code', 'ASC')->get(), 
-            'reports'       => Appointment::where('status', '>', 6)->with(['service', 'patient', 'report.findings', 'radiologist'])->orderBy('radiologist_at', 'DESC')->orderBy('schedule', 'ASC')->paginate(10),
+            'reports'       => Appointment::where('status', '>', 6)->with(['service', 'patient', 'report.findings', 'radiologist'])->orderBy('radiologist_at', 'DESC')->orderBy('schedule', 'ASC')->paginate(30),
             'nations'       => Country::orderBy('name', 'ASC')->get(),   
             'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
             'services'      => Service::orderBy('name', 'ASC')->get(),  

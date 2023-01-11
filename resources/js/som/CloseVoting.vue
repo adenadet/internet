@@ -1,91 +1,110 @@
 <template>
-<section class="row">
-    <div class="overlay-wrapper">
-        <div class="overlay dark"><i class="fas fa-3x fa-sync-alt fa-spin"></i><div class="text-bold pt-2">Loading...</div></div>
-        Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor. Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique. Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum placerat urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at consequat diam. Nunc et felis ut nisl commodo dignissim. In hac habitasse platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
+<div class="overlay-wrapper">
+    <div v-if="loading" class="overlay"><i class="fas fa-3x fa-sync-alt fa-spin"></i><div class="text-bold pt-2">Loading...</div></div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Votings for {{ month_date | ExcelMonthYear }}</h3>
+                    <div class="card-tools">
+                        <button class="btn btn-sm btn-primary" @click="openVotings(new_month)"><i class="fa fa-calendar-check"></i> Open Voting for {{ new_month | ExcelMonthYear }}</button>
+                    </div>
+                </div>
+                <div class="card-body table-responsive p-0" style="max-height: 500px;">
+                    <table class="table table-head-fixed text-nowrap">
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Branch</th>
+                                <th>Staff</th>
+                                <th>Votes</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(nomination,index) in nominations" :key="nomination.id">
+                                <td>{{ index | addOne}}</td>
+                                <td>{{ nomination.branch != null ?nomination.branch.name: 'HQ?' }}</td>
+                                <td>{{ nomination.nominee | FullName }}</td>
+                                <td>{{ nomination.votes.length }}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-primary" @click="closeVoting()"><i class="fa fa-calendar-times mr-1"></i>Close Voting</button>
+                </div>
+            </div>
+        </div>
     </div>
-</section>
+</div>
 </template>
 <script>
 import moment from 'moment'
 export default {
     data(){
         return {
-            dept_users: [],
+            nominations: [],
+            loading: true,
             editMode: false,
-            month: '',
-            nominateData: new Form({
-                id: '',
-                user_id: 0,
-                month: '',
-                description: '',
-            }),   
+            month: '', 
+            month_date: '',
+            new_month: '',
+            voteData: new Form({}),
         }
     },
     methods:{
-        addNomination(){
-            this.$Progress.start();
-            this.nominateData.post('/api/som/nominations')
-            .then(response=>{
-                this.$Progress.finish();
-                Swal.fire({icon: 'success', title: 'Your nomination has been accepted!',});
+        closeVoting(){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, close voting!'
             })
-            .catch(()=>{
-                this.$Progress.fail();
-                Swal.fire({icon: 'error', title: 'Your form was not sent try again later!',});
-            })
-        },
-        editNomination(){
-            this.$Progress.start();
-            this.nominateData.put('/api/som/nominations/'+this.nominateData.id)
-            .then(response=>{
-                console.log(response)
-                this.$Progress.finish();
-                Swal.fire({icon: 'success', title: 'Your nomination has been accepted!',});
-            })
-            .catch(()=>{
-                this.$Progress.fail();
-                Swal.fire({icon: 'error', title: 'Your form was not sent try again later!',});
-            })
+            .then((result) => {
+                if(result.value){
+                    this.$Progress.start();
+                    this.voteData.put('/api/som/votes/close/'+this.month_date)
+                    .then(response=>{
+                        this.$Progress.finish();
+                        Swal.fire({icon: 'success', title: 'All nominations has for '+this.month+' been closed!',});
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail();
+                        Swal.fire({icon: 'error', title: 'Your form was not sent try again later!',});
+                    })
+                }
+            });
         },
         getAllInitials(){
+            this.loading = true;
             var currentDate = moment({});
+            this.new_month = currentDate.format('YYYY-MM');
             var futureMonth = moment(currentDate).add(-1, 'M');
             var futureMonthEnd = moment(futureMonth).endOf('month');
-
-            if(currentDate.date() != futureMonth.date() && futureMonth.isSame(futureMonthEnd.format('YYYY-MM-DD'))) {
-                futureMonth = futureMonth.add(1, 'd');
-            }
-
-            axios.get('/api/som/nominations')
+            this.month = futureMonthEnd.format('MMM YYYY');
+            this.month_date = futureMonthEnd.format('YYYY-MM');
+            
+            axios.get('/api/som/votes/'+futureMonthEnd.format('YYYY-MM'))
             .then(response =>{
-                if (response.data.previous == 1){
-                    Swal.fire({icon: 'warning', title: 'You have previously nominate for '+futureMonth.format('YYYY-MM')+', you would be modifying your record',});
-                    this.nominateData.id            = response.data.nomination.id;
-                    this.nominateData.user_id       = response.data.nomination.user_id;
-                    this.nominateData.description   = response.data.nomination.description;
-                    this.nominateData.month         = response.data.nomination.month;
-                    this.editMode                   = true;
-                }
-                else{
-                    this.nominateData.id            = '';
-                    this.nominateData.description   = '';
-                    this.nominateData.user_id       = 0;
-                    this.nominateData.month         = futureMonth.format('YYYY-MM');
-                    this.editMode                   = false;
-                }
-                this.dept_users = response.data.dept_users;
-                
+                this.reloadPage(response);
             })
             .catch(()=>{
                 this.$Progress.fail();
                 toast.fire({
                     icon: 'error',
-                    title: 'Dashboard not loaded successfully',
+                    title: 'Nominations did not loaded successfully',
                 })
             });
         },
-        scrollHanle(evt) {},
+        reloadPage(response){
+            this.nominations = response.data.nominations;
+            this.loading = false;
+        },
     },
     mounted() {
         this.getAllInitials();
