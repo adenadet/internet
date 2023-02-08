@@ -2,7 +2,7 @@
 <section>
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title"><i class="ion ion-clipboard mr-1"></i>To Do List</h3>
+            <h3 class="card-title"><i class="fa fa-comments mr-1"></i>To Do List</h3>
             <div class="card-tools">
                 <ul class="pagination pagination-sm">
                     <li class="page-item"><a href="#" class="page-link">&laquo;</a></li>

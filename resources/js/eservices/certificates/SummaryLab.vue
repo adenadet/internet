@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-3">
                 <div class="form-check">
-                    <i class="mr-1" :class="appointment.laboratory != null ? 'fa fa-check': 'far fa-square'"></i>
+                    <i class="mr-1" :class="(appointment.laboratory != null && appointment.laboratory.summary != null) ? 'fa fa-check': 'far fa-square'"></i>
                     <label class="form-check-label" style="font-weight:normal !important; color: #222;" ><small>Negative</small></label>
                 </div>
             </div>

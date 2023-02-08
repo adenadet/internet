@@ -45,7 +45,7 @@
                         <EServiceCertificateBioData :appointment="appointment" />
                     </div>
                     <div class="col-5">
-                        <EServiceCertificateSummaryKids :appointment="appointment" />
+                        <EServiceCertificateSummaryKid :appointment="appointment" />
                     </div>
                     <EServiceCertificateFooter :appointment="appointment" />
                 </div>

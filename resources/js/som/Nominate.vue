@@ -85,22 +85,6 @@ export default {
                     this.open = response.data.open;
 
                 }
-                if (response.data.previous == 1){
-                    Swal.fire({icon: 'warning', title: 'You have previously nominate for '+futureMonth.format('YYYY-MM')+', you would be modifying your record',});
-                    this.nominateData.id            = response.data.nomination.id;
-                    this.nominateData.nomination_id = response.data.nomination.nomination_id;
-                    this.nominateData.description   = response.data.nomination.description;
-                    this.nominateData.month         = response.data.nomination.month;
-                    this.editMode                   = true;
-                }
-
-                else{
-                    this.nominateData.id            = '';
-                    this.nominateData.description   = '';
-                    this.nominateData.nomination_id       = 0;
-                    this.nominateData.month         = futureMonth.format('YYYY-MM');
-                    this.editMode                   = false;
-                }
 
                 this.dept_users = response.data.dept_users;
                 

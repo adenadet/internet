@@ -103,7 +103,7 @@ Vue.filter('addOne', function(value) {
 Vue.filter('age', function(value){
     return moment().diff(moment(value, "DD MMM YYYY"), 'years');
 });
-    
+   
 Vue.filter('currency', function(value) {
     if (isNaN(value)){ return '0.00';}
     let val = (value/1).toFixed(2).replace(',', '.')
@@ -133,6 +133,11 @@ Vue.filter('ExcelMonthYear', function(text){
 Vue.filter('FullName', function(text){
     if (text == null){return 'Old User/Staff';}
     return text.last_name+', '+text.first_name+ (text.middle_name != null ? ' '+text.middle_name : '');
+});
+
+Vue.filter('Names', function(value){
+    if (text == null){return 'Old User/Staff';}
+    return text.first_name+ (text.middle_name != null ? ' '+text.middle_name : '');
 });
 
 Vue.filter('FullDate', function(text){

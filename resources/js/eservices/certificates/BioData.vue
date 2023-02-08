@@ -2,7 +2,7 @@
 <section>
     <div class="form-group row">
         <label for="inputEmail3" class="col-sm-5 col-form-label text-small" style="font-weight:normal !important;"><small>Given name(s) (as shown in passport):</small></label>
-        <div class="col-sm-6"><div width="100%"  class="pl-2 rounded" style="border: 1px solid #222; color: #222;" v-html="appointment.patient.first_name+' '+appointment.patient.middle_name"></div></div>
+        <div class="col-sm-6"><div width="100%"  class="pl-2 rounded" style="border: 1px solid #222; color: #222;">{{ appointment.patient | Names}}</div></div>
     </div>
     <div class="form-group row">
         <label for="inputEmail3" class="col-sm-5 col-form-label text-small" style="font-weight:normal !important; "><small>Family name (as shown in passport):</small></label>
@@ -44,7 +44,7 @@
     </div>
     <div class="form-group row">
         <label for="inputEmail3" class="col-sm-8 col-form-label" style="font-weight:normal !important; "><small>Number of accompanying children under 11 years of age:</small></label>
-        <div class="col-sm-3"><div width="100%"  class="pl-2 rounded" style="border: 1px solid #222; color: #222;" v-html="appointment.patient.accompanying_kids"></div></div>
+        <div class="col-sm-3"><div width="100%"  class="pl-2 rounded" style="border: 1px solid #222; color: #222;" v-html="appointment.patient.accompanying_kids != null ? appointment.patient.accompanying_kids : 0"></div></div>
     </div>
     <div class="form-group row">
         <label for="inputEmail3" class="col-sm-5 col-form-label" style="font-weight:normal !important; "><small>Full residential address:</small></label>

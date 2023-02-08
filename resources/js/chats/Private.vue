@@ -5,6 +5,9 @@
         <h3 class="card-title" v-show="chat.name == null">
             <em v-for="user in chat.members" :key="user.id">{{user.user.first_name+' '+user.user.last_name+', ' }}</em>
         </h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" @click="editRoom(chat)"><i class="fas fa-plus"></i></button>
+        </div>
     </div>
     <div class="card-body"><ChatMessages :user="user"/></div>
     <div class="card-footer"><ChatFormInput :user="user"/></div> 
