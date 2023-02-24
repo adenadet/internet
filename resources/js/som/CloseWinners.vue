@@ -5,13 +5,13 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">All Nominations for {{ staff_month.month | ExcelMonthYear }}</h3>
-                        <!--<div class="card-tools">
+                        <h3 class="card-title">All Nominations for {{ month_date | ExcelMonthYear }}</h3>
+                        <div class="card-tools">
                             <button class="btn btn-sm btn-primary" @click="openNominations(new_month)"><i class="fa fa-calendar-check"></i> Open Nomination for {{ new_month | ExcelMonthYear }}</button>
-                        </div>-->
+                        </div>
                     </div>
                     <div class="card-body table-responsive p-0" style="max-height: 500px;">
-                        <table class="table table-head-fixed table-striped table-hover">
+                        <table class="table table-head-fixed text-nowrap">
                             <thead>
                                 <tr>
                                     <th>S/N</th>

@@ -1,21 +1,59 @@
 <template>
 <section class="row">
-    <div class="col-12 col-md-12 col-sm-6">
-        <div class="card card-primary card-tabs">
-            <div class="card-header p-0 pt-1">
-                <ul class="nav nav-tabs" id="custom-tabs-five-tab" role="tablist">
-                    <li class="nav-item"><a class="nav-link active" id="custom-tabs-five-overlay-tab" data-toggle="pill" href="#custom-tabs-five-overlay" role="tab" aria-controls="custom-tabs-five-overlay" aria-selected="true">Nominations</a></li>
-                    <li class="nav-item"><a class="nav-link" id="custom-tabs-five-overlay-dark-tab" data-toggle="pill" href="#custom-tabs-five-overlay-dark" role="tab" aria-controls="custom-tabs-five-overlay-dark" aria-selected="false">Voting</a></li>
-                </ul>
-            </div>
-            <div class="card-body">
-                <div class="tab-content" id="custom-tabs-five-tabContent">
-                    <div class="tab-pane fade show active" id="custom-tabs-five-overlay" role="tabpanel" aria-labelledby="custom-tabs-five-overlay-tab"><SOMCloseNominations /></div>
-                    <div class="tab-pane fade" id="custom-tabs-five-overlay-dark" role="tabpanel" aria-labelledby="custom-tabs-five-overlay-dark-tab"><SOMCloseVoting /></div>
+    <div class="modal fade" id="monthModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Month Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <SOMFormMonth :editMode="editMode" />
                 </div>
             </div>
-        </div> 
-    </div>  
+        </div>
+    </div>
+    <div class="col-12 card card-primary">
+        <div class="card-header"><h3 class="card-title">Staff of the Month Administrator</h3>
+            <div class="card-tools">
+                <button class="btn btn-xs btn-default" @click="addMonth()"><i class="fa fa-calendar-check"></i> Add new Month</button>
+            </div>
+        </div>
+        <div class="card-body">
+            <section class="row">
+                <div class="col-2">
+                    <section>
+                        List of Months 
+                        <button class="btn btn-block btn-default" @click="showMonth(month.month)" v-for="month in months.data" :key="month.id">{{month.month | ExcelMonthYear}}</button>
+                    </section>
+                </div>
+                <div class="col-10">
+                    <section class="row">
+                        <div class="col-12 col-md-12 col-sm-6">
+                            <div class="card card-primary card-tabs">
+                                <div class="card-header p-0 pt-1">
+                                    <ul class="nav nav-tabs" id="custom-tabs-five-tab" role="tablist">
+                                        <li class="nav-item"><a class="nav-link" id="details-tab" data-toggle="pill" href="#details" role="tab" aria-controls="detail" aria-selected="true">Details</a></li>
+                                        <li class="nav-item"><a class="nav-link active" id="nomination-tab" data-toggle="pill" href="#nomination" role="tab" aria-controls="nomination" aria-selected="true">Nominations</a></li>
+                                        <li class="nav-item"><a class="nav-link" id="voting-tab" data-toggle="pill" href="#voting" role="tab" aria-controls="voting" aria-selected="false">Voting</a></li>
+                                        <li class="nav-item"><a class="nav-link" id="winners-tab" data-toggle="pill" href="#winners" role="tab" aria-controls="winners" aria-selected="true">Winners</a></li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content" id="custom-tabs-five-tabContent">
+                                        <div class="tab-pane fade show" id="details" role="tabpanel" aria-labelledby="details-tab"><SOMDetail /></div>
+                                        <div class="tab-pane fade show" id="winners" role="tabpanel" aria-labelledby="winners-tab"><SOMCloseWinners /></div>
+                                        <div class="tab-pane fade show active" id="nomination" role="tabpanel" aria-labelledby="nomination-tab"><SOMCloseNominations /></div>
+                                        <div class="tab-pane fade" id="voting" role="tabpanel" aria-labelledby="voting-tab"><SOMCloseVoting /></div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>  
+                    </section>
+                </div>
+            </section>
+        </div>   
+    </div>
 </section>
 </template>
 <script>
@@ -26,42 +64,28 @@ export default {
             dept_users: [],
             editMode: false,
             month: '',
+            months: {},
             nominateData: new Form({
                 id: '',
                 user_id: 0,
                 month: '',
                 description: '',
-            }),   
+            }),
+            staff_months: {},   
         }
     },
     methods:{
+        addMonth(){
+            this.editMode = false;
+            this.month = {};
+            Fire.$emit('MonthDataFill', this.month);
+            $('#monthModal').modal('show');
+        
+        },
         getAllInitials(){
-            var currentDate = moment({});
-            var futureMonth = moment(currentDate).add(-1, 'M');
-            var futureMonthEnd = moment(futureMonth).endOf('month');
-
-            if(currentDate.date() != futureMonth.date() && futureMonth.isSame(futureMonthEnd.format('YYYY-MM-DD'))) {
-                futureMonth = futureMonth.add(1, 'd');
-            }
-
-            axios.get('/api/som/nominations')
+            axios.get('/api/som/months')
             .then(response =>{
-                if (response.data.previous == 1){
-                    Swal.fire({icon: 'warning', title: 'You have previously nominate for '+futureMonth.format('YYYY-MM')+', you would be modifying your record',});
-                    this.nominateData.id            = response.data.nomination.id;
-                    this.nominateData.user_id       = response.data.nomination.user_id;
-                    this.nominateData.description   = response.data.nomination.description;
-                    this.nominateData.month         = response.data.nomination.month;
-                    this.editMode                   = true;
-                }
-                else{
-                    this.nominateData.id            = '';
-                    this.nominateData.description   = '';
-                    this.nominateData.user_id       = 0;
-                    this.nominateData.month         = futureMonth.format('YYYY-MM');
-                    this.editMode                   = false;
-                }
-                this.dept_users = response.data.dept_users;
+                this.months = response.data.staff_months;
                 
             })
             .catch(()=>{
@@ -72,10 +96,12 @@ export default {
                 })
             });
         },
-        scrollHanle(evt) {},
+        showMonth(month){
+            Fire.$emit('loadMonth', month);
+        },
     },
     mounted() {
-        //this.getAllInitials();
+        this.getAllInitials();
     }
 }
 </script>

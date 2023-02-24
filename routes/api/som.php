@@ -9,5 +9,6 @@ Route::group(['prefix'=>'som'], function () {
         '/nominations' => 'NominationController',
         '/votes'       => 'VoteController',
         '/winners'     => 'WinnerController',
+        '/months'      => 'MonthController',
     ]);
 });

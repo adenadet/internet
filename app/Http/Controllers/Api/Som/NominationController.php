@@ -21,7 +21,7 @@ class NominationController extends Controller
 
         return response()->json([
             'staff_month'   => Month::where('month', '=', $id.'-01')->first(),
-            'nominations'    => Nomination::where('month', '=', $id)->with(['branch', 'nominee', 'nominator'])->get(),
+            'nominations'    => Nomination::where('month', '=', $id)->with(['branch', 'nominee.branch', 'nominator'])->get(),
             'previous'      => 0,
         ]);
     }

@@ -15,11 +15,19 @@ class Month extends Structure
     	return $this->hasMany('App\Models\SOM\Winner', 'month_id', 'id');
 	}
     
-    public function creator(){
-    	return $this->belongsTo('App\Models\User', 'created_by', 'id');
+    public function nomination_open(){
+    	return $this->belongsTo('App\Models\User', 'nominate_initiate_id', 'id');
 	}
 
-    public function voting_ender(){
+    public function nomination_close(){
+    	return $this->belongsTo('App\Models\User', 'nominate_end_id', 'id');
+	}
+    
+    public function voting_open(){
+    	return $this->belongsTo('App\Models\User', 'voting_initiate_id', 'id');
+	}
+    
+    public function voting_close(){
     	return $this->belongsTo('App\Models\User', 'voting_end_id', 'id');
 	}
 }
