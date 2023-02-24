@@ -5,11 +5,11 @@
     <div class="card-header">
         <h3 class="card-title">Nominate Staff</h3>
     </div>
-    <div class="card-body" v-if="open == 0">
+    <!--<div class="card-body" v-if="open == 0">
         <h3>Nominations is closed!</h3>
         <p>The nominations for this month is closed. Kindly check back later.</p>
-    </div>
-    <div class="card-body" v-if="open != 0">  
+    </div>-->
+    <div class="card-body">  
         <div class="form-group">
             <label for="exampleInputEmail1">Month</label>
             <input type="month" disabled class="form-control" id="som_month" placeholder="Month" v-model="nominateData.month">
@@ -83,17 +83,17 @@ export default {
                 if (response.data.open == 0){
                     Swal.fire({icon: 'warning', title: 'Nominating for the month '+futureMonth.format('YYYY-MM')+' is closed, check again later'});
                     this.open = response.data.open;
-
                 }
-
-                this.dept_users = response.data.dept_users;
-                
+                this.dept_users = response.data.dept_users;  
+                this.month = response.data.month.month;
+                this.nominateData.month = response.data.month.month.slice(0, 7);
+                this.open = response.data.open;
             })
             .catch(()=>{
                 this.$Progress.fail();
                 toast.fire({
                     icon: 'error',
-                    title: 'Dashboard not loaded successfully',
+                    title: 'Nominations not loaded successfully',
                 })
             });
         },
