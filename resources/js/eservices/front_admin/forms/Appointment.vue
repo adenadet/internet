@@ -29,11 +29,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-12">
-                    <div class="form-group" v-if="editMode">
-                        <label>Schedule</label>
-                        <input type="time" class="form-control" id="schedule" name="schedule" v-model="appointmentData.schedule" required/>
-                    </div>
-                    <div class="form-group" v-else>
+                    <div class="form-group">
                         <label>Schedule</label>
                         <select class="form-control" id="schedule" name="schedule" v-model="appointmentData.schedule" required>
                             <option value=''>--Select Available Time--</option>

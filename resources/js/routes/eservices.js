@@ -16,6 +16,8 @@ import EServiceFrontMissed           from '../eservices/front/Missed.vue';
 import EServiceFrontPatients         from '../eservices/front/Patients.vue';
 import EServicePayments              from '../eservices/front/Payments.vue';
 
+import EServiceFrontAdminAppointments from '../eservices/front_admin/Appointments.vue';
+
 import EServiceDocConsultation       from '../eservices/doctor/Consultation.vue';
 import EServiceDocConsultations      from '../eservices/doctor/Consultations.vue';
 import EServiceDocConsentView        from '../eservices/doctor/ConsentView.vue';
@@ -61,6 +63,8 @@ Vue.component('EServiceFrontPatients',           EServiceFrontPatients);
 Vue.component('EServiceFrontMissed',             EServiceFrontMissed);
 Vue.component('EServicePayments',                EServicePayments);
 
+Vue.component('EServiceFrontAdminAppointments',  EServiceFrontAdminAppointments);
+
 Vue.component('EServiceDocConsultation',         EServiceDocConsultation);
 Vue.component('EServiceDocConsultations',        EServiceDocConsultations);
 Vue.component('EServiceDocConsentView',          EServiceDocConsentView);
@@ -98,6 +102,9 @@ let routes = [
     {path: '/eservices/doctor/consultation/:id',        component:EServiceDocConsultation},
     {path: '/eservices/doctor/reviews',                 component:EServiceDocReviews},
     
+    {path: '/eservices/front_admin',                    component:EServiceFrontAppointments},
+    {path: '/eservices/front_admin/appointments',       component:EServiceFrontAppointments},
+
     {path: '/eservices/front_office',                   component:EServiceFrontAppointments},
     {path: '/eservices/front_office/applicants',        component:EServiceFrontPatients},
     {path: '/eservices/front_office/appointments',      component:EServiceFrontAppointments},

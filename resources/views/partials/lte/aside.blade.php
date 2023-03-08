@@ -60,6 +60,14 @@
                             </a>
                         </li>
                         @endif
+                        @if(Auth::user()->hasRole('E-Services Front Admin') || Auth::user()->hasRole('Super Admin'))
+                        <li class="nav-item">
+                            <a href="/eservices/front_admin" class="nav-link">
+                            <i class="fa fa-user-cog nav-icon"></i>
+                            <p>Front Administrator</p>
+                            </a>
+                        </li>
+                        @endif
                     </ul>
                 </li>
                 @endif

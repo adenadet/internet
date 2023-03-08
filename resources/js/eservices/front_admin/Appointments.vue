@@ -27,6 +27,19 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="applicantModal">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Create Patient</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <EServiceFormPatient :editMode="editMode" :nations="nations" :applicant="applicant" /> 
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <EServiceFormSearch />
@@ -34,6 +47,7 @@
                         <div class="card-header">
                             <h3 class="card-title">All Appointments</h3>
                             <div class="card-tools">
+                                <button class="btn btn-sm btn-success" @click="addApplicant"><i class="fa fa-user-plus"></i> Create Applicant</button>
                                 <button class="btn btn-sm btn-primary" @click="addAppointment"><i class="fa fa-calendar-plus"></i> Book Appointment</button>
                             </div>
                         </div>

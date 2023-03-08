@@ -31,6 +31,14 @@ class ServiceController extends Controller
         return view('eservices')->with($params);
     }
 
+    public function front_admin()
+    {
+        $params = [
+            'page_title' => 'E-Services | Front Admin',
+        ];
+        return view('eservices')->with($params);
+    }
+
     public function medical()
     {
         $params = [

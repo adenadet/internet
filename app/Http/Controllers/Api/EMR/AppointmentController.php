@@ -48,7 +48,7 @@ class AppointmentController extends Controller
             'patient_id' => 'required',
             'service_id' => 'required',
             'date' => 'required | date',
-            'schedule' => 'sometimes',
+            'schedule' => 'required',
         ]);
 
         $appointment = Appointment::create([
@@ -57,7 +57,7 @@ class AppointmentController extends Controller
             'date'       => $request->input('date'),
             'schedule'   => $request->input('schedule'),
             'status'     => 0,
-            'created_by' => 0,
+            'created_by' => auth('api')->id(),
         ]);
 
         return response()->json([
@@ -81,7 +81,30 @@ class AppointmentController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'id' => 'required | numeric',
+            'patient_id' => 'required',
+            'service_id' => 'required',
+            'date' => 'required | date',
+            'schedule' => 'required',
+        ]);
+
+        $appointment = Appointment::find($request->input('id'));
+
+        $appointment->patient_id = $request->input('patient_id');
+        $appointment->service_id = $request->input('service_id');
+        $appointment->date = $request->input('date');
+        $appointment->schedule = $request->input('schedule');
+        $appointment->updated_by = auth('api')->id();
+
+        return response()->json([
+            'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
+            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(50),
+            'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
+            'services' => Service::orderBy('name', 'ASC')->get(),
+            'nations' => Country::orderBy('name', 'ASC')->get(), 
+            'patients' => Patient::orderBy('last_name', 'ASC')->get()     
+        ]);
     }
 
     public function destroy($id)
@@ -238,7 +261,10 @@ class AppointmentController extends Controller
         $appointments = $app_query->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->paginate(30);
 
         return response()->json([
-            'appointments' => $appointments,
+            'appointments'  => $appointments,
+            'nations'       => Country::orderBy('name', 'ASC')->get(),   
+            'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
+            'services'      => Service::orderBy('name', 'ASC')->get(),   
         ]);
     }
 
