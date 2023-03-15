@@ -47,6 +47,7 @@
 export default {
     data(){
         return  {
+            month: {},
             MonthData: new Form({
                 month: '',
                 nomination_start: '',
@@ -59,17 +60,28 @@ export default {
     },
     mounted() {
         Fire.$on('MonthDataFill', month =>{
-            this.MonthData.fill(month);
+            this.month = month;
+            if (month.id != null){
+                this.MonthData.id = month.id;
+                this.MonthData.month = month.month.slice(0, 7);
+                this.MonthData.nomination_start = month.nomination_start;
+                this.MonthData.nomination_end = month.nomination_end.slice(0, 10);
+                this.MonthData.voting_start = month.voting_start;
+                this.MonthData.voting_end = month.voting_end.slice(0, 10);
+                //this.MonthData.month = month.month;
+            }
+            else{
+                this.MonthData.fill(month);
+            }
         });
     },
     methods:{
         createMonthData(){
             this.$Progress.start();
-            alert("Working 2");
             this.MonthData.post('/api/som/months')
             .then(response =>{
                 this.$Progress.finish();
-                Fire.$emit('Reload', response);
+                Fire.$emit('monthReload', response);
                 Swal.fire({
                     icon: 'success',
                     title: 'The month has been created',
@@ -89,14 +101,13 @@ export default {
         },
         updateMonthData(){
             this.$Progress.start();
-            alert("Working")
             this.MonthData.put('/api/som/months/'+this.MonthData.id)
             .then(response =>{
                 this.$Progress.finish();
-                Fire.$emit('Reload', response);
+                Fire.$emit('monthReload', response);
                 Swal.fire({
                     icon: 'success',
-                    title: 'The User '+ response.data.user.first_name+' '+  response.data.user.last_name+' has been created',
+                    title: 'The Month has been updated',
                     showConfirmButton: false,
                     timer: 1500
                 });

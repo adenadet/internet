@@ -41,10 +41,10 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="tab-content" id="custom-tabs-five-tabContent">
-                                        <div class="tab-pane fade show" id="details" role="tabpanel" aria-labelledby="details-tab"><SOMDetail /></div>
-                                        <div class="tab-pane fade show" id="winners" role="tabpanel" aria-labelledby="winners-tab"><SOMCloseWinners /></div>
                                         <div class="tab-pane fade show active" id="nomination" role="tabpanel" aria-labelledby="nomination-tab"><SOMCloseNominations /></div>
                                         <div class="tab-pane fade" id="voting" role="tabpanel" aria-labelledby="voting-tab"><SOMCloseVoting /></div>
+                                        <div class="tab-pane fade show" id="details" role="tabpanel" aria-labelledby="details-tab"><SOMDetail /></div>
+                                        <div class="tab-pane fade show" id="winners" role="tabpanel" aria-labelledby="winners-tab"><SOMCloseWinners /></div>
                                     </div>
                                 </div>
                             </div> 
@@ -93,8 +93,7 @@ export default {
         getAllInitials(){
             axios.get('/api/som/months')
             .then(response =>{
-                this.months = response.data.staff_months;
-                
+                this.reloadPage(response);
             })
             .catch(()=>{
                 this.$Progress.fail();
@@ -104,14 +103,19 @@ export default {
                 })
             });
         },
+        reloadPage(response){
+            this.months = response.data.staff_months;
+            this.showMonth = response.data.staff_month.month;
+        },
         showMonth(month){
             Fire.$emit('loadMonth', month);
         },
     },
     mounted() {
         this.getAllInitials();
-        Fire.$on('monthResponse', response=>{
+        Fire.$on('monthReload', response=>{
             this.closeModal();
+            this.reloadPage(response);
         });
         Fire.$on('fireEditMonth', month =>{
             this.editMonth(month);

@@ -1,6 +1,6 @@
 <template>
 <section>
-    <div class="card card-widget widget-user-2">
+    <div class="card card-widget widget-user-2"  v-if="month.id != null ">
         <div class="card-body">
             <i class="fas fa-user mr-1"></i> Nomination Opened By:
             <p><strong>{{ month.nomination_open | FullName }}<br /></strong>
@@ -27,6 +27,11 @@
         </div>
         <div class="card-footer">
             <button class="btn btn-sm btn-primary" @click="updateMonth(month)">Edit</button>
+        </div>
+    </div>
+    <div class="card" v-else>
+        <div class="card-body">
+            No Month has been selected, kindly select a month
         </div>
     </div>
 </section>
@@ -61,6 +66,7 @@ export default {
             .then((response ) => {this.reloadPage(response);})
             .catch(()=>{});
         });
+        
     }
 }
 </script>
