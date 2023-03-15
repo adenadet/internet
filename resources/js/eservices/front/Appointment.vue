@@ -44,8 +44,9 @@
         <h3 class="card-title">Appointment Detail</h3>
         <div class="card-tools">
             <button v-if="appointment.payment == null" type="button" class="btn btn-sm btn-success" title="Make Payment" @click="makePayment(appointment)"><i class="fas fa-credit-card"></i></button>
-            <!--<button v-else-if="appointment.front_officer == null" @click="to_doctor(appointment)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button>
-            --><button v-else @click="to_doctor(appointment)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button>
+            <!--<button v-else-if="appointment.front_officer == null" @click="to_doctor(appointment)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button-->
+            <button v-if="appointment.date == today" @click="to_doctor(appointment)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button>
+            <button v-else @click="to_doctor(appointment)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button>
         </div>
     </div>
     <div class="card-body">

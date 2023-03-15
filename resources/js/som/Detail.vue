@@ -25,6 +25,9 @@
             <i class="fas fa-map-marker-alt mr-1"></i> Status:
             <p> <strong>{{ month.status }}</strong></p>
         </div>
+        <div class="card-footer">
+            <button class="btn btn-sm btn-primary" @click="updateMonth(month)">Edit</button>
+        </div>
     </div>
 </section>
 </template>
@@ -43,6 +46,9 @@ export default {
     methods:{
         reloadPage(response){
             this.month = response.data.month;
+        },
+        updateMonth(month){
+            Fire.$emit('fireEditMonth', month);
         },
     },
     mounted() {

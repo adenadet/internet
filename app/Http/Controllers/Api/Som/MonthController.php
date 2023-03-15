@@ -26,14 +26,14 @@ class MonthController extends Controller
         ]);
 
         $staff_month = Month::create([
-            'month' => $request->input('month'),
+            'month' => $request->input('month').'-01',
             'nomination_start' => $request->input('nomination_start'),
             'nomination_end' => (($request->input('nomination_end') != '') || is_null($request->input('nomination_end'))) ?$request->input('nomination_end') : NULL,
             'voting_start' => $request->input('voting_start'),
             'voting_end' => (($request->input('voting_end') != '') || !(is_null($request->input('voting_end')))) ? $request->input('voting_end') : NULL,
             'nomination_end_id' => (($request->input('nomination_end') != '') || !(is_null($request->input('nomination_end')))) ? auth('api')->id() : NULL,
             'nominate_initiate_id' => auth('api')->id(),
-            'voting_initiate_id' => $request->input(),
+            'voting_initiate_id' => auth('api')->id(),
             'voting_end_id' => (($request->input('voting_end') != '') || !(is_null($request->input('voting_end'))))  ? auth('api')->id() : NULL
         ]);
 

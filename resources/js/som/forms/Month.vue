@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-        <button type="button" name="button" class="submit btn btn-primary" @click.prevent="editMode ? updateMonthData : createMonthData">Submit</button>
+        <button type="button" name="button" class="submit btn btn-primary" @click.prevent="editMode ? updateMonthData() : createMonthData()">Submit</button>
     </form>
 </section>
 </template>

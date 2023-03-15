@@ -4,13 +4,19 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header" v-if="staff_month == null">
+                        <h3 class="card-title">No Month Selected</h3>
+                    </div>
+                    <div class="card-header" v-else>
                         <h3 class="card-title">All Nominations for {{ staff_month.month | ExcelMonthYear }}</h3>
                         <!--<div class="card-tools">
                             <button class="btn btn-sm btn-primary" @click="openNominations(new_month)"><i class="fa fa-calendar-check"></i> Open Nomination for {{ new_month | ExcelMonthYear }}</button>
                         </div>-->
                     </div>
-                    <div class="card-body table-responsive p-0" style="max-height: 500px;">
+                    <div class="card-body" v-if="staff_month == null">
+                        <p>No month has been chosen</p>
+                    </div>
+                    <div class="card-body table-responsive p-0" style="max-height: 500px;" v-else>
                         <table class="table table-head-fixed table-striped table-hover">
                             <thead>
                                 <tr>
@@ -34,7 +40,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer" v-if="staff_month != null">
                         <span v-if="staff_month != null && staff_month.nomination_end != null">Nominations have been closed, </span>
                         <button v-else class="btn btn-sm btn-primary" @click="closeNominations()"><i class="fa fa-calendar-times mr-1"></i>Close Nominations</button>
                     </div>
@@ -44,7 +50,6 @@
     </div>
 </template>
 <script>
-import { assertNullLiteralTypeAnnotation } from '@babel/types';
 import moment from 'moment'
 export default {
     data(){

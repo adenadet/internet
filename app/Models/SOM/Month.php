@@ -20,7 +20,7 @@ class Month extends Structure
 	}
 
     public function nomination_close(){
-    	return $this->belongsTo('App\Models\User', 'nominate_end_id', 'id');
+    	return $this->belongsTo('App\Models\User', 'nomination_end_id', 'id');
 	}
     
     public function voting_open(){

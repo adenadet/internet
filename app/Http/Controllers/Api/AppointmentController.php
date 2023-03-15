@@ -95,7 +95,7 @@ class AppointmentController extends Controller
         $appointment->service_id = $request->input('service_id');
         $appointment->date = $request->input('date');
         $appointment->schedule = $request->input('schedule');
-        //$appointment->updated_by = auth('api')->id();
+        $appointment->updated_by = auth('api')->id();
 
         $appointment->save();
 

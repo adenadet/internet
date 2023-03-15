@@ -57,7 +57,7 @@
 </section>
 </template>
 <script>
-import moment from 'moment'
+//import moment from 'moment'
 export default {
     data(){
         return {
@@ -82,6 +82,14 @@ export default {
             $('#monthModal').modal('show');
         
         },
+        closeModal(){
+            $('#monthModal').modal('hide');
+        },
+        editMonth(month){
+            this.editMode = true;
+            Fire.$emit('MonthDataFill', month);
+            $('#monthModal').modal('show');
+        },
         getAllInitials(){
             axios.get('/api/som/months')
             .then(response =>{
@@ -102,6 +110,12 @@ export default {
     },
     mounted() {
         this.getAllInitials();
+        Fire.$on('monthResponse', response=>{
+            this.closeModal();
+        });
+        Fire.$on('fireEditMonth', month =>{
+            this.editMonth(month);
+        });
     }
 }
 </script>

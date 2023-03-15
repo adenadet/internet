@@ -29,9 +29,10 @@ class DashboardController extends Controller
         $membership = Member::select('room_id')->where('user_id', '=', auth('api')->id())->where('status', '=', 1);
         $chats = Room::whereIn('id', $membership)->with('messages.user')->with('members.user')->orderBy('updated_at', 'DESC')->paginate(10);
         $staff_month = $this->staff_months('1');
+        //echo Carbon::now()->addWeek();
         
         return response()->json([
-            //'birthdays'     => User::birthDayBetween(Carbon::now(), Carbon::now()->addWeek())->orderByRaw("DAYOFMONTH('dob')", 'ASC')->limit(8)->get(),
+            'birthdays'     => User::birthDayBetween(Carbon::now(), Carbon::now()->addWeek())->limit(8)->get(),
             'chats'         => $chats,
             'message_rooms' => Member::where('user_id', '=', auth('api')->id())->with('room.messages')->get(),
             'new_staffs'    => User::where('user_type', '!=', 'Applicant')->orderBy('created_at', 'DESC')->limit(8)->get(),
