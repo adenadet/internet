@@ -2,6 +2,7 @@
 <div>
 <form>
     <alert-error :form="BioData"></alert-error> 
+    {{ user}}
     <div class="row">
         <div class="col-sm-4">
             <div class="form-group">
@@ -129,7 +130,7 @@ export default {
         return  {
             BioData: new Form({
                 alt_phone:'', 
-                area_id:'', 
+                area:'', 
                 city:'', 
                 dob:'', 
                 email:'',
@@ -144,7 +145,7 @@ export default {
                 phone:'', 
                 roles:'',
                 sex:'', 
-                state_id:'', 
+                state:'', 
                 street:'', 
                 street2:'',
             }),
@@ -161,7 +162,6 @@ export default {
     },
     methods:{
         updateBioData(){
-            console.log("Tested");
             this.$Progress.start();
             this.BioData.post('/api/ums/bios')
             .then(response =>{

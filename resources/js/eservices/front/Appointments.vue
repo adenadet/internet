@@ -68,7 +68,6 @@
                                                 <router-link :to="'/eservices/front_office/appointment/'+appointment.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
                                                 <button v-show="appointment.status == 0" class="btn btn-success btn-sm" @click="makePayment(appointment)"><i class="fa fa-credit-card"></i></button>
                                                 <button v-show="appointment.status == 1" class="btn btn-success btn-sm"><i class="fa fa-file-pdf"></i></button>
-                                                <button v-show="appointment.status <= 1 || appointment.status == null" class="btn btn-default btn-sm" @click="rescheduleAppointment(appointment)"><i class="fa fa-calendar"></i></button>
                                                 <button v-show="appointment.status == 0" class="btn btn-danger btn-sm" @click="deleteAppointment(appointment.id)"><i class="fa fa-trash"></i></button>
                                             </div> 
                                         </td>

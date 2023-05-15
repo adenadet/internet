@@ -81,6 +81,7 @@ class VoteController extends Controller
             $vote = Vote::create([
                 'nomination_id'       => $request->input('nomination_id'), 
                 'month'         => $request->input('month'), 
+                'user_id'       => auth('api')->id(),
                 'created_by'    => auth('api')->id(), 
                 'updated_by'    => auth('api')->id(), 
             ]);

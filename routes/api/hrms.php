@@ -9,9 +9,11 @@ Route::group(['prefix'=>'hrms'], function () {
     Route::get('/users/search', 'UserController@search')->name('users.search');
     
     Route::apiResources([
+        //'applications' => 'ApplicationController',
         '/bios' => 'BioController',
         '/nok' => 'NOKController',
         '/users' => 'UserController',
+
         //'/profile' => 'ProfileController',
     ]);
 });

@@ -102,13 +102,13 @@ let routes = [
     {path: '/eservices/doctor/consultation/:id',        component:EServiceDocConsultation},
     {path: '/eservices/doctor/reviews',                 component:EServiceDocReviews},
     
-    {path: '/eservices/front_admin',                    component:EServiceFrontAppointments},
-    {path: '/eservices/front_admin/appointments',       component:EServiceFrontAppointments},
-
+    {path: '/eservices/front_admin',                    component:EServiceFrontAdminAppointments},
+    {path: '/eservices/front_admin/appointments',       component:EServiceFrontAdminAppointments},
+    {path: '/eservices/front_admin/appointments/missed',component:EServiceFrontMissed},
+    {path: '/eservices/front_admin/applicants',        component:EServiceFrontPatients},
+    
     {path: '/eservices/front_office',                   component:EServiceFrontAppointments},
-    {path: '/eservices/front_office/applicants',        component:EServiceFrontPatients},
     {path: '/eservices/front_office/appointments',      component:EServiceFrontAppointments},
-    {path: '/eservices/front_office/appointments/missed',component:EServiceFrontMissed},
     {path: '/eservices/front_office/appointment/:id',   component:EServiceFrontAppointment},
     {path: '/eservices/front_office/payments',          component:EServicePayments},
     {path: '/eservices/front_office/Certificates',      component:EServiceFrontCertificates},
@@ -119,4 +119,4 @@ let routes = [
     {path: '/eservices/radiologist/report/:id',         component:EServiceRadReport},
 ];
 
-export default routes
+export default routes 
