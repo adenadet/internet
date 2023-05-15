@@ -111,7 +111,7 @@ Vue.filter('currency', function(value) {
 });
 
 Vue.filter('ExcelDate', function(text){
-    return moment(text).format('MMMM Do, YYYY');
+    return moment(text).format('Do MMMM, YYYY');
 });
 
 Vue.filter('ExcelDateShort', function(text){
