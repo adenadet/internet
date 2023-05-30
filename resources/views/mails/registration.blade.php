@@ -17,7 +17,10 @@
             Payment Mode: {{$appointment->payment->channel}}<br />
             Amount: &#8358; {{$appointment->payment->amount}}<br />
             Date: {{$appointment->payment->created_at}}<br />
-            Transaction ID: {{$appointment->payment->details}}</p>
+            Transaction ID: {{$appointment->payment->details}}<br />
+            Tracking ID: {{$appointment->transaction_id}}<br />
+            In subsequent communications, kindly make use of the Tracking ID. 
+        </p>
         <p>Come along with your international passport as well as your Paystack receipt.</p>
         <p>Thank you</p>
     </body>

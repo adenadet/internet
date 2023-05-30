@@ -15,6 +15,11 @@ use App\Models\State;
 use App\Models\Country;
 use App\Models\User;
 
+use Dompdf\Adapter\PDFLib;
+use PDF;
+use Mail;
+use App\Mail\Certificate\NormalMail;
+
 class AppointmentController extends Controller
 {
     public function index()
@@ -33,7 +38,7 @@ class AppointmentController extends Controller
     {
         return response()->json([
             'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('fir`st_name', 'ASC')->with(['area', 'state',])->get(),
-            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
+            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(10),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
             'states' => State::orderBy('name', 'ASC')->get(),
@@ -62,7 +67,7 @@ class AppointmentController extends Controller
 
         return response()->json([
             'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
-            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(50),
+            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(50),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
             'nations' => Country::orderBy('name', 'ASC')->get(), 
@@ -73,7 +78,7 @@ class AppointmentController extends Controller
     public function show($id)
     {
         return response()->json([
-            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'laboratory', 'report.findings', 'issuing_officer'])->first(),
+            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'laboratory', 'lab_officer', 'report.findings', 'issuing_officer'])->first(),
             'findings'    => RadFinding::all(),
             'nations' => Country::orderBy('name', 'ASC')->get(), 
         ]);
@@ -101,7 +106,7 @@ class AppointmentController extends Controller
 
         return response()->json([
             'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
-            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(50),
+            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(50),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
             'nations' => Country::orderBy('name', 'ASC')->get(), 
@@ -136,7 +141,7 @@ class AppointmentController extends Controller
 
             return response()->json([
                 'applicants' => Patient::orderBy('created_at', 'DESC')->with(['nationality',])->paginate(100),
-                'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
+                'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(50),
                 'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
                 'services' => Service::orderBy('name', 'ASC')->get(),
                 'states' => State::orderBy('name', 'ASC')->get(),
@@ -188,13 +193,13 @@ class AppointmentController extends Controller
     public function issue(Request $request, $id)
     {
         $this->validate($request, [
-            'issue_action' => 'required',
-            'issue_detail' => 'required',
+            'issue_action' => 'sometimes',
+            'issue_detail' => 'sometimes',
         ]);
 
         $appointment = Appointment::find($id);
 
-        $appointment->issuer = auth('api')->id();
+        $appointment->issuer = 1;
         $appointment->issue_action = $request->input('issue_action');
         $appointment->issue_detail = $request->input('issue_detail');
         $appointment->issue_at =date('Y-m-d H:i:s');
@@ -202,10 +207,25 @@ class AppointmentController extends Controller
 
         $appointment->save();
 
+        $consultation = Appointment::where('id', '=', $id)->with(['service', 'patient'])->first()->toArray();
+        $app = Appointment::where('id', '=', $id)->with(['service', 'patient'])->first();
+
+        /* Option 1, Not interacting with the template for now
+        $pdf = \PDF::loadView('certificates.normal', $consultation);
+
+        \Mail::send('mails.certificates.normal', $consultation, function ($message) use ($consultation, $pdf) {
+            $message->to($consultation['patient']['email'], $consultation['patient']['email'])
+                ->subject('Certificate for'.$consultation['service']['name'].' '.$consultation['patient']['first_name'].' '.$consultation['patient']['last_name'])
+                ->attachData($pdf->output(), $consultation['service']['name']." Certificate for ".$consultation['patient']['first_name']." ".$consultation['patient']['last_name'].".pdf");
+        });*/
+
+        /* Option 2, Using Mail */
+        \Mail::to($app->patient->email)->send(new NormalMail($app));
+
         return response()->json([
             'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first(),
-            'findings'    => RadFinding::all(),
-            'nations'   => Country::orderBy('name', 'ASC')->get(), 
+            //'findings'    => RadFinding::all(),
+            //'nations'   => Country::orderBy('name', 'ASC')->get(), 
         ]);
 
     }
@@ -218,6 +238,37 @@ class AppointmentController extends Controller
         ]);
     }
 
+    public function getXray(){
+        $appointments = Appointment::where('status', '=', 6)
+        ->whereDate('date', '=', date('Y-m-d'))
+        ->where('status_end', '!=', 1)
+        ->with(['front_officer', 'medical_officer', 'radiologist','lab_officer', 'service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])
+        ->orderBy('date', 'DESC')->paginate(3);
+        
+        return response()->json([
+            'appointments' => $appointments
+        ]);
+    }
+
+    public function postXray(Request $request, $id){
+        $appointment = Appointment::find($id);
+
+        $appointment->status_end = true;
+        $appointment->xray_officer_id = auth('api')->id();
+        $appointment->xray_at = date('Y-m-d H:i:s');
+
+        $appointment->save();
+
+        $appointments = Appointment::where('status', '=', 6)
+        ->whereDate('date', '=', date('Y-m-d'))
+        ->where('status_end', '!=', 1)
+        ->with(['front_officer', 'medical_officer', 'radiologist','lab_officer', 'service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])
+        ->orderBy('date', 'DESC')->paginate(30);
+        
+        return response()->json([
+            'appointments' => $appointments,
+        ]);
+    }
 
     public function search(){
         if ($search = \Request::get('q')){

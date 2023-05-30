@@ -8,6 +8,8 @@ Route::group(['prefix'=>'emr'], function () {
     Route::get('/appointments/certificates', 'AppointmentController@certificates')->name('appointments.certificates');
     Route::put('/appointments/issue/{id}', 'AppointmentController@issue')->name('appointments.certificate_issue');
     Route::put('/appointments/toDoctor/{id}', 'AppointmentController@toDoctor')->name('appointments.toDoctor');
+    Route::put('/appointments/xray/{id}', 'AppointmentController@postXray')->name('appointments.postXray');
+    Route::get('/appointments/xray', 'AppointmentController@getXray')->name('appointments.getXray');
     Route::get('/consultations/reviews', 'ConsultationController@reviews')->name('consultations.reviews');
     Route::get('/consultations/search', 'ConsultationController@search')->name('consultations.search');
     Route::get('/radiologists/reviews', 'RadiologistController@reviews')->name('radiologists.reviews');
@@ -19,6 +21,7 @@ Route::group(['prefix'=>'emr'], function () {
         'appointments'  => 'AppointmentController',
         'consents'      => 'ConsentController',
         'consultations' => 'ConsultationController',
+        'laboratories'  => 'LaboratoryController',
         'patients'      => 'PatientController',
         'payments'      => 'PaymentController',
         'schedulers'    => 'SchedulerController',

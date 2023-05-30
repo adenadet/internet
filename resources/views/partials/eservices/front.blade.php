@@ -11,6 +11,9 @@
                 <router-link to="/eservices/front_office/payments" class="nav-link"><i class="fas fa-user-clock"></i> Payments</router-link>
             </li>
             <li class="nav-item">
+                <router-link to="/eservices/front_office/radiographer" class="nav-link"><i class="fas fa-x-ray"></i> Radiographer</router-link>
+            </li>
+            <li class="nav-item">
                 <router-link to="/eservices/front_office/certificates" class="nav-link"><i class="fas fa-certificate"></i> Certificates</router-link>
             </li>
         </ul>

@@ -8,6 +8,8 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/patient', [App\Http\Controllers\HomeController::class, 'index'])->name('welcome');
 Route::get('/uk-tb-screening', function () {return view('welcome');});
+Route::get('/uk-tb-cancellation', function () {return view('welcome');});
+Route::get('/uk-tb-reschedule', function () {return view('welcome');});
 Route::get('/certificates/{id}', function () {return view('welcome');});
 
 Route::get('/clear-cache', function() {

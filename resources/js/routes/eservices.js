@@ -15,6 +15,7 @@ import EServiceFrontCertificates     from '../eservices/front/Certificates.vue';
 import EServiceFrontMissed           from '../eservices/front/Missed.vue';
 import EServiceFrontPatients         from '../eservices/front/Patients.vue';
 import EServicePayments              from '../eservices/front/Payments.vue';
+import EServiceRadiographer          from '../eservices/front/Radiographer.vue';
 
 import EServiceFrontAdminAppointments from '../eservices/front_admin/Appointments.vue';
 
@@ -23,6 +24,7 @@ import EServiceDocConsultations      from '../eservices/doctor/Consultations.vue
 import EServiceDocConsentView        from '../eservices/doctor/ConsentView.vue';
 import EServiceDocConsultationView   from '../eservices/doctor/ConsultationView.vue';
 import EServiceDocIssueView          from '../eservices/doctor/IssueView.vue';
+//import EServiceDocLaboratory         from '../eservices/doctor/Laboratory.vue';
 import EServiceDocLaboratoryView     from '../eservices/doctor/LaboratoryView.vue';
 import EServiceDocPatientView        from '../eservices/doctor/PatientView.vue';
 import EServiceDocReportView         from '../eservices/doctor/ReportView.vue';
@@ -42,6 +44,7 @@ import EServiceRadReviews            from '../eservices/radiologist/Reviews.vue'
 
     import EServiceDocFormConsent              from '../eservices/doctor/forms/Consent.vue';
     import EServiceDocFormIssue                from '../eservices/doctor/forms/Issue.vue';
+    import EServiceDocFormLaboratory           from '../eservices/doctor/forms/Laboratory.vue';
     import EServiceDocFormScreening            from '../eservices/doctor/forms/Screening.vue';
 
     import EServiceRadFormReport            from '../eservices/radiologist/forms/Report.vue';
@@ -70,6 +73,7 @@ Vue.component('EServiceDocConsultations',        EServiceDocConsultations);
 Vue.component('EServiceDocConsentView',          EServiceDocConsentView);
 Vue.component('EServiceDocConsultationView',     EServiceDocConsultationView);
 Vue.component('EServiceDocIssueView',            EServiceDocIssueView);
+//Vue.component('EServiceDocLaboratory',           EServiceDocLaboratory); 
 Vue.component('EServiceDocLaboratoryView',       EServiceDocLaboratoryView); 
 Vue.component('EServiceDocPatientView',          EServiceDocPatientView); 
 Vue.component('EServiceDocReportView',           EServiceDocReportView); 
@@ -89,6 +93,7 @@ Vue.component('EServiceRadReviews',              EServiceRadReviews);
 
     Vue.component('EServiceDocFormConsent',      EServiceDocFormConsent);
     Vue.component('EServiceDocFormIssue',        EServiceDocFormIssue);
+    Vue.component('EServiceDocFormLaboratory',   EServiceDocFormLaboratory);
     Vue.component('EServiceDocFormScreening',    EServiceDocFormScreening);
 
     Vue.component('EServiceRadFormReport',       EServiceRadFormReport);
@@ -100,17 +105,19 @@ let routes = [
     {path: '/eservices/doctor',                         component:EServiceDocConsultations},
     {path: '/eservices/doctor/consultations',           component:EServiceDocConsultations},
     {path: '/eservices/doctor/consultation/:id',        component:EServiceDocConsultation},
+    //{path: '/eservices/doctor/laboratory',              component:EServiceDocLaboratory},
     {path: '/eservices/doctor/reviews',                 component:EServiceDocReviews},
     
     {path: '/eservices/front_admin',                    component:EServiceFrontAdminAppointments},
     {path: '/eservices/front_admin/appointments',       component:EServiceFrontAdminAppointments},
     {path: '/eservices/front_admin/appointments/missed',component:EServiceFrontMissed},
-    {path: '/eservices/front_admin/applicants',        component:EServiceFrontPatients},
+    {path: '/eservices/front_admin/applicants',         component:EServiceFrontPatients},
     
     {path: '/eservices/front_office',                   component:EServiceFrontAppointments},
     {path: '/eservices/front_office/appointments',      component:EServiceFrontAppointments},
     {path: '/eservices/front_office/appointment/:id',   component:EServiceFrontAppointment},
     {path: '/eservices/front_office/payments',          component:EServicePayments},
+    {path: '/eservices/front_office/radiographer',      component:EServiceRadiographer},
     {path: '/eservices/front_office/Certificates',      component:EServiceFrontCertificates},
 
     {path: '/eservices/radiologist',                    component:EServiceRadReports},

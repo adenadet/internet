@@ -99,10 +99,13 @@ class RegistrationController extends Controller
             'details' => $request->input('payment_transaction').' | '.$request->input('payment_reference'),    
         ]);
 
+        $appointment->transaction_id = "SNH-".$appointment->id."-".$payment->id."-".$patient->id;
+        $appointment->save();
+
         $consultation = Appointment::where('id', '=', $appointment->id)->with(['service', 'patient', 'payment'])->first();
 
-        \Mail::to($patient->email)
-        ->send(new RegMail($consultation));
+        \Mail::to($patient->email)->send(new RegMail($consultation));
+        
         return response()->json([
             'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
             'appointments' => Appointment::with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),

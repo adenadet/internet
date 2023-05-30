@@ -24,15 +24,14 @@
         <div class="collapse navbar-collapse order-3" id="navbarCollapse">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
-            <li class="nav-item">
-                <a href="https://saintnicholashospital.com" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item">
-                <router-link to="/uk-tb-screening" class="nav-link">Book Appointment</router-link>
-            </li>
-            <li class="nav-item">
-                <router-link to="/uk-tb-payment" class="nav-link">Confirm Payment</router-link>
-            </li>
+                <li class="nav-item">
+                    <a href="https://saintnicholashospital.com" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <router-link to="/uk-tb-screening" class="nav-link">Book Appointment</router-link>
+                </li>
+                <li class="nav-item"><router-link to="/uk-tb-reschedule" class="nav-link">Reschedule Appointment</router-link></li>
+                <li class="nav-item"><router-link to="/uk-tb-cancellation" class="nav-link">Appointment Cancellation</router-link></li>
             </ul>
         </div>
 

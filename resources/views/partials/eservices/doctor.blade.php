@@ -8,6 +8,9 @@
                 <router-link to="/eservices/doctor/consultations" class="nav-link"><i class="fa fa-calendar-day"></i> Consultations</router-link>
             </li>
             <li class="nav-item">
+                <router-link to="/eservices/doctor/laboratory" class="nav-link"><i class="fa fa-flask"></i> Add Laboratory Results</router-link>
+            </li>
+            <li class="nav-item">
                 <router-link to="/eservices/doctor/reviews" class="nav-link"><i class="fa fa-file"></i> Review Results</router-link>
             </li>
         </ul>

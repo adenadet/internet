@@ -1,7 +1,24 @@
 <template>
 <section>
-    <div v-if="consultation.consultation.decision ==6 || consultation.consultation.decision == 8" class="card">
-        <div class="card-body">{{consultation.consultation.decision == 7 ? 'Patient sent for Sputum': (consultation.consultation.decision == 8 ? 'Kid under the age of 11 years': 'Awaiting report')}}</div>
+    <div class="modal fade" id="laboratoryModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Laboratory Result Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <EServiceDocFormLaboratory :patient="patient" :appointment="consultation" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div v-if="consultation.laboratory == null" class="card">
+        <div class="card-body">
+            <p v-if="consultation.consultation.decision == 7"> Patient sent for Sputum</p>
+            <p v-else-if="consultation.consultation.decision == 8"> Kid under the age of 11 years</p>
+            <p v-else>Awaiting report <br /><button class="btn btn-sm btn-primary" @click="addLabReport()">Add Report </button></p>
+        </div>
     </div>
     <div v-else class="card">
         <div class="card-body">
@@ -51,6 +68,11 @@ export default {
         };
     },
     methods:{
+        addLabReport(){
+            this.$Progress.start();
+            $('#laboratoryModal').modal('show');
+            this.$Progress.finish();
+        },
     },
     props:{
         consultation: Object,
