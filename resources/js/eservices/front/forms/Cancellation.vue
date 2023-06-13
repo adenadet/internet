@@ -19,12 +19,13 @@
                     <div class="form-group">
                         <label>Tracking ID</label>
                         <input class="form-control" type="text" name="tracking_id" id="tracking_id" placeholder="SNH-0000-0000-0000" v-model="CancellationData.tracking_id" @change="searchAppointment()"/>
+                        <has-error :form="CancellationData" field="tracking_id"></has-error> 
                     </div>
                 </div>
                 <div class="col-md-9 col-sm-12">
                     <div class="form-group">
                         <label>Appointment Details</label>
-                        <div class="form-control" type="" name="date" id="date"></div>
+                        <div class="form-control" type="text" disabled name="details" id="details">{{ CancellationData.details }}</div>
                     </div>
                 </div>
             </div>
@@ -32,11 +33,11 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Bank *</label>
-                        <select class="form-control" id="bank" name="bank" required v-model="CancellationData.bank" :class="{'is-invalid' : CancellationData.errors.has('bank') }">
+                        <select class="form-control" id="bank_id" name="bank_id" required v-model="CancellationData.bank_id" :class="{'is-invalid' : CancellationData.errors.has('bank_id') }">
                             <option value=''>---Select Bank---</option>
-                            <option v-for="bank in banks" :key="bank.id" :value="bank.id">{{ bank.name }}</option>
+                            <option v-for="bank in banks" :key="bank.id" :value="bank.id">{{ bank.bank_name }}</option>
                         </select>
-                        <has-error :form="CancellationData" field="bank"></has-error> 
+                        <has-error :form="CancellationData" field="bank_id"></has-error> 
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -58,7 +59,7 @@
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         <label>Reason for Cancellation*</label>
-                        <wysiwyg rows="5" id="uk_address" name="uk_address" placeholder="Enter Reason for cancellation *" required v-model="CancellationData.uk_address" :class="{'is-invalid' : CancellationData.errors.has('uk_address') }"></wysiwyg>
+                        <wysiwyg rows="5" id="reason" name="reason" placeholder="Enter Reason for cancellation *" required v-model="CancellationData.reason" :class="{'is-invalid' : CancellationData.errors.has('reason') }"></wysiwyg>
                     </div>
                 </div>
                 <input type="hidden" name="id" id="id" v-model="CancellationData.id">
@@ -67,11 +68,12 @@
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         <label class="form-check-label">I have read and accepted the <a href="#" @click.prevent="viewTerms()">Terms and conditions</a> of St. Nicholas Hospital as well as the United Kingdom Home office.</label>
-                        <input class="form-check-input ml-2" type="checkbox" name="terms" id="terms" v-model="terms">
-                        
+                        <input class="form-check-input ml-2" type="checkbox" name="terms" id="terms" v-model="terms">   
                     </div>
                 </div>
             </div>
+            <button @click.prevent="cancelAppointment()" type="submit" name="submit" class="submit btn btn-primary" :disabled="terms == 0 || CancellationData.tracking_id == '' || CancellationData.bank_id == '' || CancellationData.account_name == '' || CancellationData.account_number == ''">Cancel Appointment</button>
+
         </form>
     </div>
     <div class="card-footer">
@@ -80,13 +82,11 @@
 </div>
 </template>
 <script>
-import paystack from 'vue-paystack';
 export default {
-    components: {
-        paystack
-    },
+
     data(){
         return  {
+            appointment: {},
             banks: [],
             terms: 0,
             today: '',
@@ -102,6 +102,7 @@ export default {
                 account_name: '',
                 account_number: '',
                 amount: '',
+                details: '',
             }),
         }
     },
@@ -112,121 +113,67 @@ export default {
         closeModal(){
             $('#termsModal').modal('hide');
         },
-        createApplicant(){
-            this.$Progress.start();
-            this.CancellationData.post('/api/scheduler')
-            .then(response =>{
-                this.$Progress.finish();
-                Fire.$emit('refreshAppointment', response);
-                this.CancellationData.reset();
-                Swal.fire({icon: 'success', title: 'The Profile details has been created', showConfirmButton: false, timer: 1500});
+        cancelAppointment(){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "A 50% charge would apply and you would not be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, cancel the appointment!'
             })
-            .catch(()=>{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!',
-                    footer: 'Please try again later!'
+            .then((result) => {
+                this.$Progress.start();
+                this.CancellationData.post('/api/emr/cancellations')
+                .then(response =>{
+                    this.$Progress.finish();
+                    Fire.$emit('refreshAppointment', response);
+                    this.CancellationData.reset();
+                    Swal.fire({icon: 'success', title: 'The appointment has been cancelled successfully', showConfirmButton: false, timer: 1500});
+                })
+                .catch(()=>{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                        footer: 'Please try again later!'
+                    });
+                this.$Progress.fail();
                 });
-            this.$Progress.fail();
             });  
         },
         getInitials(){
-            axios.get('/api/scheduler')
+            axios.get('/api/emr/cancellations')
             .then(response => {;
-                var today = new Date();
-                var dd = today.getDate();
-                var mm = today.getMonth()+1; 
-                var yyyy = today.getFullYear();
-                if(dd<10){dd='0'+dd;} 
-                if(mm<10){mm='0'+mm;} 
-                today = yyyy+'-'+mm+'-'+dd;
-            this.today = today;
-            this.refreshScheduler(response)
+                this.banks = response.data.banks;
             })
             .catch(() => {
                 this.$Progress.fail();
                 toast.fire({icon: 'error', title: 'Your appointments did not loaded successfully',})
             });
         },
-        
-        isWeekend(date){
-            var cast = new Date(date)
-            console.log(cast);
-            console.log(cast.getDay() === 6 || cast.getDay() === 0);
-            return cast.getDay() === 6 || cast.getDay() === 0;
-        },
-        refreshScheduler(response){
-            this.services = response.data.services;
-            this.nations = response.data.nations;
-        },
-        processAppointment(response){
-            if (response.message == "Approved"){
-                alert("Payment was successful");
-                this.CancellationData.payment_method = "Paystack";
-                this.CancellationData.payment_reference= response.reference;
-                this.CancellationData.payment_transaction = response.transaction;
-
-                this.createApplicant();
-            }
-            else{
-                alert("Payment has to be made to confirm booking");
-            }
-        },
-        processBooking(){
-            console.log(response);
-            this.CancellationData.payment_method = "Holding";
-        },
         searchAppointment(){
-            if (this.CancellationData.tracking_id.length01234 >= 18){
-                alert("Processing");
-                //search for the tracking id
-
-            }
-        },
-        searchSchedule(){
-            if (this.isWeekend(this.CancellationData.preferred_date)){
-                alert("Weekend not available for selection");
-                this.CancellationData.date = "";
-                return;
-            }
-            axios.get('/api/schedules?service_id='+this.CancellationData.service_id+'&date='+this.CancellationData.preferred_date)
-            .then(response =>{
-                this.schedules = response.data.schedules;
-                this.$Progress.finish();
-            })
-            .catch(()=>{
-                this.$Progress.fail();
-                toast.fire({
-                    icon: 'error',
-                    title: 'Schedules not loaded successfully',
-                })
-            });
-        },
-        updateAmount(){
-            var dob = new Date(this.CancellationData.dob);
-            var month_diff = Date.now() - dob.getTime();  
-            var age_dt = new Date(month_diff);   
-            var year = age_dt.getUTCFullYear();  
-            var age = Math.abs(year - 1970);  
-            
-            if (age >= 11){this.CancellationData.amount = 60000;}
-            else {this.CancellationData.amount = 30000;}
-        },
-        updateProfilePic(e){
-            let file = e.target.files[0];
-            let reader = new FileReader();
-            if (file['size'] < 2000000){
-                reader.onloadend = (e) => {
-                    this.CancellationData.image = reader.result
+            this.$Progress.start();
+            if (this.CancellationData.tracking_id.length >= 18){
+                axios.get('/api/scheduler/'+this.CancellationData.tracking_id)
+                .then(response =>{
+                    this.appointment = response.data.appointment;
+                    if (this.appointment == null){
+                        toast.fire({icon: 'error',title: 'No Appointment with this Tracking ID found',})
                     }
-                reader.readAsDataURL(file)
-            }
-            else{
-                Swal.fire({
-                    type: 'error',
-                    title: 'File is too large'
+                    else{
+                        this.CancellationData.details = this.appointment.patient.first_name+' '+this.appointment.patient.last_name+' | '+this.appointment.service.name+' scheduled for '+this.appointment.date;
+                    }
+                    this.$Progress.finish();
                 })
+                .catch(()=>{
+                    this.$Progress.fail();
+                    toast.fire({
+                        icon: 'error',
+                        title: 'No Appointment with this Tracking ID found',
+                    })
+                });
             }
         },
         viewTerms(){

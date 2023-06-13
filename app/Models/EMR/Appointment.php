@@ -17,6 +17,10 @@ class Appointment extends Structure
         return $this->belongsTo('App\Models\EMR\Patient', 'patient_id', 'id');
     }
 
+    public function cancellation(){
+        return $this->belongsTo('App\Models\EMR\Cancellation', 'id', 'appointment_id');
+    }
+
     public function consent(){
         return $this->belongsTo('App\Models\EMR\Consent', 'id', 'appointment_id');
     }

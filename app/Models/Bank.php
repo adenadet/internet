@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bank extends Structure {
     protected $primaryKey = 'id';
-    protected $table = 'banks';
-    protected $fillable = array('name', 'bank_name', 'purpose', 'status', 'number'); 
+    protected $table = 'all_banks';
+    protected $fillable = array('bank_name', 'status' ); 
 }

@@ -20,8 +20,12 @@ Route::post('notices/modify',    'App\Http\Controllers\Api\NoticeController@modi
 Route::get('policies/all/{id}',  'App\Http\Controllers\Api\PolicyController@all')->name('api.policies.all');
 Route::post('policies/assign',   'App\Http\Controllers\Api\PolicyController@assign')->name('api.policies.assign');
 
+Route::get('/schedulers/cancel', 'App\Http\Controllers\Api\EMR\RegistrationController@cancel')->name('schedulers.cancel');
+Route::post('/schedulers/cancelled', 'App\Http\Controllers\Api\EMR\RegistrationController@cancelled')->name('schedulers.cancelled');
+
 Route::apiResources([
     'certificates'  => 'App\Http\Controllers\Api\EMR\CertificateController',
+    'emr/cancellations' => 'App\Http\Controllers\Api\EMR\CancellationController',
     'dashboard'     => 'App\Http\Controllers\Api\DashboardController',
     'member'        => 'App\Http\Controllers\Api\MemberController',
     'notices'       => 'App\Http\Controllers\Api\NoticeController',

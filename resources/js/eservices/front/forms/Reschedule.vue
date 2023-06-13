@@ -24,7 +24,7 @@
                 <div class="col-md-9 col-sm-12">
                     <div class="form-group">
                         <label>Appointment Details</label>
-                        <div class="form-control" type="" name="date" id="date"></div>
+                        <div class="form-control" type="text" disabled name="details" id="details">{{ RescheduleData.details }}</div>
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                         <label>Preferred Time *</label>
                         <select class="form-control" id="preferred_time" name="preferred_time" required v-model="RescheduleData.preferred_time" :class="{'is-invalid' : RescheduleData.errors.has('preferred_time') }">
                             <option value=''>---Select Preferred Timing---</option>
-                            <option value="Female">Morning (9am - 11am)</option>
+                            <option v-for="reschedule in schedules" :value="reschedule.schedule">{{reschedule.schedule}}</option>
                             <option value="Male">Mid Day (11am - 1pm)</option>
                             <option value="Male">Afternoon (1pm - 3pm)</option>
                         </select>
@@ -67,7 +67,7 @@
                     </div>
                 </div>
             </div>
-            <paystack style="margin-auto;" class="btn btn-primary" type="button" :amount="this.RescheduleData.amount * 100" :email="RescheduleData.email" :paystackkey="PUBLIC_KEY" :callback="processAppointment" :close="close" :reference="genRef()" :embed="false" :disabled="terms == 0 || RescheduleData.email == '' || RescheduleData.first_name == '' || RescheduleData.last_name == '' || RescheduleData.schedule == ''">PAY NGN {{this.RescheduleData.amount}} Online</paystack>
+            <paystack style="margin-auto;" class="btn btn-primary" type="button" :amount="this.RescheduleData.amount * 100" :email="RescheduleData.email" :paystackkey="PUBLIC_KEY" :callback="processAppointment" :close="close" :reference="genRef()" :embed="false" :disabled="terms == 0 || RescheduleData.preferred_date == '' || RescheduleData.email == '' || RescheduleData.full_name == ''">PAY NGN {{this.RescheduleData.amount}} Online</paystack>
         </form>
     </div>
     <div class="card-footer">
@@ -83,25 +83,27 @@ export default {
     },
     data(){
         return  {
+            appointment: {},
             terms: 0,
             today: '',
-            PUBLIC_KEY: "pk_live_9e3c92567f7ad310ae7c28e248b8edb67ca2661a",
+            PUBLIC_KEY:"pk_live_bc0ac48a98f4c026984d05bfc30908c2cd6cdfa3",
             amount: 0,
             nations: [],
             schedules: [],
             services: [], 
             RescheduleData: new Form({
                 tracking_id: '', 
-                appointment_id:'', 
+                appointment_id:'',
+                email: 'adenadet01@gmail.com',
+                amount: '15000',
                 preferred_date:'', 
                 preferred_time: '',
                 amount: '',
-                email:'',
-                first_name:'', 
-                last_name: '',
+                full_name: '',
                 payment_method:'',
                 payment_reference: '',
                 payment_transaction: '',
+                details: '',
             }),
         }
     },
@@ -127,7 +129,7 @@ export default {
         },
         createApplicant(){
             this.$Progress.start();
-            this.RescheduleData.post('/api/scheduler')
+            this.RescheduleData.put('/api/scheduler/'+this.RescheduleData.tracking_id)
             .then(response =>{
                 this.$Progress.finish();
                 Fire.$emit('refreshAppointment', response);
@@ -165,16 +167,11 @@ export default {
                 toast.fire({icon: 'error', title: 'Your appointments did not loaded successfully',})
             });
         },
-       
         isWeekend(date){
             var cast = new Date(date)
             console.log(cast);
             console.log(cast.getDay() === 6 || cast.getDay() === 0);
             return cast.getDay() === 6 || cast.getDay() === 0;
-        },
-        refreshScheduler(response){
-            this.services = response.data.services;
-            this.nations = response.data.nations;
         },
         processAppointment(response){
             if (response.message == "Approved"){
@@ -193,20 +190,50 @@ export default {
             console.log(response);
             this.RescheduleData.payment_method = "Holding";
         },
+        refreshScheduler(response){
+            this.services = response.data.services;
+            this.nations = response.data.nations;
+        },
         searchAppointment(){
-            if (this.RescheduleData.tracking_id.length01234 >= 18){
-                alert("Processing");
-                //search for the tracking id
-
+            this.$Progress.start();
+            if (this.RescheduleData.tracking_id.length >= 18){
+                axios.get('/api/scheduler/'+this.RescheduleData.tracking_id)
+                .then(response =>{
+                    this.appointment = response.data.appointment;
+                    if (this.appointment == null){
+                        toast.fire({icon: 'error',title: 'No Appointment with this Tracking ID found',})
+                    }
+                    else{
+                        this.RescheduleData.details = this.appointment.patient.first_name+' '+this.appointment.patient.last_name+' | '+this.appointment.service.name+' scheduled for '+this.appointment.date;
+                        this.RescheduleData.full_name = this.appointment.patient.first_name+' '+this.appointment.patient.last_name;
+                        this.RescheduleData.email = Math.random().toString(36).substring(2,3)+this.appointment.patient.email
+                        var dob = new Date(this.appointment.patient.dob);
+                        var month_diff = Date.now() - dob.getTime();  
+                        var age_dt = new Date(month_diff);   
+                        var year = age_dt.getUTCFullYear();  
+                        var age = Math.abs(year - 1970);  
+            
+                        if (age >= 11){this.RescheduleData.amount = 15000;}
+                        else {this.RescheduleData.amount = 7500;}
+                    }
+                    this.$Progress.finish();
+                })
+                .catch(()=>{
+                    this.$Progress.fail();
+                    toast.fire({
+                        icon: 'error',
+                        title: 'No Appointment with this Tracking ID found',
+                    })
+                });
             }
         },
         searchSchedule(){
             if (this.isWeekend(this.RescheduleData.preferred_date)){
                 alert("Weekend not available for selection");
-                this.RescheduleData.date = "";
+                this.RescheduleData.preferred_date = "";
                 return;
             }
-            axios.get('/api/schedules?service_id='+this.RescheduleData.service_id+'&date='+this.RescheduleData.preferred_date)
+            axios.get('/api/schedules?service_id='+3+'&date='+this.RescheduleData.preferred_date)
             .then(response =>{
                 this.schedules = response.data.schedules;
                 this.$Progress.finish();

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Appointment Confirmation</title>
+        <title>Re: Appointment Confirmation</title>
     </head>
     <body>
         <h1>Hello {{$appointment->patient->first_name}}</h1>
         <p>Thank you for choosing St. Nicholas Hospital.</p>
-        <p>Your appointment for {{$appointment->service->name}} is confirmed.</p>
+        <p>Your appointment for {{$appointment->service->name}} has been scheduled.</p>
         <p>Below are the details:<br />
             Name: {{$appointment->patient->last_name}}, {{$appointment->patient->first_name}} {{$appointment->patient->middle_name}}<br />
             Venue: 57, Campbell Street, Lagos Island, Lagos, Nigeria.<br />

@@ -10,7 +10,12 @@ Route::get('/patient', [App\Http\Controllers\HomeController::class, 'index'])->n
 Route::get('/uk-tb-screening', function () {return view('welcome');});
 Route::get('/uk-tb-cancellation', function () {return view('welcome');});
 Route::get('/uk-tb-reschedule', function () {return view('welcome');});
-Route::get('/certificates/{id}', function () {return view('welcome');});
+//Route::get('/certificates/{id}', function () {return view('welcome');});
+Route::get('/test/{id}', function () {return view('certificates.new2');});
+
+Route::resources([
+    'certificates' => 'App\Http\Controllers\CertificateController',
+]);
 
 Route::get('/clear-cache', function() {
     //$exitCode = Artisan::call('cache:clear');

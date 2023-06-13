@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\EMR\Appointment;
+use App\Models\EMR\Cancellation;
 use App\Models\EMR\Patient;
 use App\Models\EMR\RadFinding;
 use App\Models\EMR\Schedule;
@@ -16,6 +17,7 @@ use App\Models\User;
 use App\Models\EMR\Payment;
 
 use App\Mail\RegistrationMail as RegMail;
+use App\Mail\RescheduleMail as ResMail;
 
 class RegistrationController extends Controller
 {
@@ -38,35 +40,14 @@ class RegistrationController extends Controller
             'schedule' => 'sometimes',
         ]);
 
-        $image_url = $currentPhoto = null;
-        $passport_image_url = $currentPassportPhoto = null;
-
-        if (($request['image'] != $currentPhoto) && ($request['image'] != '')){
-            $image = $request['id']."-".time().".".explode('/',explode(':', substr( $request['image'], 0, strpos($request['image'], ';')))[1])[1];
-            \Image::make($request['image'])->save(public_path('img/applicants/').$image);
-            $image_url = $image;
-            $old_image = public_path('img/applicants/').$currentPhoto;
-
-            if (file_exists($old_image)){ @unlink($old_image); }
-        }
-
-        if (($request['passport_image'] != $currentPhoto) && ($request['passport_image'] != '')){
-            $image = $request['id']."-".time().".".explode('/',explode(':', substr( $request['passport_image'], 0, strpos($request['passport_image'], ';')))[1])[1];
-            \Image::make($request['passport_image'])->save(public_path('img/passports/').$image);
-            $passport_image_url = $passport_image;
-            $old_image = public_path('img/passports/').$currentPassportPhoto;
-
-            if (file_exists($old_image)){ @unlink($old_image); }
-        }
-        
         $patient = Patient::create([
             'last_name'     => $request->input('last_name'),
             'first_name'    => $request->input('first_name'),
             'middle_name'   => $request->input('middle_name'),
             'dob' => $request->input('dob'),
             'sex' => $request->input('sex'),
-            'image' => $image_url,
-            'passport_page' => $passport_image_url,
+            'image' => NULL,
+            'passport_page' => NULL,
             'lmp' => $request->input('lmp'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
@@ -105,6 +86,32 @@ class RegistrationController extends Controller
         $consultation = Appointment::where('id', '=', $appointment->id)->with(['service', 'patient', 'payment'])->first();
 
         \Mail::to($patient->email)->send(new RegMail($consultation));
+
+        $image_url = $currentPhoto = null;
+        $passport_image_url = $currentPassportPhoto = null;
+
+        if (($request['image'] != $currentPhoto) && ($request['image'] != '')){
+            $image = $request['id']."-".time().".".explode('/',explode(':', substr( $request['image'], 0, strpos($request['image'], ';')))[1])[1];
+            \Image::make($request['image'])->save(public_path('img/applicants/').$image);
+            $image_url = $image;
+            $old_image = public_path('img/applicants/').$currentPhoto;
+
+            if (file_exists($old_image)){ @unlink($old_image); }
+        }
+
+        if (($request['passport_image'] != $currentPhoto) && ($request['passport_image'] != '')){
+            $image = $request['id']."-".time().".".explode('/',explode(':', substr( $request['passport_image'], 0, strpos($request['passport_image'], ';')))[1])[1];
+            \Image::make($request['passport_image'])->save(public_path('img/passports/').$image);
+            $passport_image_url = $passport_image;
+            $old_image = public_path('img/passports/').$currentPassportPhoto;
+
+            if (file_exists($old_image)){ @unlink($old_image); }
+        }
+
+        $patient->image = $image_url;
+        $patient->passport_page = $passport_image_url;
+
+        $patient->save();
         
         return response()->json([
             'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
@@ -118,12 +125,34 @@ class RegistrationController extends Controller
 
     public function show($id)
     {
-        //
+        return response()->json([
+            'appointment' => Appointment::where('transaction_id', '=', $id)->where('status', '=', 1)->with(['service', 'patient', 'payment'])->first(),
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'preferred_date' => 'required|date',
+            'preferred_time' => 'required',
+            'tracking_id' => 'required'
+        ]);
+
+        $appointment = Appointment::where('transaction_id', '=', $request->input('tracking_id'))->with(['service', 'patient', 'payment'])->first();
+
+        $appointment->date = $request->input('preferred_date');
+        $appointment->schedule = $request->input('preferred_time');
+
+        $appointment->save();
+
+        $consultation = Appointment::where('id', '=', $appointment->id)->with(['service', 'patient', 'payment'])->first();
+
+        \Mail::to($appointment->patient->email)->send(new ResMail($consultation));
+
+        return response()->json([
+            'appointment' => Appointment::where('transaction_id', '=', $id)->with(['service', 'patient', 'payment'])->first(),
+            'message' => 'Cancelled successfully',
+        ]);
     }
 
     public function destroy($id)
@@ -134,7 +163,7 @@ class RegistrationController extends Controller
     public function schedules()
     {
       	$date = \Request::get('date');
-      	$public_holidays = ['2023-01-02', '2023-12-25', '2023-12-26', '2023-12-27'];
+      	$public_holidays = ['2023-01-02', '2023-06-28', '2023-06-29', '2023-06-30', '2023-07-19', '2023-10-02', '2023-09-23', '2023-09-23', '2023-12-24', '2023-12-25', '2023-12-26', '2023-12-27'];
         if (in_array($date, $public_holidays)){
         	$schedules = [];
         }
