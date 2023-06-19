@@ -14,6 +14,7 @@ import EServiceDetailPolicy          from '../eservices/front/details/Policy.vue
 import EServiceFormCancellation      from '../eservices/front/forms/Cancellation.vue';
 import EServiceFormDirect            from '../eservices/front/forms/Direct.vue';
 import EServiceFormReschedule        from '../eservices/front/forms/Reschedule.vue';
+import EServiceFormReschedules       from '../eservices/front/forms/Reschedules.vue';
 
 Vue.component('EServiceCertificate',            EServiceCertificate);
 Vue.component('EServiceCertificateBioData',     EServiceCertificateBioData);
@@ -28,11 +29,13 @@ Vue.component('EServiceDetailPolicy',           EServiceDetailPolicy);
 Vue.component('EServiceFormCancellation',       EServiceFormCancellation);
 Vue.component('EServiceFormDirect',             EServiceFormDirect);
 Vue.component('EServiceFormReschedule',         EServiceFormReschedule);
+Vue.component('EServiceFormReschedules',        EServiceFormReschedules);
 
 let routes = [
     {path:'/certificates/:id',      component: EServiceCertificate},
     {path:'/uk-tb-cancellation',    component: EServiceFormCancellation},
     {path:'/uk-tb-reschedule',      component: EServiceFormReschedule},
+    {path:'/uk-tb-reschedules',     component: EServiceFormReschedules},
     {path:'/uk-tb-screening',       component: EServiceFormDirect},
 ];
 

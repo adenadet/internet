@@ -84,7 +84,7 @@ export default {
             appointment: {},
             terms: 0,
             today: '',
-            PUBLIC_KEY:"pk_live_bc0ac48a98f4c026984d05bfc30908c2cd6cdfa3",
+            PUBLIC_KEY: "pk_live_9e3c92567f7ad310ae7c28e248b8edb67ca2661a",
             amount: 0,
             nations: [],
             schedules: [],
