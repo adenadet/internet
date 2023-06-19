@@ -42,8 +42,6 @@
                         <select class="form-control" id="preferred_time" name="preferred_time" required v-model="RescheduleData.preferred_time" :class="{'is-invalid' : RescheduleData.errors.has('preferred_time') }">
                             <option value=''>---Select Preferred Timing---</option>
                             <option v-for="reschedule in schedules" :value="reschedule.schedule">{{reschedule.schedule}}</option>
-                            <option value="Male">Mid Day (11am - 1pm)</option>
-                            <option value="Male">Afternoon (1pm - 3pm)</option>
                         </select>
                         <has-error :form="RescheduleData" field="preferred_time"></has-error> 
                     </div>

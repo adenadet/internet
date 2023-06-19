@@ -40,7 +40,7 @@
                                     <td>
                                         <div class="btn btn-group">
                                             <router-link :to="'/eservices/front_office/appointment/'+appointment.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
-                                            <a :href="'/eservices/certificate/'+appointment.id"><button class="btn btn-success btn-sm"><i class="fa fa-certificate"></i></button></a>
+                                            <a :href="'/certificates/'+appointment.id" target="_blank"><button class="btn btn-success btn-sm"><i class="fa fa-certificate"></i></button></a>
                                         </div> 
                                     </td>
                                 </tr>
