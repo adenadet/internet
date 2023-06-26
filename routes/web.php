@@ -16,7 +16,7 @@ Route::get('/test/{id}', function () {return view('certificates.new2');});
 
 Route::resources([
     'certificates' => 'App\Http\Controllers\CertificateController',
-]);
+]); 
 
 Route::get('/clear-cache', function() {
     //$exitCode = Artisan::call('cache:clear');
@@ -88,7 +88,6 @@ Route::middleware(['auth', 'role:Staff'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/applicants',         [App\Http\Controllers\ApplicantController::class, 'index'])->name('applicants');
-
     Route::get('/applicants/{any}',   [App\Http\Controllers\ApplicantController::class, 'index'])->where('any', '.*');
-
 });
+

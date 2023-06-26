@@ -83,6 +83,7 @@
                                                 <button v-show="appointment.status == 0" class="btn btn-success btn-sm" @click="makePayment(appointment)"><i class="fa fa-credit-card"></i></button>
                                                 <button v-show="appointment.status == 1" class="btn btn-success btn-sm"><i class="fa fa-file-pdf"></i></button>
                                                 <button v-show="appointment.status <= 1 || appointment.status == null" class="btn btn-default btn-sm" @click="rescheduleAppointment(appointment)"><i class="fa fa-calendar"></i></button>
+                                                <button v-show="appointment.status == 1" class="btn btn-warning btn-sm" @click="resendAppointment(appointment.id)"><i class="fa fa-envelope"></i></button>
                                                 <button v-show="appointment.status == 0" class="btn btn-danger btn-sm" @click="deleteAppointment(appointment.id)"><i class="fa fa-trash"></i></button>
                                             </div> 
                                         </td>
@@ -211,6 +212,32 @@ export default {
             $('#appointmentModal').modal('show');
             this.$Progress.finish();
         },
+        resendAppointment(id){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "The candidate would get a mail with the confirmation letter",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, resend confirmation!'
+                })
+            .then((result) => {
+                //Send Delete request
+                if(result.value){
+                    this.form.get('/api/emr/registrations/resend/'+id)
+                    .then(response=>{
+                        //if (response.data.status == 'error')
+                        Swal.fire(response.data.status, response.data.message, response.data.status);
+                        //this.refreshAppointments(response);   
+                    })
+                    .catch(()=>{
+                    Swal.fire({icon: 'error', title: 'Oops...', text: 'Something went wrong!', footer: '<a href>Why do I have this issue?</a>'});
+                    });
+                }
+            });
+        },
+        showReceipt(){},
     },
     props: {}
 }

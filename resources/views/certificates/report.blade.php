@@ -36,7 +36,7 @@
         </div>
         <div class="col-12">
             <div class="d-flex">
-                <i class="mr-1 {{(!is_null($appointment->report) && (($appointment->report->summary == 'not suggestive') ||($appointment->report->summary == 'normal'))) ? 'far fa-check':'fa fa-square'}}"></i>
+                <i class="mr-1 {{($appointment->consultation->decision == 8 ) || (!is_null($appointment->report) && (($appointment->report->summary == 'not suggestive') ||($appointment->report->summary == 'normal'))) ? 'fa fa-check':'far fa-square'}}"></i>
                 <label style="font-weight:normal !important; color: #222;"><small>No evidence of active pulmonary TB </small></label>
             </div>
         </div>

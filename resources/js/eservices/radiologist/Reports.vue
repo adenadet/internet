@@ -1,5 +1,6 @@
 <template>
 <div class="row clearfix">
+    <div class="col-lg-12"><EServiceFormSearch search_type="radiologist"/></div>
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
@@ -131,6 +132,10 @@ export default {
     },
     mounted() {
         this.getAllInitials();
+        Fire.$on('refreshAppointment', response => {
+            this.refresh(response);
+            $('#reportModal').modal('hide');
+        });
     },
 }
 </script>

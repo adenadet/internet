@@ -1,5 +1,6 @@
 <template>
     <div class="row clearfix">
+        <div class="col-lg-12"><EServiceFormSearch search_type="radiologist"/></div>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
@@ -53,22 +54,6 @@
             }
         },
         methods:{
-            addReport(){
-                this.$Progress.start();
-                this.editMode = false;
-                this.report = {};
-                Fire.$emit('ReportDataFill', {});
-                $('#reportModal').modal('show');
-                this.$Progress.finish();
-            },
-            editReport(report){
-                this.$Progress.start();
-                this.editMode = true;
-                this.report = report;
-                Fire.$emit('ReportDataFill', report);
-                $('#reportModal').modal('show');
-                this.$Progress.finish();
-            },
             getAllInitials(){
                 this.$Progress.start();
                 axios.get('/api/emr/radiologists/reviews').then(response =>{
@@ -96,17 +81,13 @@
             refresh(response){
                 this.reports = response.data.reports;
             },
-            seeReport(report){
-                this.$Progress.start();
-                this.report = report;
-                //Fire.$emit('ReportRefresh', report)
-                Fire.$emit('AssignUsers', report.assignees);
-                Fire.$emit('ReportRefresh', this.report);
-                this.$Progress.finish();
-            },
         },
         mounted() {
             this.getAllInitials();
+            Fire.$on('refreshAppointment', response => {
+                this.refresh(response);
+                $('#reportModal').modal('hide');
+            });
         },
     }
     </script>

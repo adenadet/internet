@@ -13,9 +13,11 @@ Route::group(['prefix'=>'emr'], function () {
     Route::get('/consultations/reviews', 'ConsultationController@reviews')->name('consultations.reviews');
     Route::get('/consultations/search', 'ConsultationController@search')->name('consultations.search');
     Route::get('/radiologists/reviews', 'RadiologistController@reviews')->name('radiologists.reviews');
+    Route::get('/registrations/resend/{id}', 'RegistrationController@resend')->name('registration.resend');
     Route::get('/patients/search', 'PatientController@search')->name('patients.search');
     Route::post('/appointments/search', 'AppointmentController@search_appointment')->name('appointments.search');
     Route::post('/consultations/search', 'ConsultationController@search_appointment')->name('consultations.search');
+    Route::post('/radiologists/search', 'RadiologistController@search_appointment')->name('radiologists.search');
 
     Route::apiResources([
         'appointments'  => 'AppointmentController',
@@ -24,7 +26,6 @@ Route::group(['prefix'=>'emr'], function () {
         'laboratories'  => 'LaboratoryController',
         'patients'      => 'PatientController',
         'payments'      => 'PaymentController',
-        'schedulers'    => 'SchedulerController',
         'radiologists'  => 'RadiologistController',
     ]);
 });

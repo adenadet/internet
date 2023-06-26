@@ -224,8 +224,6 @@ class AppointmentController extends Controller
 
         return response()->json([
             'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first(),
-            //'findings'    => RadFinding::all(),
-            //'nations'   => Country::orderBy('name', 'ASC')->get(), 
         ]);
 
     }
@@ -243,7 +241,7 @@ class AppointmentController extends Controller
         ->whereDate('date', '=', date('Y-m-d'))
         ->where('status_end', '!=', 1)
         ->with(['front_officer', 'medical_officer', 'radiologist','lab_officer', 'service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])
-        ->orderBy('date', 'DESC')->paginate(3);
+        ->orderBy('date', 'DESC')->paginate(30);
         
         return response()->json([
             'appointments' => $appointments

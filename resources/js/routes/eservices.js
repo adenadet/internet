@@ -21,6 +21,7 @@ import EServiceFrontAdminAppointments from '../eservices/front_admin/Appointment
 
 import EServiceDocConsultation       from '../eservices/doctor/Consultation.vue';
 import EServiceDocConsultations      from '../eservices/doctor/Consultations.vue';
+import EServiceDocConsultationSingle from '../eservices/doctor/ConsultationSingle.vue';
 import EServiceDocConsentView        from '../eservices/doctor/ConsentView.vue';
 import EServiceDocConsultationView   from '../eservices/doctor/ConsultationView.vue';
 import EServiceDocIssueView          from '../eservices/doctor/IssueView.vue';
@@ -43,6 +44,7 @@ import EServiceRadReviews            from '../eservices/radiologist/Reviews.vue'
     import EServiceFormSearch           from '../eservices/front/forms/Search.vue';
 
     import EServiceDocFormConsent              from '../eservices/doctor/forms/Consent.vue';
+    import EServiceDocFormConsentPad           from '../eservices/doctor/forms/ConsentPad.vue';
     import EServiceDocFormIssue                from '../eservices/doctor/forms/Issue.vue';
     import EServiceDocFormLaboratory           from '../eservices/doctor/forms/Laboratory.vue';
     import EServiceDocFormScreening            from '../eservices/doctor/forms/Screening.vue';
@@ -70,6 +72,7 @@ Vue.component('EServiceFrontAdminAppointments',  EServiceFrontAdminAppointments)
 
 Vue.component('EServiceDocConsultation',         EServiceDocConsultation);
 Vue.component('EServiceDocConsultations',        EServiceDocConsultations);
+Vue.component('EServiceDocConsultationSingle',   EServiceDocConsultationSingle);
 Vue.component('EServiceDocConsentView',          EServiceDocConsentView);
 Vue.component('EServiceDocConsultationView',     EServiceDocConsultationView);
 Vue.component('EServiceDocIssueView',            EServiceDocIssueView);
@@ -92,6 +95,7 @@ Vue.component('EServiceRadReviews',              EServiceRadReviews);
     Vue.component('EServiceFormSearch',          EServiceFormSearch);
 
     Vue.component('EServiceDocFormConsent',      EServiceDocFormConsent);
+    Vue.component('EServiceDocFormConsentPad',   EServiceDocFormConsentPad);
     Vue.component('EServiceDocFormIssue',        EServiceDocFormIssue);
     Vue.component('EServiceDocFormLaboratory',   EServiceDocFormLaboratory);
     Vue.component('EServiceDocFormScreening',    EServiceDocFormScreening);
@@ -104,6 +108,7 @@ let routes = [
     {path: '/eservices/certificate/:id',                component:EServiceCertificate},
     {path: '/eservices/doctor',                         component:EServiceDocConsultations},
     {path: '/eservices/doctor/consultations',           component:EServiceDocConsultations},
+    {path: '/eservices/doctor/consultations/:id',       component:EServiceDocConsultationSingle},
     {path: '/eservices/doctor/consultation/:id',        component:EServiceDocConsultation},
     //{path: '/eservices/doctor/laboratory',              component:EServiceDocLaboratory},
     {path: '/eservices/doctor/reviews',                 component:EServiceDocReviews},

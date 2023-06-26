@@ -160,6 +160,34 @@ class RegistrationController extends Controller
         //
     }
 
+    public function resend($id)
+    {
+        $appointment = Appointment::where('id', '=', $id)->first();
+        $payment = Payment::where('appointment_id', '=', $id)->first();
+
+        if ((is_null($appointment)) || (is_null($payment))){
+            return response()->json([
+                'message' => 'Appointment has not been paid or does not exist',
+                'status' => 'error',
+            ]);
+        }
+
+        $appointment->transaction_id = "SNH-".$appointment->id."-".$payment->id."-".$appointment->patient_id;
+        $appointment->save();
+
+        $consultation = Appointment::where('id', '=', $appointment->id)->with(['service', 'patient', 'payment'])->first();
+        if(is_null($consultation->patient->email)){
+            return response()->json([
+                'message' => 'Patient does not have a valid email address',
+                'status' => 'error',
+            ]);
+        }
+        \Mail::to($consultation->patient->email)->send(new RegMail($consultation));
+        return response()->json([
+            'message' => 'Mail has been resent successfully',
+            'status' => 'success',
+        ]);
+    }
     public function schedules()
     {
       	$date = \Request::get('date');
@@ -168,7 +196,7 @@ class RegistrationController extends Controller
         	$schedules = [];
         }
         else if (($date = \Request::get('date')) && ($service_id = \Request::get('service_id'))){
-            $taken = Appointment::select('schedule')->where([['date', '=', $date], ['service_id', '=', $service_id]])->get();
+            $taken = Appointment::select('schedule')->where([['date', '=', $date]])->get();
             $schedules = Schedule::select('schedule')->where('service_id', '=', $service_id)->whereNotIn('schedule', $taken)->get();
             }
         else{

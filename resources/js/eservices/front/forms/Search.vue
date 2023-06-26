@@ -1,5 +1,5 @@
 <template>
-<section class="card card-primary row clearfix">
+<section class="card card-primary">
     <div class="card-header">Appointment Search</div>
     <div class="card-body">
         <div class="col-md-12">
@@ -53,7 +53,7 @@ export default {
             var route = '';
             if (this.search_type == "consultations"){ route = '/api/emr/consultations/search';}
             else if (this.search_type == "consultations"){ route = '/api/emr/appointments/search';}
-            else if (this.search_type == "consultations"){ route = '/api/emr/appointments/search';}
+            else if (this.search_type == "radiologist"){ route = '/api/emr/radiologists/search';}
             else{ route = '/api/emr/appointments/search';}
             this.searchData.post(route)
             .then(response => {

@@ -23,7 +23,6 @@ class RadiologistController extends Controller
     public function index()
     {
         return response()->json([
-            'applicants'    => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
             'findings'      => RadFinding::orderBy('code', 'ASC')->get(), 
             'reports'       => Appointment::whereNull('radiologist_id')->Where('status', '=', 6)->with(['service', 'patient',])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(10),
             'nations'       => Country::orderBy('name', 'ASC')->get(),   
@@ -69,6 +68,34 @@ class RadiologistController extends Controller
         return response()->json([
             'findings'      => RadFinding::orderBy('code', 'ASC')->get(), 
             'report'        => Appointment::where('id',$request->input('appointment_id'))->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee' ])->first(),
+        ]);
+    }
+
+    public function search_appointment(Request $request)
+    {
+        $this->validate($request, [
+            'patient' => 'required',
+            'start_date' => 'nullable | sometimes | date',
+            'end_date' => 'nullable | sometimes | date',
+        ]);
+        //Search for Patients
+        $search = $request->input('patient');
+
+        $patients = Patient::select('id')->orderBy('first_name', 'ASC')->where(function($query) use ($search){
+            $query->where('first_name', 'LIKE', "%$search%")
+            ->orWhere('middle_name', 'LIKE', "%$search%")
+            ->orWhere('last_name', 'LIKE', "%$search%")
+            ->orWhere('email', 'LIKE', "%$search%");
+        })->get();
+
+        $app_query = Appointment::whereIn('patient_id', $patients)->where('status', '>=', 6);
+        if (!is_null($request->input('start_date'))){$app_query->whereDate('date', '>=', $request->input('start_date'));}
+        if (!is_null($request->input('end_date'))){$app_query->whereDate('date', '<=', $request->input('end_date'));}
+        $reports = $app_query->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->paginate(30);
+
+        return response()->json([
+            'findings'      => RadFinding::orderBy('code', 'ASC')->get(), 
+            'reports'       => $reports,
         ]);
     }
 
