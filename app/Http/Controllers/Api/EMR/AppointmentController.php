@@ -199,7 +199,7 @@ class AppointmentController extends Controller
 
         $appointment = Appointment::find($id);
 
-        $appointment->issuer = 1;
+        $appointment->issuer = auth('api'->id());
         $appointment->issue_action = $request->input('issue_action');
         $appointment->issue_detail = $request->input('issue_detail');
         $appointment->issue_at =date('Y-m-d H:i:s');
