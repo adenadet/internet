@@ -21,10 +21,10 @@ class NormalMail extends Mailable
 
     public function build()
     {
-        $pdf = \PDF::loadView('certificates.horizontal', $this->appointment->toArray());
+        //$pdf = \PDF::loadView('certificates.horizontal', $this->appointment->toArray());
 
         return $this->subject('UK TB Screening Certificate from St. Nicholas Hospital')
-        ->view('mails.certificates.horizontal')
-        ->attachData($pdf->output(), "Certificate for UK TB Screening for ".$this->appointment->patient->first_name." ".$this->appointment->patient->last_name);
+        ->view('mails.certificates.normal');
+        //->attachData($pdf->output(), "Certificate for UK TB Screening for ".$this->appointment->patient->first_name." ".$this->appointment->patient->last_name);
     }
 }

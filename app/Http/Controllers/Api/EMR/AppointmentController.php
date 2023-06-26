@@ -210,6 +210,12 @@ class AppointmentController extends Controller
         $consultation = Appointment::where('id', '=', $id)->with(['service', 'patient'])->first()->toArray();
         $app = Appointment::where('id', '=', $id)->with(['service', 'patient'])->first();
 
+        if (is_null($app)){
+            return response()->json([
+                'message' => 'Error invalid ID',
+            ]);
+        }
+
         /* Option 1, Not interacting with the template for now
         $pdf = \PDF::loadView('certificates.normal', $consultation);
 
