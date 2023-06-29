@@ -37,6 +37,7 @@
                                         <td>
                                             <div class="btn btn-group">
                                                 <router-link :to="'/eservices/doctor/consultation/'+consultation.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
+                                                <a v-if="consultation.status == 4" :href="'/eservices/doctor/consent/'+consultation.id"><button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button></a>
                                             </div> 
                                         </td>
                                     </tr>

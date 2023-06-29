@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\EMR;
 
 use App\Http\Controllers\Controller;
+use App\Models\EMR\Appointment;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
@@ -21,6 +22,17 @@ class ServiceController extends Controller
             'page_title' => 'E-Services | Certificate',
         ];
         return view('eservices')->with($params);
+    }
+
+    public function consent($id)
+    {
+        $appointment = Appointment::where('id', '=', $id)->with(['front_officer', 'service', 'patient.nationality', 'consent' ])->first();
+
+        $params = [
+            'page_title' => 'E-Services | Consent Form',
+            'appointment' => $appointment,
+        ];
+        return view('consent')->with($params);
     }
 
     public function front()
