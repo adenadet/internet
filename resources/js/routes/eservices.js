@@ -1,6 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import EServiceAdminDashboard        from '../eservices/admin/Dashboard.vue';
+import EServiceAdminReportDetailed   from '../eservices/admin/Detailed.vue';
+import EServiceAdminReportSummary    from '../eservices/admin/Summary.vue';
+Vue.component('EServiceAdminDashboard',             EServiceAdminDashboard);
+Vue.component('EServiceAdminReportDetailed',        EServiceAdminReportDetailed);
+Vue.component('EServiceAdminReportSummary',         EServiceAdminReportSummary);    
+
 import EServiceCertificate           from '../eservices/certificates/Certificate.vue';
 import EServiceCertificateBioData    from '../eservices/certificates/BioData.vue';
 import EServiceCertificateFooter     from '../eservices/certificates/Footer.vue';
@@ -105,6 +112,12 @@ Vue.component('EServiceRadReviews',              EServiceRadReviews);
 
 let routes = [
     //EServices Links   
+    {path: '/eservices/administrator',                  component:EServiceAdminDashboard},
+    {path: '/eservices/administrator/dashboard',        component:EServiceAdminDashboard},
+    {path: '/eservices/administrator/detailed_reports', component:EServiceAdminReportDetailed},
+    {path: '/eservices/administrator/summary_reports',  component:EServiceAdminReportSummary},
+    {path: '/eservices/administrator/dashboard',        component:EServiceAdminDashboard},
+
     {path: '/eservices/certificate/:id',                component:EServiceCertificate},
     {path: '/eservices/doctor',                         component:EServiceDocConsultations},
     {path: '/eservices/doctor/consultations',           component:EServiceDocConsultations},

@@ -19,8 +19,11 @@ Route::group(['prefix'=>'emr'], function () {
     Route::post('/consultations/search', 'ConsultationController@search_appointment')->name('consultations.search');
     Route::post('/radiologists/search', 'RadiologistController@search_appointment')->name('radiologists.search');
     Route::post('/consents/signature', 'ConsentController@signature')->name('consents.signature');
+    Route::post('/admin/summary_report', 'AdminController@summary_report')->name('administrator.summary_report');
+    Route::post('/admin/detailed_report', 'AdminController@detailed_report')->name('administrator.detailed_report');
 
     Route::apiResources([
+        'administrator' => 'AdminController',
         'appointments'  => 'AppointmentController',
         'consents'      => 'ConsentController',
         'consultations' => 'ConsultationController',
