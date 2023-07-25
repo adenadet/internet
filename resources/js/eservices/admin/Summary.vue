@@ -74,8 +74,8 @@
                             <tbody v-else-if="report_type == 'all' && reports != null">
                                 <tr v-for="(report, index) in reports" :key="index">
                                     <td>{{index | addOne}}</td>
-                                    <td>{{report.end_date | excelDate}}</td>
-                                    <td>{{report.total_}}</td>
+                                    <td>{{report.date | excelDate}}</td>
+                                    <td>{{report.total}}</td>
                                     <td>{{report.x_ray}}</td>
                                     <td>{{report.sputum}}</td>
                                     <td>{{report.kid_under_11}}</td>
@@ -86,7 +86,7 @@
                             <tbody v-else-if="report_type == 'pending' && reports != null">
                                 <tr v-for="(report, index) in reports" :key="index">
                                     <td>{{index | addOne}}</td>
-                                    <td>{{report.date | excelDate}}</td>
+                                    <td>{{report.end_date}}</td>
                                     <td>{{report.total_no}}</td>
                                     <td>{{report.total_amount | currency}}</td>
                                     <td>{{report.no_kids}}</td>

@@ -25,7 +25,7 @@ class AppointmentController extends Controller
     public function index()
     {
         return response()->json([
-            'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
+            //'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
             'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(30),
             'nations' => Country::orderBy('name', 'ASC')->get(),   
             'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
@@ -37,7 +37,7 @@ class AppointmentController extends Controller
     public function initials()
     {
         return response()->json([
-            'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('fir`st_name', 'ASC')->with(['area', 'state',])->get(),
+            //'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('fir`st_name', 'ASC')->with(['area', 'state',])->get(),
             'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(10),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
@@ -66,7 +66,7 @@ class AppointmentController extends Controller
         ]);
 
         return response()->json([
-            'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
+            //'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
             'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(50),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
@@ -105,7 +105,7 @@ class AppointmentController extends Controller
         $appointment->save();
 
         return response()->json([
-            'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
+            //'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
             'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(50),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
@@ -140,7 +140,7 @@ class AppointmentController extends Controller
             //$appointment->save();
 
             return response()->json([
-                'applicants' => Patient::orderBy('created_at', 'DESC')->with(['nationality',])->paginate(100),
+                //'applicants' => Patient::orderBy('created_at', 'DESC')->with(['nationality',])->paginate(100),
                 'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(50),
                 'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
                 'services' => Service::orderBy('name', 'ASC')->get(),
@@ -199,7 +199,7 @@ class AppointmentController extends Controller
 
         $appointment = Appointment::find($id);
 
-        $appointment->issuer = auth('api'->id());
+        $appointment->issuer = auth('api')->id();
         $appointment->issue_action = $request->input('issue_action');
         $appointment->issue_detail = $request->input('issue_detail');
         $appointment->issue_at =date('Y-m-d H:i:s');
