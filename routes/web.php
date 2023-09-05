@@ -10,7 +10,7 @@ Route::get('/patient', [App\Http\Controllers\HomeController::class, 'index'])->n
 Route::get('/uk-tb-screening', function () {return view('welcome');});
 Route::get('/uk-tb-cancellation', function () {return view('welcome');});
 //Route::get('/uk-tb-reschedule', function () {return view('welcome');});
-//Route::get('/uk-tb-reschedules', function () {return view('welcome');});
+Route::get('/uk-tb-reschedules', function () {return view('welcome');});
 //Route::get('/certificates/{id}', function () {return view('welcome');});
 Route::get('/test/{id}', function () {return view('certificates.new2');});
 
@@ -48,7 +48,7 @@ Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Co
     Route::get('/doctor',                 'ServiceController@medical');
     Route::get('/radiologist',            'ServiceController@radiologist');
     Route::get('/doctor/consent/{id}',    'ServiceController@consent');
-
+    Route::post('/doctor/consents',        'ServiceController@consent_save');
 
     Route::get('/administrator/{any}',    'ServiceController@administrator')->where('any', '.*');
     Route::get('/certificate/{any}',      'ServiceController@certificate')->where('any', '.*'); 

@@ -21,7 +21,7 @@
             Tracking ID: {{$appointment->transaction_id}}<br />
             In subsequent communications, kindly make use of the Tracking ID. 
         </p>
-        <p>Come along with a printed copy of this mail, your valid travel documents (i.e. International Passport) as well as your payment receipt (i.e. Paystack receipt).</p>
+        <p>Come along with a printed copy of this mail and  your valid travel documents (i.e. International Passport).</p>
         <p>Thank you</p>
     </body>
 </html>

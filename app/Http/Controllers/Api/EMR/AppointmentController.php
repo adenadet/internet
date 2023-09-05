@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\EMR;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\EMR\Appointment;
 use App\Models\EMR\Patient;
@@ -18,6 +19,7 @@ use App\Models\User;
 use Dompdf\Adapter\PDFLib;
 use PDF;
 use Mail;
+use App\Mail\Certificate\AbnormalMail;
 use App\Mail\Certificate\NormalMail;
 
 class AppointmentController extends Controller
@@ -25,9 +27,8 @@ class AppointmentController extends Controller
     public function index()
     {
         return response()->json([
-            //'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
-            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(30),
-            'nations' => Country::orderBy('name', 'ASC')->get(),   
+            'appointments'  => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(30),
+            'nations'       => Country::orderBy('name', 'ASC')->get(),   
             'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
             'services'      => Service::orderBy('name', 'ASC')->get(),   
             'findings'      => RadFinding::all(),
@@ -37,7 +38,6 @@ class AppointmentController extends Controller
     public function initials()
     {
         return response()->json([
-            //'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('fir`st_name', 'ASC')->with(['area', 'state',])->get(),
             'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(10),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
@@ -63,10 +63,10 @@ class AppointmentController extends Controller
             'schedule'   => $request->input('schedule'),
             'status'     => 0,
             'created_by' => auth('api')->id(),
+            'updated_by' => auth('api')->id(),
         ]);
 
         return response()->json([
-            //'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
             'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(50),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
@@ -100,12 +100,11 @@ class AppointmentController extends Controller
         $appointment->service_id = $request->input('service_id');
         $appointment->date = $request->input('date');
         $appointment->schedule = $request->input('schedule');
-        //$appointment->updated_by = auth('api')->id();
+        $appointment->updated_by = auth('api')->id();
 
         $appointment->save();
 
         return response()->json([
-            //'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
             'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(50),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
@@ -131,13 +130,6 @@ class AppointmentController extends Controller
             $appointment->save();
 
             $message = "Appointment was deleted successfully";
-
-            //$appointment = Appointment::find($id);
-
-            //$appointment->deleted_by = auth('api')->id();
-            //$appointment->deleted_at = date('Y-m-d H:i:s');
-
-            //$appointment->save();
 
             return response()->json([
                 //'applicants' => Patient::orderBy('created_at', 'DESC')->with(['nationality',])->paginate(100),
@@ -193,13 +185,13 @@ class AppointmentController extends Controller
     public function issue(Request $request, $id)
     {
         $this->validate($request, [
-            'issue_action' => 'sometimes',
-            'issue_detail' => 'sometimes',
+            'issue_action' => 'required',
+            'issue_detail' => 'required',
         ]);
 
         $appointment = Appointment::find($id);
 
-        $appointment->issuer = auth('api')->id();
+        $appointment->issuer = auth('api')->id() ?? Auth::id();
         $appointment->issue_action = $request->input('issue_action');
         $appointment->issue_detail = $request->input('issue_detail');
         $appointment->issue_at =date('Y-m-d H:i:s');
@@ -226,8 +218,13 @@ class AppointmentController extends Controller
         });*/
 
         /* Option 2, Using Mail */
-        \Mail::to($app->patient->email)->send(new NormalMail($app));
+        if ($request->input('issue_action') == 'certificate'){
+            \Mail::to($app->patient->email)->send(new NormalMail($app));
+        }
 
+        else{
+            \Mail::to($app->patient->email)->send(new AbnormalMail($app));
+        }
         return response()->json([
             'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first(),
         ]);

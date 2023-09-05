@@ -98,7 +98,8 @@
             <div class="alert alert-success" role="alert" id="successMsg" style="display: none" >
             Saved! <a href="/eservices/doctor/consultation/{{$appointment->id}}" class="btn btn-primary btn-sm">Continue to Consultation</a> 
             </div>
-           <form name="FORM1" id="SubmitForm" method="post" action="/api/emr/consents/signature">
+           <form name="FORM1" id="SubmitForm" method="post" action="/eservices/doctor/consents">
+            @csrf
                 <div class="card row p-3">
                     <h3>Annex F: Consent Form</h3>
                     <p>UNITED KINGDOM PRE-ENTRY TUBERCULOSIS SCREENING PROGRAMME</p>
