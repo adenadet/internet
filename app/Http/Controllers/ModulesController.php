@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lms\Lesson;
+use App\Models\Policy\Policy;
 use Illuminate\Http\Request;
 
 class ModulesController extends Controller
@@ -58,6 +60,16 @@ class ModulesController extends Controller
             'page_title' => 'Policies',
         ];
         return view('policies')->with($params);
+    }
+
+    public function policy_reader($id)
+    {
+
+        $params = [
+            'page_title' => 'Policies',
+            'policy' => Policy::where('id', '=', $id)->first(),
+        ];
+        return view('policies.reader')->with($params);
     }
 
     public function profile()

@@ -30,20 +30,10 @@
     </div>
     <div class="col-12" v-show="lesson != '' && typeof (lesson) != 'undefined' && lesson.created_at != null && lesson != null">
         <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Lesson Details</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" title="Collapse"><i class="fas fa-minus"></i></button>
-                    <button type="button" class="btn btn-tool" title="Remove"><i class="fas fa-times"></i></button>
-                </div>
-            </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-12 col-lg-8">
-                        <h3 class="text-primary">Student's View</h3>
-                        <StudentLessonDetail :lesson="lesson" />
-                    </div>
-                    <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                    
+                    <div class="col-12 col-md-12 order-1 order-md-2">
                         <h3 class="text-primary"><i class="fas fa-paint-brush"></i> Reports</h3>
                         <p class="text-muted"></p>
                         <br>
@@ -58,7 +48,7 @@
                             <li v-show="lesson.file !== null"><a target="_blank" :href="lesson.file" class="btn-link text-secondary"><i class="far fa-fw fa-file-pdf"></i> </a></li>
                         </ul>
                         <div class="text-center mt-5 mb-3">
-                            <router-link :to="'/learn/tutor_area/exam/'+this.lesson.exam.id" v-if="lesson.exam != null" class="btn btn-sm btn-success">View Exam</router-link>
+                            <a :href="'/learn/tutor_area/exam/'+this.lesson.exam.id" v-if="lesson.exam != null" class="btn btn-sm btn-success">View Exam</a>
                             <button v-else-if="lesson.exam == null" class="btn btn-sm btn-default" @click="addExam">Add Exam</button>
                             <button class="btn btn-sm btn-warning" @click="editLesson">Edit Module</button>
                         </div>

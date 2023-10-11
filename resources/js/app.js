@@ -9,6 +9,11 @@ import Vue from 'vue';
 //import 'vue-pdf-reader/dist/vue-pdf-reader.min.css';
 //Vue.component(VuePdfReader);
 
+//import VuePdfApp from "vue-pdf-app";
+// import this to use default icons for buttons
+//import "vue-pdf-app/dist/icons/main.css";
+//Vue.vue(VuePdfApp);
+
 //Import Progress Bar
 import VueProgressBar from 'vue-progressbar';
 Vue.use(VueProgressBar, {color: 'rgb(255, 255, 19)', failedColor: 'red', height: '5px',});

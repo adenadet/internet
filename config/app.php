@@ -69,6 +69,7 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+        Davcpas1234\LaravelPdfViewer\LaravelPdfViewerServiceProvider::class,
     ],
 
     'aliases' => [

@@ -25,7 +25,7 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="text-right">
-                                        <router-link :to="policy.policy != null ? '/policies/view/'+policy.policy.id : '/policies/'"><button class="btn btn-sm btn-primary" title="Read"><i class="fa fa-eye"></i></button></router-link>
+                                        <a :href="policy.policy != null ? '/policies/view/'+policy.policy.id : '/policies/'"><button class="btn btn-sm btn-primary" title="Read"><i class="fa fa-eye"></i></button></a>
                                     </div>
                                 </div>
                             </div>

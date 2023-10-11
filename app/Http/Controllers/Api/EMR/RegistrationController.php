@@ -19,6 +19,7 @@ use App\Models\EMR\Payment;
 use App\Mail\RegistrationMail as RegMail;
 use App\Mail\RescheduleMail as ResMail;
 
+
 class RegistrationController extends Controller
 {
     public function index()
@@ -85,7 +86,16 @@ class RegistrationController extends Controller
 
         $consultation = Appointment::where('id', '=', $appointment->id)->with(['service', 'patient', 'payment'])->first();
 
-        \Mail::to($patient->email)->send(new RegMail($consultation));
+        $dayOfWeek = date('w', strtotime($request->input('date')));
+        if ($dayOfWeek != 0 || $dayOfWeek != 6) {
+            \Mail::to($patient->email)->send(new RegMail($consultation));
+            return response()->json([
+                'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
+                'services' => Service::orderBy('name', 'ASC')->get(),
+                'nations' => Country::orderBy('name', 'ASC')->get(), 
+                'patients' => Patient::orderBy('last_name', 'ASC')->get()     
+            ]);
+        }
 
         $image_url = $currentPhoto = null;
         $passport_image_url = $currentPassportPhoto = null;
@@ -102,20 +112,16 @@ class RegistrationController extends Controller
         if (($request['passport_image'] != $currentPhoto) && ($request['passport_image'] != '')){
             $image = $request['id']."-".time().".".explode('/',explode(':', substr( $request['passport_image'], 0, strpos($request['passport_image'], ';')))[1])[1];
             \Image::make($request['passport_image'])->save(public_path('img/passports/').$image);
-            $passport_image_url = $passport_image;
             $old_image = public_path('img/passports/').$currentPassportPhoto;
 
             if (file_exists($old_image)){ @unlink($old_image); }
         }
 
         $patient->image = $image_url;
-        $patient->passport_page = $passport_image_url;
-
+        
         $patient->save();
         
         return response()->json([
-            'applicants' => User::whereIn('user_type', ['Patient', 'Both'])->orderBy('first_name', 'ASC')->with(['area', 'state',])->get(),
-            'appointments' => Appointment::with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
             'nations' => Country::orderBy('name', 'ASC')->get(), 

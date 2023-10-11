@@ -2,17 +2,20 @@
 <div class="card">
     <div class="card-header"><h3>{{policy.name}}</h3></div>
     <div class="card-body">
-        <div class="col-md-12" style="max-height: 500px; overflow: scroll;" v-if="policy.file != null">
-            <vue-pdf-embed :source="policy.file != null ? 'https://intranet.saintnicholashospital.com'+policy.file : 'http://localhost:8000/upload/lessons/1666686506.pdf'" width="900" />
+        <div class="col-md-12" style="max-height: 500px" v-if="policy.file != null">
+            https://intranet.saintnicholashospital.com/upload/policies/1668508208.pdf
+            <VuePdfApp pdf="https://intranet.saintnicholashospital.com/upload/policies/1668508208.pdf"/>
         </div>
     </div>
 </div>
 </template>
 <script>
-import VuePdfEmbed from 'vue-pdf-embed/dist/vue2-pdf-embed';
+import VuePdfApp from 'vue-pdf-app';
+import "vue-pdf-app/dist/icons/main.css";
+
 export default {
     components: {
-        VuePdfEmbed
+        VuePdfApp
     },
     data(){
         return {

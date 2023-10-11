@@ -61,7 +61,7 @@
             </td>
             <td>
                 <div class="btn-group">
-                    <router-link :to="'/learn/tutor_area/lesson/'+lesson.id"><button class="btn btn-sm btn-success" ><i class="fa fa-eye"></i></button></router-link>
+                    <a :href="'/learn/tutor_area/lesson/'+lesson.id"><button class="btn btn-sm btn-success" ><i class="fa fa-eye"></i></button></a>
                     <button class="btn btn-sm btn-danger" v-on:click="deleteLesson(lesson.id)"><i class="fa fa-trash"></i></button>
                 </div>
             </td>

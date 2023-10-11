@@ -15,7 +15,8 @@
     </div>
     <div v-if="consultation.laboratory == null" class="card">
         <div class="card-body">
-            <p v-if="consultation.consultation.decision == 7"> Patient sent for Sputum</p>
+            <p v-if="consultation.consultation.decision == 6 && consultation.report == null">Patient sent for X-ray</p>
+            <p v-if="consultation.consultation.decision == 6 && consultation.report.summary == 'suggestive'">Awaiting report <br /><button class="btn btn-sm btn-primary" @click="addLabReport()">Add Report </button></p>
             <p v-else-if="consultation.consultation.decision == 8"> Kid under the age of 11 years</p>
             <p v-else>Awaiting report <br /><button class="btn btn-sm btn-primary" @click="addLabReport()">Add Report </button></p>
         </div>
