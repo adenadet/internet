@@ -22,6 +22,7 @@ import EServiceFrontCertificates     from '../eservices/front/Certificates.vue';
 import EServiceFrontMissed           from '../eservices/front/Missed.vue';
 import EServiceFrontPatients         from '../eservices/front/Patients.vue';
 import EServicePayments              from '../eservices/front/Payments.vue';
+import EServicePayment               from '../eservices/front_admin/Payment.vue';
 import EServiceRadiographer          from '../eservices/front/Radiographer.vue';
 
 import EServiceFrontAdminAppointments from '../eservices/front_admin/Appointments.vue';
@@ -74,6 +75,7 @@ Vue.component('EServiceFrontCertificates',       EServiceFrontCertificates);
 Vue.component('EServiceFrontPatients',           EServiceFrontPatients);
 Vue.component('EServiceFrontMissed',             EServiceFrontMissed);
 Vue.component('EServicePayments',                EServicePayments);
+Vue.component('EServicePayment',                 EServicePayment);
 
 Vue.component('EServiceFrontAdminAppointments',  EServiceFrontAdminAppointments);
 

@@ -27,7 +27,7 @@ class AppointmentController extends Controller
     public function index()
     {
         return response()->json([
-            'appointments'  => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(30),
+            'appointments'  => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient', 'payment'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(30),
             'nations'       => Country::orderBy('name', 'ASC')->get(),   
             'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
             'services'      => Service::orderBy('name', 'ASC')->get(),   
@@ -146,7 +146,7 @@ class AppointmentController extends Controller
 
     public function schedules()
     {
-        if (($date = \Request::get('date')) && ($service_id = \Request::get('service_id'))){
+        if (($date = Request::get('date')) && ($service_id = Request::get('service_id'))){
             $taken = Appointment::select('schedule')->where([['date', '=', $date], ['service_id', '=', $service_id]])->get();
             $schedules = Schedule::select('schedule')->where('service_id', '=', $service_id)->whereNotIn('schedule', $taken)->get();
             }

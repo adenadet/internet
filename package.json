@@ -44,6 +44,7 @@
         "vue-progressbar": "^0.7.5",
         "vue-qrcode-component": "^2.1.1",
         "vue-router": "^3.4.3",
+        "vue-search-select": "^2.9.5",
         "vue-signature-pad": "^2.0.5",
         "vue-wysiwyg": "^1.7.2",
         "vue-youtube": "^1.4.0"

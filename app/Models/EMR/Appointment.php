@@ -29,8 +29,20 @@ class Appointment extends Structure
         return $this->belongsTo('App\Models\EMR\Consultation', 'id', 'appointment_id');
     }
 
+    public function issuing_officer(){
+        return $this->belongsTo('App\Models\User', 'issuer', 'id');
+    }    
+
     public function laboratory(){
         return $this->belongsTo('App\Models\EMR\Laboratory', 'id', 'appointment_id');
+    }
+
+    public function payment(){
+    	return $this->belongsTo('App\Models\EMR\Payment', 'id', 'appointment_id');
+	}
+    
+    public function radiologist(){
+        return $this->belongsTo('App\Models\User', 'radiologist_id', 'id');
     }
 
     public function report(){
@@ -39,14 +51,6 @@ class Appointment extends Structure
 
     public function service(){
         return $this->belongsTo('App\Models\EMR\Service', 'service_id', 'id');
-    }
-
-    public function issuing_officer(){
-        return $this->belongsTo('App\Models\User', 'issuer', 'id');
-    }
-    
-    public function radiologist(){
-        return $this->belongsTo('App\Models\User', 'radiologist_id', 'id');
     }
 
     public function lab_officer(){
@@ -69,7 +73,4 @@ class Appointment extends Structure
         return $this->belongsTo('App\Models\User', 'deleted_by', 'id');
     }
 
-    public function payment(){
-    	return $this->belongsTo('App\Models\EMR\Payment', 'id', 'appointment_id');
-	}
 }

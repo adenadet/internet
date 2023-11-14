@@ -2,7 +2,47 @@
 <section class="content-header">
     <div class="container-fluid">
         <EServiceFormSearch />
-        
+        <div class="modal fade" id="reportModal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Report</h4>
+                        <button type="button" @click="closeModal()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header p-2">
+                                        <ul class="nav nav-pills">
+                                            <li class="nav-item"><a class="nav-link" href="#report" data-toggle="tab">Report</a></li>
+                                            <li class="nav-item"><a class="nav-link" href="#laboratory" data-toggle="tab">Laboratory</a></li>
+                                            <li class="nav-item"><a class="nav-link" href="#certificate" data-toggle="tab">Issue Certificate</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="tab-content">
+                                            <div class="tab-pane" id="report">
+                                                <EServiceDocReportView  :findings="finding" :consultation="appointment" :patient="appointment.patient" :report="appointment.report"/>
+                                            </div>
+                                            <div class="tab-pane" id="laboratory">
+                                                <EServiceDocLaboratoryView  :findings="findings" :consultation="appointment" :patient="appointment.patient" :laboratory="appointment.laboratory"/>
+                                            </div>
+                                            <div class="tab-pane" id="certificate">
+                                                <div class="card" v-if="((appointment.report == null) && (appointment.laboratory == null)) && (appointment.status != 8)"><div class="card-header">Awaiting Report</div><div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div></div>
+                                                <EServiceDocIssueView :appointment="appointment" v-else-if="appointment.issuer != null" />
+                                                <!--EServiceDocFormIssue :appointment="appointment" v-else-if="" /-->
+                                                <div class="card" v-else><div class="card-header">Awaiting Report</div><div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
         <div class="row">
             <div class="col-12">
                 <div class="card card-success">
@@ -38,9 +78,13 @@
                                     <td>{{appointment.issuing_officer != null ? 'Dr. '+appointment.issuing_officer.first_name+' '+appointment.issuing_officer.last_name : 'Not Yet Issued'}}</td>
                                     <td><span class="tag tag-success">{{appointment.status == 0 ? 'Unpaid' :(appointment.status == 1 ? 'Paid' :(appointment.status == 2 ? 'Reschedule' :(appointment.status == 3 ? 'Cancelled' : (appointment.status == 8 ? 'Completed' : (appointment.status == 10 ? 'Certificate Sent' :'Done')))))}}</span></td>
                                     <td>
-                                        <div class="btn btn-group">
-                                            <router-link :to="'/eservices/front_office/appointment/'+appointment.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
-                                            <a :href="'/certificates/'+appointment.id" target="_blank"><button class="btn btn-success btn-sm"><i class="fa fa-certificate"></i></button></a>
+                                        <button class="nav-link btn btn-sm btn-default" data-toggle="dropdown" type="button">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                            <router-link :to="'/eservices/front_admin/appointment/'+appointment.id" class="dropdown-item btn btn-block btn-sm"><i class="fa fa-eye mr-1 text-primary mr-1"></i> View Appointment</router-link>
+                                            <a :href="'/certificates/'+appointment.id"  class="dropdown-item btn btn-block btn-sm" target="_blank"><i class="fa fa-certificate"></i> Print Certificate</a>
+                                            <button v-show="appointment.status == 10" class="dropdown-item btn btn-block btn-sm" @click="viewReport(appointment)"><i class="fa fa-file mr-1"></i> View Report</button>
                                         </div> 
                                     </td>
                                 </tr>
@@ -65,6 +109,7 @@ export default {
     data() {
         return {
             appointments:{},
+            appointment: {},
         }
     },
     mounted() {
@@ -93,7 +138,13 @@ export default {
             //this.services = response.data.services;
             //this.nations = response.data.nations;
             //this.patients = response.data.patients;
-        }
+        },
+        viewReport(appointment){
+            this.$Progress.start();
+            this.appointment = appointment;
+            $('#reportModal').modal('show');
+            this.$Progress.finish();
+        },
     },
     props: {}
 }

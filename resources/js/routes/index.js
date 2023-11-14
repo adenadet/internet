@@ -11,6 +11,7 @@ import eservices from './eservices';
 import external from './external';
 //import hims from './hims';
 //import hr from './hr';
+import inventory from './inventory';
 import learn from './learn';
 import notices from './notices';
 
@@ -31,6 +32,7 @@ const routes = baseRoutes.concat(
     external,
     //hims, 
     //hr, 
+    inventory,
     learn,
     notices, 
     policies,

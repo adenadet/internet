@@ -125,7 +125,27 @@
                 <li class="nav-item">
                     <a href="/ticketing" class="nav-link"><i class="nav-icon fas fa-tags"></i><p>Tickets</p></a>
                 </li>
-                
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-boxes"></i><p>Inventory <i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @if(Auth::user()->hasRole('Information Technology') || Auth::user()->hasRole('Super Admin'))
+                        <li class="nav-item"><a href="/inventory/items" class="nav-link"><i class="fas fa-circle nav-icon"></i><p>Items</p></a></li>
+                        <li class="nav-item"><a href="/inventory/stores" class="nav-link"><i class="fas fa-circle nav-icon"></i><p>Stores</p></a></li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link"><i class="nav-icon fas fa-circle"></i><p>Transfer Requests<i class="right fas fa-angle-left"></i></p></a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item"><a href="/inventory/transfer_orders/new" class="nav-link"><i class="fas fa-circle nav-icon"></i><p>New</p></a></li>
+                                <li class="nav-item"><a href="/inventory/transfer_orders/mine" class="nav-link"><i class="fas fa-circle nav-icon"></i><p>My Requests</p></a></li>
+                                <li class="nav-item"><a href="/inventory/transfer_orders/all" class="nav-link"><i class="fas fa-circle nav-icon"></i><p>All Requests</p></a></li>
+                                <li class="nav-item"><a href="/inventory/transfer_orders/merge" class="nav-link"><i class="fas fa-circle nav-icon"></i><p>Merge Requests</p></a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a href="/inventory/purchase_orders" class="nav-link"><i class="nav-icon fas fa-circle"></i><p>Purchase Requests</p></a></li>
+                        @endif
+                    </ul>
+                </li>
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-cogs"></i><p>System <i class="right fas fa-angle-left"></i></p>

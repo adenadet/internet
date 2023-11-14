@@ -40,6 +40,19 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="receiptModal">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Appointment Receipt</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModals()"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <EServicePayment :appointment="appointment" /> 
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <EServiceFormSearch />
@@ -78,14 +91,17 @@
                                         <td>{{appointment.schedule}}</td>
                                         <td><span class="tag tag-success">{{appointment.status == 0 ? 'Unpaid' :(appointment.status == 1 ? 'Paid' :(appointment.status == 2 ? 'Reschedule' :(appointment.status == 3 ? 'Cancelled' : (appointment.status == 8 ? 'Certificate Sent' :'Done'))))}}</span></td>
                                         <td>
-                                            <div class="btn btn-group">
-                                                <router-link :to="'/eservices/front_office/appointment/'+appointment.id"><button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></router-link>
-                                                <button v-show="appointment.status == 0" class="btn btn-success btn-sm" @click="makePayment(appointment)"><i class="fa fa-credit-card"></i></button>
-                                                <button v-show="appointment.status == 1" class="btn btn-success btn-sm"><i class="fa fa-file-pdf"></i></button>
-                                                <button v-show="appointment.status <= 1 || appointment.status == null" class="btn btn-default btn-sm" @click="rescheduleAppointment(appointment)"><i class="fa fa-calendar"></i></button>
-                                                <button v-show="appointment.status == 1" class="btn btn-warning btn-sm" @click="resendAppointment(appointment.id)"><i class="fa fa-envelope"></i></button>
-                                                <button v-show="appointment.status == 0" class="btn btn-danger btn-sm" @click="deleteAppointment(appointment.id)"><i class="fa fa-trash"></i></button>
-                                            </div> 
+                                            <button class="nav-link btn btn-sm btn-default" data-toggle="dropdown" type="button">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                                <router-link :to="'/eservices/front_admin/appointment/'+appointment.id"><button class="dropdown-item btn btn-block btn-sm"><i class="fa fa-eye mr-1 text-primary"></i> View Appointment</button></router-link>
+                                                <button v-show="appointment.status == 0" class="dropdown-item btn btn-block btn-sm" @click="makePayment(appointment)"><i class="fa fa-credit-card mr-1 text-success"></i> Make Payment</button>
+                                                <button v-show="appointment.status == 1" class="dropdown-item btn btn-block btn-sm" @click="viewPayment(appointment)"><i class="fa fa-file-pdf mr-1 text-success"></i> View Receipt</button>
+                                                <button v-show="appointment.status <= 1 || appointment.status == null" class="dropdown-item btn btn-default btn-sm" @click="rescheduleAppointment(appointment)"><i class="fa fa-calendar mr-1"></i> Reschedule Appointment</button>
+                                                <button v-show="appointment.status == 1" class="dropdown-item btn btn-warning btn-sm" @click="resendAppointment(appointment.id)"><i class="fa fa-envelope mr-1 text-warning"></i> Resend Confirmation</button>
+                                                <button v-show="appointment.status == 0" class="dropdown-itembtn btn-danger btn-sm" @click="deleteAppointment(appointment.id)"><i class="fa fa-trash mr-1 text-danger"></i> Delete Appointment</button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -121,19 +137,15 @@ export default {
         this.getInitials();
         Fire.$on('refreshAppointment', response => {
             this.refreshAppointments(response);
-            $('#paymentModal').modal('hide');
-            $('#patientModal').modal('hide');
-            $('#appointmentModal').modal('hide');
+            this.closeModals();
         });
         Fire.$on('refresh', response => {
             this.refreshAppointments(response);
-            $('#paymentModal').modal('hide');
-            $('#patientModal').modal('hide');
-            $('#appointmentModal').modal('hide');
+            this.closeModals();
         });
         Fire.$on('refreshPayment', response => {
             this.refreshAppointments(response);
-            $('#paymentModal').modal('hide');
+            this.closeModals();
         });
     },
     methods: {
@@ -176,6 +188,12 @@ export default {
                     });
                 }
             });
+        },
+        closeModals(){
+            $('#appointmentModal').modal('hide');
+            $('#patientModal').modal('hide');
+            $('#applicantModal').modal('hide');
+            $('#receiptModal').modal('hide');
         },
         getInitials() {
             axios.get('/api/emr/appointments')
@@ -237,7 +255,11 @@ export default {
                 }
             });
         },
-        showReceipt(){},
+        viewPayment(appointment){
+            this.appointment = appointment;
+            $('#receiptModal').modal('show');
+            this.$Progress.finish();
+        },
     },
     props: {}
 }

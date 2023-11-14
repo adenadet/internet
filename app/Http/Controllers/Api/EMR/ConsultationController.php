@@ -8,19 +8,13 @@ use Illuminate\Http\Request;
 use App\Models\EMR\Appointment;
 use App\Models\EMR\Consultation;
 use App\Models\EMR\Patient;
-use App\Models\EMR\Schedule;
-use App\Models\EMR\Service;
-use App\Models\Area;
-use App\Models\State;
-use App\Models\Country;
-use App\Models\User;
 
 class ConsultationController extends Controller
 {
     public function index()
     {
         return response()->json([
-            'appointments' => Appointment::whereDate('date', '=', date('Y-m-d'))->whereIn('status', [4, 5, 6, 7, 8, 9])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(30),
+            'appointments' => Appointment::whereDate('date', '=', date('Y-m-d'))->whereIn('status', [4, 5, 6, 7, 8, 9, 10])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(70),
         ]);
     }
 
@@ -83,13 +77,14 @@ class ConsultationController extends Controller
     }
 
     public function reviews(){
+        $last_month = date('Y-m-d', strtotime('-1 month'));
         return response()->json([
-            'appointments' => Appointment::whereDate('date', '<=', date('Y-m-d'))->whereIn('status', [4, 5, 6, 7, 8, 9])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(30),
+            'appointments' => Appointment::whereDate('date', '>=', $last_month)->whereDate('date', '<=', date('Y-m-d'))->whereIn('status', [ 6, 7, 8, 9, 10])->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(70),
         ]);
     }
 
     public function search(){
-        if ($search = \Request::get('q')){
+        if ($search = Request::get('q')){
             $patients = Patient::select('id')->orderBy('first_name', 'ASC')->where(function($query) use ($search){
                 $query->where('first_name', 'LIKE', "%$search%")
                 ->orWhere('middle_name', 'LIKE', "%$search%")
@@ -126,11 +121,11 @@ class ConsultationController extends Controller
             ->orWhere('email', 'LIKE', "%$search%");
         })->get();
 
-        $app_query = Appointment::whereDate('date', '<=', date('Y-m-d'))->whereIn('patient_id', $patients)->whereIn('status', [4, 5, 6, 7, 8, 9]);
+        $app_query = Appointment::whereDate('date', '<=', date('Y-m-d'))->whereIn('patient_id', $patients)->whereIn('status', [4, 5, 6, 7, 8, 9, 10]);
         if (!is_null($request->input('start_date'))){$app_query->whereDate('date', '>=', $request->input('start_date'));}
         if (!is_null($request->input('end_date'))){$app_query->whereDate('date', '<=', $request->input('end_date'));}
-        $appointments = $app_query->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->paginate(30);
-        //echo $search;
+        $appointments = $app_query->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->limit(450)->paginate(30);
+        
         return response()->json([
             'appointments' => $appointments,
         ]);

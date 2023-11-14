@@ -48,6 +48,15 @@ class ModulesController extends Controller
         return view('internet')->with($params);
     }
 
+
+    public function inventory()
+    {
+        $params = [
+            'page_title' => 'Inventory',
+        ];
+        return view('internet')->with($params);
+    }
+
     public function notices()
     {
         $params = ['page_title' => 'Notice Board',];

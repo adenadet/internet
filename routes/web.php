@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Co
     Route::get('/dashboard',     'ModulesController@dashboard')->name('dashboard');
     Route::get('/departments',   'ModulesController@departments')->name('departments');
     Route::get('/internet',      'ModulesController@internet')->name('internet');
+    Route::get('/inventory',     'ModulesController@inventory')->name('inventory');
     Route::get('/notices',       'ModulesController@notices')->name('notices');
     Route::get('/policies',      'ModulesController@policies')->name('policies');
     Route::get('/profile',       'ModulesController@profile')->name('profile');
@@ -79,6 +80,7 @@ Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Co
     Route::get('/contacts/{any}',           'ModulesController@contacts')->where('any', '.*');
     Route::get('/departments/{any}',        'ModulesController@departments')->where('any', '.*');
     Route::get('/internet/{any}',           'ModulesController@internet')->where('any', '.*');
+    Route::get('/inventory/{any}',          'ModulesController@inventory')->where('any', '.*');
     Route::get('/notices/{any}',            'ModulesController@notices')->where('any', '.*');
     Route::get('/policies/view/{id}',       'ModulesController@policy_reader'); 
     Route::get('/policies/{any}',           'ModulesController@policies')->where('any', '.*');
