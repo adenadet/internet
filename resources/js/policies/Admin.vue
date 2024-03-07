@@ -53,7 +53,7 @@
                         <td>{{typeof policy.depts != 'undefined' && policy.depts != null ? policy.depts.length: 0 }}</td>
                         <td>
                             <div class="btn btn-group">
-                                <router-link class="btn btn-primary" title="Read Policy" :to="'/policies/view/'+policy.id"><i class="fa fa-eye"></i></router-link>
+                                <a class="btn btn-primary" title="Read Policy" :to="'/policies/view/'+policy.id"><i class="fa fa-eye"></i></a>
                                 <button class="btn btn-success" title="Edit Policy" @click="editPolicy(policy)"><i class="fa fa-edit"></i></button>
                                 <button class="btn btn-warning" title="Assign Policy" @click="assignPolicy(policy)"><i class="fa fa-inbox"></i></button>
                                 <button class="btn btn-danger"  title="Delete Policy" @click="deletePolicy(policy.id)"><i class="fa fa-trash"></i></button>

@@ -2,7 +2,17 @@
     <div class="row clearfix">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header"><h3 class="card-title">General Policies</h3></div>
+                <div class="card-header">
+                    <h3 class="card-title">General Policies</h3>
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 250px;">
+                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search" v-model="search">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" @click="getAllInitials"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-6 d-flex align-items-stretch" v-for="policy in policies.data" :key="policy.id">
@@ -34,7 +44,7 @@
                 </div>
                 <div class="col-12">
                     <div class="card-footer">
-                        <pagination :data="policies" @pagination-change-page="getPolicy">
+                        <pagination :data="policies" @pagination-change-page="getAllInitials">
                             <span slot="prev-nav">&lt; Previous </span>
                             <span slot="next-nav">Next &gt;</span>
                         </pagination>
@@ -51,19 +61,17 @@ export default {
         return {
             policy:{},
             policies:{},
+            search: '',
         }
     },
     methods:{
-        getAllInitials(){
+        getAllInitials(page=1){
             this.$Progress.start();
-            axios.get('/api/policies/all/general').then(response =>{
+            axios.get('/api/policies/all/general?page='+page+'&query='+this.search)
+            .then(response =>{
                 this.policies = response.data.policies;
-                
                 this.$Progress.finish();
-                toast.fire({
-                    icon: 'success',
-                    title: 'Policies loaded successfully',
-                });
+                //toast.fire({icon: 'success', title: 'Policies loaded successfully',});
             })
             .catch(()=>{
                 this.$Progress.fail();
@@ -71,12 +79,6 @@ export default {
                     icon: 'error',
                     title: 'Policies were not loaded successfully',
                 })
-            });
-        },
-        getPolicy(page=1){
-            axios.get('/api/policies/all/general?page='+page)
-            .then(response=>{
-                this.policies = response.data.policies;   
             });
         },
     },

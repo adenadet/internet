@@ -34,7 +34,8 @@
                         </td>
                         <td><span>{{course.expiry_date | ExcelDate}}</span></td>
                         <td>
-                            <router-link v-show="Date.parse(course.expiry_date) >= Date.parse(Date())" :to="'/learn/student_area/course/'+course.course_id"><button class="btn btn-sm btn-success" title="See Course"><i class="fa fa-play"></i> {{course.level != null  ? "Continue" : "Start"}}</button></router-link>
+                            <!--v-show="Date.parse(course.expiry_date) >= Date.parse(Date())"-->
+                            <a :href="'/learn/student_area/course/'+course.course_id"><button class="btn btn-sm btn-success" title="See Course"><i class="fa fa-play"></i> {{course.level != null  ? "Continue" : "Start"}}</button></a>
                         </td>
                     </tr>
                 </tbody>

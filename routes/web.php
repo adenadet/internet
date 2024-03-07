@@ -34,30 +34,32 @@ Route::group(['middleware' => 'auth','namespace' => 'App\Http\Controllers\Std', 
 });
 
 Route::group(['middleware' => 'auth','namespace' => 'App\Http\Controllers\Learn', 'name' => 'learn.', 'prefix' => '/learn'],function(){
-    Route::get('/admin_area',             'AdminController@index');
-    Route::get('/student_area',           'StudentController@index');
-    Route::get('/tutor_area',             'TutorController@index');
-    Route::get('/tutor_area/lesson/{id}', 'TutorController@lesson_show');
-    Route::get('/admin_area/{any}',       'AdminController@index')->where('any', '.*');
-    Route::get('/student_area/{any}',     'StudentController@index')->where('any', '.*');
-    Route::get('/tutor_area/{any}',       'TutorController@index')->where('any', '.*'); 
+    Route::get('/admin_area',                               'AdminController@index');
+    Route::get('/admin_area/{any}',                         'AdminController@index')->where('any', '.*');
+    Route::get('/student_area',                             'StudentController@index')->name('student_area.dashboard');
+    Route::get('/student_area/lesson/complete/{id}',        'StudentController@complete_lesson')->name('student_area.lesson_complete');
+    Route::get('/student_area/lesson/{id}',                 'StudentController@show')->name('student_area.lesson');
+    Route::get('/student_area/{any}',                       'StudentController@index')->where('any', '.*');
+    Route::get('/tutor_area',                               'TutorController@index');
+    Route::get('/tutor_area/lesson/{id}',                   'TutorController@lesson_show');
+    Route::get('/tutor_area/{any}',                         'TutorController@index')->where('any', '.*'); 
 });
 
 Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Controllers\EMR', 'name' => 'eservices.', 'prefix' => '/eservices'],function(){
-    Route::get('/administrator',          'ServiceController@administrator');
-    Route::get('/front_admin',            'ServiceController@front_admin');
-    Route::get('/front_office',           'ServiceController@front');
-    Route::get('/doctor',                 'ServiceController@medical');
-    Route::get('/radiologist',            'ServiceController@radiologist');
-    Route::get('/doctor/consent/{id}',    'ServiceController@consent');
-    Route::post('/doctor/consents',        'ServiceController@consent_save');
+    Route::get('/administrator',                            'ServiceController@administrator');
+    Route::get('/front_admin',                              'ServiceController@front_admin');
+    Route::get('/front_office',                             'ServiceController@front');
+    Route::get('/doctor',                                   'ServiceController@medical');
+    Route::get('/radiologist',                              'ServiceController@radiologist');
+    Route::get('/doctor/consent/{id}',                      'ServiceController@consent');
+    Route::post('/doctor/consents',                         'ServiceController@consent_save');
 
-    Route::get('/administrator/{any}',    'ServiceController@administrator')->where('any', '.*');
-    Route::get('/certificate/{any}',      'ServiceController@certificate')->where('any', '.*'); 
-    Route::get('/front_admin/{any}',      'ServiceController@front_admin')->where('any', '.*');
-    Route::get('/front_office/{any}',     'ServiceController@front')->where('any', '.*');
-    Route::get('/doctor/{any}',           'ServiceController@medical')->where('any', '.*');
-    Route::get('/radiologist/{any}',      'ServiceController@radiologist')->where('any', '.*'); 
+    Route::get('/administrator/{any}',                      'ServiceController@administrator')->where('any', '.*');
+    Route::get('/certificate/{any}',                        'ServiceController@certificate')->where('any', '.*'); 
+    Route::get('/front_admin/{any}',                        'ServiceController@front_admin')->where('any', '.*');
+    Route::get('/front_office/{any}',                       'ServiceController@front')->where('any', '.*');
+    Route::get('/doctor/{any}',                             'ServiceController@medical')->where('any', '.*');
+    Route::get('/radiologist/{any}',                        'ServiceController@radiologist')->where('any', '.*'); 
 });
 
 Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Controllers',], function () {

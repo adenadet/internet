@@ -2,30 +2,39 @@
     <div class="row clearfix">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header"><h3 class="card-title">My Departmental Policies</h3></div>
+                <div class="card-header"><h3 class="card-title">My Departmental Policies</h3>
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 250px;">
+                            <input type="text" name="table_search" class="form-control float-right" placeholder="Search" v-model="search">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" @click="getAllInitials"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-6 d-flex align-items-stretch" v-for="policy in policies.data" :key="policy.id">
-                            <div class="card bg-light" v-show="policy.policy != null">
+                            <div class="card bg-light">
                                 <div class="card-header text-muted border-bottom-0">&nbsp;</div>
                                 <div class="card-body pt-0">
                                     <div class="row">
                                         <div class="col-7">
-                                            <h2 class="lead"><b>{{policy.policy != null ? policy.policy.name: 'Deleted Policy'}}</b></h2>
+                                            <h2 class="lead"><b>{{policy.name}}</b></h2>
                                         </div>
                                         <div class="col-5 text-center">
                                             <h1><i class="fa fa-file-pdf"></i></h1>
                                         </div>
                                         <div class="col-12">
                                             <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                <li class="small"><span class="fa-li"><i class="fas fa-tag"></i></span> Category: {{policy.policy != null && policy.policy.category_id != null && typeof policy.policy.category != 'undefined' ? policy.policy.category.name: ''}}</li>
+                                                <li class="small"><span class="fa-li"><i class="fas fa-tag"></i></span> Category: {{policy.category_id != null && policy.category != null ? policy.category.name: policy.category_id}}</li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="text-right">
-                                        <a :href="policy.policy != null ? '/policies/view/'+policy.policy.id : '/policies/'"><button class="btn btn-sm btn-primary" title="Read"><i class="fa fa-eye"></i></button></a>
+                                        <a :href="policy != null ? '/policies/view/'+policy.id : '/policies/'"><button class="btn btn-sm btn-primary" title="Read"><i class="fa fa-eye"></i></button></a>
                                     </div>
                                 </div>
                             </div>
@@ -34,7 +43,7 @@
                 </div>
                 <div class="col-12">
                     <div class="card-footer">
-                        <pagination :data="policies" @pagination-change-page="getPolicy">
+                        <pagination :data="policies" @pagination-change-page="getAllInitials">
                             <span slot="prev-nav">&lt; Previous </span>
                             <span slot="next-nav">Next &gt;</span>
                         </pagination>
@@ -58,19 +67,17 @@ export default {
             policy:{},
             policies:{},
             form: new Form({}),
+            search: '',
         }
     },
     methods:{
-        getAllInitials(){
+        getAllInitials(page=1, search){
             this.$Progress.start();
-            axios.get('/api/policies/all/departmental').then(response =>{
+            axios.get('/api/policies/all/departmental?page='+page+'&query='+this.search)
+            .then(response =>{
                 this.policies = response.data.policies;
-                
                 this.$Progress.finish();
-                toast.fire({
-                    icon: 'success',
-                    title: 'Policies loaded successfully',
-                });
+                //toast.fire({icon: 'success', title: 'Policies loaded successfully',});
             })
             .catch(()=>{
                 this.$Progress.fail();
@@ -78,12 +85,6 @@ export default {
                     icon: 'error',
                     title: 'Policies were not loaded successfully',
                 })
-            });
-        },
-        getPolicy(page=1){
-            axios.get('/api/policies/all/departmental?page='+page)
-            .then(response=>{
-                this.Policys = response.data.Policys;   
             });
         },
     },

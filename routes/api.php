@@ -16,11 +16,11 @@ Route::namespace('App\Http\Controllers\Api\ToDo')->name('api.todos.')->group(bas
 
 Route::namespace('App\Http\Controllers\Api\Ums')->middleware('auth:api')->name('api.ums.')->group(base_path('routes/api/ums.php'));
 
-Route::get('dashboard/applicant',  'App\Http\Controllers\Api\DashboardController@applicant')->name('api.dashboard.applicant');
-Route::get('schedules', 'App\Http\Controllers\Api\EMR\RegistrationController@schedules')->name('appointments.schedules');
-Route::post('notices/modify',    'App\Http\Controllers\Api\NoticeController@modify')->name('api.notices.modify');
-Route::get('policies/all/{id}',  'App\Http\Controllers\Api\PolicyController@all')->name('api.policies.all');
-Route::post('policies/assign',   'App\Http\Controllers\Api\PolicyController@assign')->name('api.policies.assign');
+Route::get('/dashboard/applicant',  'App\Http\Controllers\Api\DashboardController@applicant')->name('api.dashboard.applicant');
+Route::get('/schedules', 'App\Http\Controllers\Api\EMR\RegistrationController@schedules')->name('appointments.schedules');
+Route::post('/notices/modify',    'App\Http\Controllers\Api\NoticeController@modify')->name('api.notices.modify');
+Route::get('/policies/all/{id}',  'App\Http\Controllers\Api\PolicyController@all')->name('api.policies.all');
+Route::post('/policies/assign',   'App\Http\Controllers\Api\PolicyController@assign')->name('api.policies.assign');
 
 Route::get('/schedulers/cancel', 'App\Http\Controllers\Api\EMR\RegistrationController@cancel')->name('schedulers.cancel');
 Route::post('/schedulers/cancelled', 'App\Http\Controllers\Api\EMR\RegistrationController@cancelled')->name('schedulers.cancelled');

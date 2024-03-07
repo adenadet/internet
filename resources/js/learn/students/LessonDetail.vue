@@ -1,14 +1,6 @@
 <template>
-    <div class="card-body pt-0">
-        <h3>{{lesson.name}}</h3>
-        <h6>{{lesson.course !== null && typeof (lesson.course) !== 'undefined' ? lesson.course.name : ''}}</h6>
+    <div class="pt-0">
         <div class="row" style="text-align:center" v-if="((lesson.video !== null) && (typeof lesson !== 'undefined') &&(typeof lesson.video !== 'undefined'))"><youtube class="col-md-12" :video-id="lesson.video" ref="youtube" /></div>
-        <div class="row" style="max-height: 500px; overflow: scroll;" v-if="lesson.file !== null">
-            <vue-pdf-embed :source="lesson.file != null ? 'https://intranet.saintnicholashospital.com'+lesson.file : 'http://localhost:8000/upload/lessons/1666686506.pdf'" width="900"/>
-            <iframe :src="lesson.file != null ? 'https://intranet.saintnicholashospital.com'+lesson.file : 'http://localhost:8000/upload/lessons/1666686506.pdf'" class="col-12" style="min-height: 1000px"></iframe>
-        </div>
-
-        <div class="col-md-12">{{lesson.content}}</div>
     </div>
 </template>
 <script>

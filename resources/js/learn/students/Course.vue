@@ -17,8 +17,8 @@
                         <button @click="startCourse(lesson.id)" title="Read Course" class="btn btn-sm btn-success"><i class="fa fa-play"></i> Start Course</button>
                     </div>
                     <div class="text-right" v-else>
-                        <router-link v-if="index == course.level" :to="'/student_area/lesson/'+lesson.id" title="Read Course" class="btn btn-sm btn-success"><i class="fa fa-play"></i> Continue</router-link>
-                        <router-link v-else :to="'/learn/student_area/lesson/'+lesson.id" title="Repeat Course" class="btn btn-sm btn-success"><i class="fa fa-circle-o"></i> Read Again</router-link>
+                        <a v-if="index == course.level" :href="'/student_area/lesson/'+lesson.id" title="Read Course" class="btn btn-sm btn-success"><i class="fa fa-play"></i> Continue</a>
+                        <a v-else :href="'/learn/student_area/lesson/'+lesson.id" title="Repeat Course" class="btn btn-sm btn-success"><i class="fa fa-circle-o"></i> Read Again</a>
                     </div>
                 </div>
             </div>

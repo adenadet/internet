@@ -107,10 +107,17 @@ class PolicyController extends Controller
     public function all($id)
     {
         if ($id=='departmental'){
-            $policies = PolicyDepartment::where('department_id', '=', auth('api')->user()->department_id)->with('policy')->with('department')->with('creator')->paginate(25);
+            $policy_id = PolicyDepartment::where('department_id', '=', auth('api')->user()->department_id)->pluck('policy_id');
+            if ($search = \Request::get('query')){
+                $policies = Policy::whereIn('id', $policy_id)->where('name', 'LIKE', "%$search%")->with(['creator'])->orderBy('name', 'ASC')->paginate(25);
+            }
+            else{
+                $policies = Policy::whereIn('id', $policy_id)->with(['creator'])->orderBy('name', 'ASC')->paginate(25);
+            }
         }
         else if ($id=='general'){
-            $policies = Policy::where('category_id', '=', 0)->paginate(25);
+            if ($search = \Request::get('query')){$policies = Policy::where('category_id', '=', 0)->where('name', 'LIKE', "%$search%")->orderBy('name', 'ASC')->paginate(25);}
+            else{$policies = Policy::where('category_id', '=', 0)->orderBy('name', 'ASC')->paginate(25);}
         }
 
         return response()->json([
