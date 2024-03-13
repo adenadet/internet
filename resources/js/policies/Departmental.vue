@@ -71,7 +71,7 @@ export default {
         }
     },
     methods:{
-        getAllInitials(page=1, search){
+        getAllInitials(page=1){
             this.$Progress.start();
             axios.get('/api/policies/all/departmental?page='+page+'&query='+this.search)
             .then(response =>{

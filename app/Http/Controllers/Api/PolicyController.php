@@ -15,7 +15,8 @@ class PolicyController extends Controller
     public function index()
     {
         $policies = Policy::orderBy('name', 'ASC')->with(['depts.department', 'creator'])->paginate(25);
-
+        if ($search = \Request::get('query')){$policies = Policy::orderBy('name', 'ASC')->where('name', 'LIKE', "%$search%")->with(['depts.department', 'creator'])->paginate(25);}
+        else{$policies = Policy::orderBy('name', 'ASC')->with(['depts.department', 'creator'])->paginate(25);}
         return response()->json([
             'policies'      => $policies,       
             'departments'   => Department::all(),       
@@ -32,7 +33,6 @@ class PolicyController extends Controller
         }
         if ($request->input('id') == null){
             $data = json_decode($request->input('data'));
-            print_r($data);
             $policy = Policy::create([
                 'name' =>  $data->name,
                 'file' => $request->file !== null ? '/'.$upload_path.'/'.$fileName : NULL,

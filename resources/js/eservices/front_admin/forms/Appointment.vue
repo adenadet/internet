@@ -7,6 +7,7 @@
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         <label>Applicant</label>
+                        <model-list-select class="form-control" :list="patients" v-model="appointmentData.patient_id" option-value="id" :custom-text="codeAndNameAndDesc" placeholder="Select Applicant" />
                         <select class="form-control" id="patient_id" name="patient_id" v-model="appointmentData.patient_id" required>
                             <option value="">--Select Applicants--</option>
                             <option v-for="patient in patients" :key="patient.id" :value="patient.id">{{patient.last_name+', '+patient.first_name+' '+patient.middle_name}}</option>
@@ -69,6 +70,7 @@ export default {
         });
     },
     methods:{
+        codeAndNameAndDesc(item){return `${item.user.last_name}, ${item.user.first_name} ${item.user.middle_name}`},
         createAppointment(){
             this.$Progress.start();
             this.appointmentData.post('/api/emr/appointments')

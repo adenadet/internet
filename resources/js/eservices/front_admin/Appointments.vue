@@ -195,8 +195,8 @@ export default {
             $('#applicantModal').modal('hide');
             $('#receiptModal').modal('hide');
         },
-        getInitials() {
-            axios.get('/api/emr/appointments')
+        getInitials(page = 1) {
+            axios.get('/api/emr/appointments?page='+page)
             .then(response => {this.refreshAppointments(response)})
             .catch(() => {
                 this.$Progress.fail();

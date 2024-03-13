@@ -22,16 +22,19 @@ use Mail;
 use App\Mail\Certificate\AbnormalMail;
 use App\Mail\Certificate\NormalMail;
 
+use App\Http\Traits\EService\AppointmentTrait;
+use App\Http\Traits\EService\PatientTrait;
+
 class AppointmentController extends Controller
 {
+    use AppointmentTrait, PatientTrait;
     public function index()
     {
+        $page = $_GET['page'] ?? 1;
         return response()->json([
-            'appointments'  => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient', 'payment'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(30),
-            'nations'       => Country::orderBy('name', 'ASC')->get(),   
-            'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
-            'services'      => Service::orderBy('name', 'ASC')->get(),   
-            'findings'      => RadFinding::all(),
+            'appointments'  => $this->appointment_get_all(NULL, $page, true),   
+            'patients'      => $this->patient_get_all(),
+            'services'      => $this->appointment_get_all_services(),   
         ]);
     }
 
@@ -67,20 +70,18 @@ class AppointmentController extends Controller
         ]);
 
         return response()->json([
-            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(50),
-            'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
-            'services' => Service::orderBy('name', 'ASC')->get(),
-            'nations' => Country::orderBy('name', 'ASC')->get(), 
-            'patients' => Patient::orderBy('last_name', 'ASC')->get()     
+            'appointments'  => $this->appointment_get_all_paginated(NULL, $page, true),   
+            'patients'      => $this->patient_get_all(),
+            'services'      => $this->appointment_get_all_services(),       
         ]);
     }
 
     public function show($id)
     {
         return response()->json([
-            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'laboratory', 'lab_officer', 'report.findings', 'issuing_officer'])->first(),
-            'findings'    => RadFinding::all(),
-            'nations' => Country::orderBy('name', 'ASC')->get(), 
+            'appointment'   => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'laboratory', 'lab_officer', 'report.findings', 'issuing_officer'])->first(),
+            'findings'      => RadFinding::all(),
+            'nations'       => Country::select('id', 'name')->get(),
         ]);
     }
 
@@ -105,11 +106,9 @@ class AppointmentController extends Controller
         $appointment->save();
 
         return response()->json([
-            'appointments' => Appointment::whereDate('date', '>=', date('Y-m-d'))->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(50),
-            'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
-            'services' => Service::orderBy('name', 'ASC')->get(),
-            'nations' => Country::orderBy('name', 'ASC')->get(), 
-            'patients' => Patient::orderBy('last_name', 'ASC')->get()     
+            'appointments'  => $this->appointment_get_all_paginated(NULL, $page, true),   
+            'patients'      => $this->patient_get_all(),
+            'services'      => $this->appointment_get_all_services(),      
         ]);
     }
 
@@ -132,13 +131,9 @@ class AppointmentController extends Controller
             $message = "Appointment was deleted successfully";
 
             return response()->json([
-                //'applicants' => Patient::orderBy('created_at', 'DESC')->with(['nationality',])->paginate(100),
-                'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->orderBy('schedule', 'ASC')->paginate(50),
-                'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
-                'services' => Service::orderBy('name', 'ASC')->get(),
-                'states' => State::orderBy('name', 'ASC')->get(),
-                'nations' => Country::orderBy('name', 'ASC')->get(), 
-                'patients' => Patient::orderBy('first_name', 'ASC')->get(), 
+                'appointments'  => $this->appointment_get_all_paginated(NULL, $page),   
+                'patients'      => $this->patient_get_all(),
+                'services'      => $this->appointment_get_all_services(),   
                 'message' => $message,    
             ]);
         }
@@ -169,16 +164,13 @@ class AppointmentController extends Controller
         $appointment->save();
 
         return response()->json([
-            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee' ])->first(),
+            'appointment' => $this->appointment_get_by_id($id, NULL),
         ]);
     }
 
     public function certificates(){
-        $last_month = date('Y-m-d', strtotime('-1 month'));
-        $appointments = Appointment::whereDate('date', '>=', $last_month)->whereDate('date', '<=', date('Y-m-d'))->whereNotNull(['doctor_id', 'front_office_id',])->Where('status', '>=', 7)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(70);
-        
         return response()->json([
-            'appointments' => $appointments,
+            'appointments' => $this->appointment_get_all('certificate', ($_GET['page'] ?? 1), true),
         ]);
     }
 
@@ -226,28 +218,20 @@ class AppointmentController extends Controller
             \Mail::to($app->patient->email)->send(new AbnormalMail($app));
         }
         return response()->json([
-            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first(),
+            'appointment' => $this->get_appointment_by_id($id, NULL)
         ]);
 
     }
 
     public function missed(){
-        $appointments = Appointment::whereDate('date', '<=', date('Y-m-d'))->whereNull(['front_office_id',])->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(30);
-        
         return response()->json([
-            'appointments' => $appointments,
+            'appointments' => $this->appointment_get_all('missed', ($_GET['page'] ?? 1), true),
         ]);
     }
 
     public function getXray(){
-        $appointments = Appointment::where('status', '=', 6)
-        ->whereDate('date', '=', date('Y-m-d'))
-        ->where('status_end', '!=', 1)
-        ->with(['front_officer', 'medical_officer', 'radiologist','lab_officer', 'service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])
-        ->orderBy('date', 'DESC')->paginate(30);
-        
         return response()->json([
-            'appointments' => $appointments
+            'appointments' => $this->appointment_get_all('xray', ($_GET['page'] ?? 1), true),
         ]);
     }
 
@@ -259,15 +243,9 @@ class AppointmentController extends Controller
         $appointment->xray_at = date('Y-m-d H:i:s');
 
         $appointment->save();
-
-        $appointments = Appointment::where('status', '=', 6)
-        ->whereDate('date', '=', date('Y-m-d'))
-        ->where('status_end', '!=', 1)
-        ->with(['front_officer', 'medical_officer', 'radiologist','lab_officer', 'service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])
-        ->orderBy('date', 'DESC')->paginate(30);
         
         return response()->json([
-            'appointments' => $appointments,
+            'appointments' => $this->appointment_get_all('xray', ($_GET['page'] ?? 1), true),
         ]);
     }
 
@@ -340,7 +318,7 @@ class AppointmentController extends Controller
         $appointment->save();
 
         return response()->json([
-            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee' ])->first(),
+            'appointment' => $this->appointment_get_by_id($id, NULL),
         ]);
     }
 }

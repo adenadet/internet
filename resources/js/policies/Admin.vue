@@ -29,7 +29,16 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">List of All Policies</h3>
-            <div class="card-tools"><button type="button" class="btn btn-sm btn-success" @click="createPolicy">Add New</button></div>
+            <div class="card-tools">
+                <div class="input-group input-group-sm" style="width: 250px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search" v-model="search">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" @click="getAllInitials()"><i class="fas fa-search"></i></button>
+                        <button type="button" class="btn btn-sm btn-success" @click="createPolicy">Add New</button>
+                    </div>  
+                </div>
+            </div>
+            <div class="card-tools"></div>
         </div>
         <div class="card-body table-responsive p-0">
             <table class="table m-b-0 col-md-12">
@@ -53,7 +62,7 @@
                         <td>{{typeof policy.depts != 'undefined' && policy.depts != null ? policy.depts.length: 0 }}</td>
                         <td>
                             <div class="btn btn-group">
-                                <a class="btn btn-primary" title="Read Policy" :to="'/policies/view/'+policy.id"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-primary" title="Read Policy" :href="'/policies/view/'+policy.id"><i class="fa fa-eye"></i></a>
                                 <button class="btn btn-success" title="Edit Policy" @click="editPolicy(policy)"><i class="fa fa-edit"></i></button>
                                 <button class="btn btn-warning" title="Assign Policy" @click="assignPolicy(policy)"><i class="fa fa-inbox"></i></button>
                                 <button class="btn btn-danger"  title="Delete Policy" @click="deletePolicy(policy.id)"><i class="fa fa-trash"></i></button>
@@ -64,7 +73,7 @@
             </table>
         </div>
         <div class="card-footer">
-            <pagination :data="policies" @pagination-change-page="getUser">
+            <pagination :data="policies" @pagination-change-page="getAllInitials">
                 <span slot="prev-nav">&lt; Previous </span>
                 <span slot="next-nav">Next &gt;</span>
             </pagination>
@@ -82,6 +91,7 @@ export default {
             form: new Form({}),
             policy: {},
             policies: {},
+            search: '',
         }
     },
     methods:{
@@ -132,9 +142,10 @@ export default {
             Fire.$emit('policyDataFill', policy);
             $('#policyModal').modal('show');
         },
-        getAllInitials(){
+        getAllInitials(page=1){
+            alert(page)
             this.$Progress.start();
-            axios.get('/api/policies').then(response =>{
+            axios.get('/api/policies?page='+page+'&search='+this.search).then(response =>{
                 this.reset(response);
                 this.$Progress.finish();
                 toast.fire({icon: 'success', title: 'Policies loaded successfully',});
@@ -143,13 +154,6 @@ export default {
                 this.$Progress.fail();
                 toast.fire({icon: 'error', title: 'Policies not loaded successfully',});
             });
-        },
-        getUser(page=1){
-            axios.get('/api/policies?page='+page)
-            .then(response=>{this.policies = response.data.policies;});
-        },
-        viewPolicy(){
-
         },
         reset(response){
             this.categories = response.data.categories;

@@ -9,12 +9,17 @@ use App\Models\EMR\Appointment;
 use App\Models\EMR\Consultation;
 use App\Models\EMR\Patient;
 
+use App\Http\Traits\EService\AppointmentTrait;
+use App\Http\Traits\EService\PatientTrait;
+
 class ConsultationController extends Controller
 {
+    use AppointmentTrait, PatientTrait;
+
     public function index()
     {
         return response()->json([
-            'appointments' => Appointment::whereDate('date', '=', date('Y-m-d'))->whereIn('status', [4, 5, 6, 7, 8, 9, 10])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(70),
+            'appointments' => $this->appointment_get_all('consultation', ($_GET['page'] ?? 1), true)
         ]);
     }
 
@@ -57,7 +62,7 @@ class ConsultationController extends Controller
         $appointment->save();
 
         return response()->json([
-            'appointment' => Appointment::where('id',$request->input('appointment_id'))->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'report.findings', ])->first(),
+            'appointment' => $this->appointment_get_by_id($request->input('appointment_id'), 'consultation'),
         ]);
     }
 
@@ -77,9 +82,8 @@ class ConsultationController extends Controller
     }
 
     public function reviews(){
-        $last_month = date('Y-m-d', strtotime('-1 month'));
         return response()->json([
-            'appointments' => Appointment::whereDate('date', '>=', $last_month)->whereDate('date', '<=', date('Y-m-d'))->whereIn('status', [ 6, 7, 8, 9, 10])->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(70),
+            'appointments' => $this->appointment_get_all('review', ($_GET['page'] ?? 1), true)
         ]);
     }
 

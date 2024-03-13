@@ -85,6 +85,12 @@ Vue.use(paystack);
 import VueQRCodeComponent from 'vue-qrcode-component';
 Vue.component('qr-code', VueQRCodeComponent);
 
+//Import Model List Search
+import { ModelListSelect, MultiSelect } from 'vue-search-select';
+import 'vue-search-select/dist/VueSearchSelect.css';
+Vue.use(ModelListSelect);
+Vue.use(MultiSelect);
+
 //Import WYSIWYG
 import wysiwyg from "vue-wysiwyg";
 import "vue-wysiwyg/dist/vueWysiwyg.css";

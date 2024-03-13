@@ -130,6 +130,7 @@ let routes = [
     
     {path: '/eservices/front_admin',                    component:EServiceFrontAdminAppointments},
     {path: '/eservices/front_admin/appointments',       component:EServiceFrontAdminAppointments},
+    {path: '/eservices/front_admin/appointment/:id',    component:EServiceFrontAppointment},
     {path: '/eservices/front_admin/appointments/missed',component:EServiceFrontMissed},
     {path: '/eservices/front_admin/applicants',         component:EServiceFrontPatients},
     
