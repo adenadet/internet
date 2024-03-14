@@ -82,9 +82,10 @@
                                             <i class="fa fa-ellipsis-v"></i>
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                                            <router-link :to="'/eservices/front_admin/appointment/'+appointment.id" class="dropdown-item btn btn-block btn-sm"><i class="fa fa-eye mr-1 text-primary mr-1"></i> View Appointment</router-link>
-                                            <a :href="'/certificates/'+appointment.id"  class="dropdown-item btn btn-block btn-sm" target="_blank"><i class="fa fa-certificate"></i> Print Certificate</a>
+                                            <router-link :to="'/eservices/front_office/appointment/'+appointment.id" class="dropdown-item btn btn-block btn-sm"><i class="fa fa-eye mr-1 text-primary mr-1"></i> View Appointment</router-link>
+                                            <a  v-show="appointment.status == 10" :href="'/certificates/'+appointment.id"  class="dropdown-item btn btn-block btn-sm" target="_blank"><i class="fa fa-certificate text-success mr-1"></i> Print Certificate</a>
                                             <button v-show="appointment.status == 10" class="dropdown-item btn btn-block btn-sm" @click="viewReport(appointment)"><i class="fa fa-file mr-1"></i> View Report</button>
+                                            <a v-show="appointment.referral !=null" :href="'/eservices/front_office/referral/'+appointment.id"  class="dropdown-item btn btn-block btn-sm" target="_blank"><i class="fa fa-file-pdf text-warning"></i> Print Referral</a>
                                         </div> 
                                     </td>
                                 </tr>

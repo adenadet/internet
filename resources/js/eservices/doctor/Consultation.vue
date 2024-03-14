@@ -66,7 +66,7 @@ export default {
             this.$Progress.finish();
         },
         getInitials() {
-            axios.get("/api/emr/appointments/" + this.$route.params.id)
+            axios.get("/api/emr/consultations/" + this.$route.params.id)
                 .then(response => {
                 Fire.$emit("refreshAppointment", response);
             })

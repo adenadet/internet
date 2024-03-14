@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Co
     Route::get('/radiologist',                              'ServiceController@radiologist');
     Route::get('/doctor/consent/{id}',                      'ServiceController@consent');
     Route::post('/doctor/consents',                         'ServiceController@consent_save');
+    Route::get('/referral/{id}',                            'ServiceController@front_admin');
 
     Route::get('/administrator/{any}',                      'ServiceController@administrator')->where('any', '.*');
     Route::get('/certificate/{any}',                        'ServiceController@certificate')->where('any', '.*'); 

@@ -28,11 +28,45 @@ use App\Http\Traits\EService\PatientTrait;
 class AppointmentController extends Controller
 {
     use AppointmentTrait, PatientTrait;
+
+    public function certificates(){
+        return response()->json([
+            'appointments' => $this->appointment_get_all('certificate', ($_GET['page'] ?? 1), true, 'DESC'),
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $appointment = Appointment::where('id','=',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first();
+        
+        if (!is_null($appointment->payment)){
+            $message = "Appointment has already been paid for, you can only reschedule.";
+        }
+        else if (!is_null(($appointment->report)) || !is_null(($appointment->consultation)) || !is_null(($appointment->consent)) || !is_null(($appointment->front_officer))){
+            $message = "Appointment has already been completed, you can not delete.";
+        }
+        else{
+            $appointment->status = -1;
+            $appointment->deleted_by = auth('api')->id();
+            $appointment->deleted_at = date('Y-m-d H:i:s');
+            $appointment->save();
+
+            $message = "Appointment was deleted successfully";
+
+            return response()->json([
+                'appointments'  => $this->appointment_get_all(NULL, $page, true, 'ASC'),   
+                'patients'      => $this->patient_get_all(),
+                'services'      => $this->appointment_get_all_services(),   
+                'message' => $message,    
+            ]);
+        }
+    }
+
     public function index()
     {
         $page = $_GET['page'] ?? 1;
         return response()->json([
-            'appointments'  => $this->appointment_get_all(NULL, $page, true),   
+            'appointments'  => $this->appointment_get_all(NULL, $page, true, 'ASC'),   
             'patients'      => $this->patient_get_all(),
             'services'      => $this->appointment_get_all_services(),   
         ]);
@@ -70,7 +104,7 @@ class AppointmentController extends Controller
         ]);
 
         return response()->json([
-            'appointments'  => $this->appointment_get_all_paginated(NULL, $page, true),   
+            'appointments'  => $this->appointment_get_all(NULL, 1, true, 'ASC'),   
             'patients'      => $this->patient_get_all(),
             'services'      => $this->appointment_get_all_services(),       
         ]);
@@ -106,37 +140,10 @@ class AppointmentController extends Controller
         $appointment->save();
 
         return response()->json([
-            'appointments'  => $this->appointment_get_all_paginated(NULL, $page, true),   
+            'appointments'  => $this->appointment_get_all(NULL, $page, true, 'ASC'),   
             'patients'      => $this->patient_get_all(),
             'services'      => $this->appointment_get_all_services(),      
         ]);
-    }
-
-    public function destroy($id)
-    {
-        $appointment = Appointment::where('id','=',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first();
-        
-        if (!is_null($appointment->payment)){
-            $message = "Appointment has already been paid for, you can only reschedule.";
-        }
-        else if (!is_null(($appointment->report)) || !is_null(($appointment->consultation)) || !is_null(($appointment->consent)) || !is_null(($appointment->front_officer))){
-            $message = "Appointment has already been completed, you can not delete.";
-        }
-        else{
-            $appointment->status = -1;
-            $appointment->deleted_by = auth('api')->id();
-            $appointment->deleted_at = date('Y-m-d H:i:s');
-            $appointment->save();
-
-            $message = "Appointment was deleted successfully";
-
-            return response()->json([
-                'appointments'  => $this->appointment_get_all_paginated(NULL, $page),   
-                'patients'      => $this->patient_get_all(),
-                'services'      => $this->appointment_get_all_services(),   
-                'message' => $message,    
-            ]);
-        }
     }
 
     public function schedules()
@@ -168,12 +175,7 @@ class AppointmentController extends Controller
         ]);
     }
 
-    public function certificates(){
-        return response()->json([
-            'appointments' => $this->appointment_get_all('certificate', ($_GET['page'] ?? 1), true),
-        ]);
-    }
-
+    
     public function issue(Request $request, $id)
     {
         $this->validate($request, [
@@ -231,7 +233,7 @@ class AppointmentController extends Controller
 
     public function getXray(){
         return response()->json([
-            'appointments' => $this->appointment_get_all('xray', ($_GET['page'] ?? 1), true),
+            'appointments' => $this->appointment_get_all('xray', ($_GET['page'] ?? 1), true, 'ASC'),
         ]);
     }
 
@@ -245,7 +247,13 @@ class AppointmentController extends Controller
         $appointment->save();
         
         return response()->json([
-            'appointments' => $this->appointment_get_all('xray', ($_GET['page'] ?? 1), true),
+            'appointments' => $this->appointment_get_all('xray', ($_GET['page'] ?? 1), true, 'ASC'),
+        ]);
+    }
+
+    public function referral($id){
+        return response()->json([
+            'appointment' => $this->appointment_get_by_id($id, 'referral'),
         ]);
     }
 

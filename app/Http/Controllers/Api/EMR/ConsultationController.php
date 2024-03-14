@@ -8,6 +8,19 @@ use Illuminate\Http\Request;
 use App\Models\EMR\Appointment;
 use App\Models\EMR\Consultation;
 use App\Models\EMR\Patient;
+use App\Models\EMR\RadFinding;
+use App\Models\EMR\Schedule;
+use App\Models\EMR\Service;
+use App\Models\Area;
+use App\Models\State;
+use App\Models\Country;
+use App\Models\User;
+
+use Dompdf\Adapter\PDFLib;
+use PDF;
+use Mail;
+use App\Mail\Certificate\AbnormalMail;
+use App\Mail\Certificate\NormalMail;
 
 use App\Http\Traits\EService\AppointmentTrait;
 use App\Http\Traits\EService\PatientTrait;
@@ -19,7 +32,7 @@ class ConsultationController extends Controller
     public function index()
     {
         return response()->json([
-            'appointments' => $this->appointment_get_all('consultation', ($_GET['page'] ?? 1), true)
+            'appointments' => $this->appointment_get_all('consultation', ($_GET['page'] ?? 1), true, 'ASC')
         ]);
     }
 
@@ -68,7 +81,11 @@ class ConsultationController extends Controller
 
     public function show($id)
     {
-        //
+        return response()->json([
+            'appointment'   => $this->appointment_get_by_id($id, 'consultation'),
+            'findings'      => RadFinding::all(),
+            'nations'       => Country::select('id', 'name')->get(),
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -83,7 +100,7 @@ class ConsultationController extends Controller
 
     public function reviews(){
         return response()->json([
-            'appointments' => $this->appointment_get_all('review', ($_GET['page'] ?? 1), true)
+            'appointments' => $this->appointment_get_all('review', ($_GET['page'] ?? 1), true, 'DESC')
         ]);
     }
 

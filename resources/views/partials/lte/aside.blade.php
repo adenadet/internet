@@ -146,6 +146,19 @@
                         @endif
                     </ul>
                 </li>
+                @if(Auth::user()->hasRole('Super Admin'))
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-cogs"></i><p>Claims <i class="right fas fa-angle-left"></i></p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item"><a href="/claims/curacel" class="nav-link"><i class="fas fa-boxes nav-icon"></i><p>Curacel Claims</p></a></li>
+                        <li class="nav-item"><a href="/departments" class="nav-link"><i class="nav-icon fas fa-boxes"></i><p>Departments</p></a></li>
+                        <li class="nav-item"><a href="/internet" class="nav-link"><i class="nav-icon fas fa-network-wired"></i><p>Internet Checker</p></a></li>
+                        <li class="nav-item"><a href="/settings" class="nav-link"><i class="nav-icon fas fa-cogs"></i><p>Settings</p></a></li>
+                    </ul>
+                </li>
+                @endif
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-cogs"></i><p>System <i class="right fas fa-angle-left"></i></p>

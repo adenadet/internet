@@ -10,28 +10,43 @@
                     <li class="nav-item"><a class="nav-link" href="#report" data-toggle="tab">Report</a></li>
                     <li class="nav-item"><a class="nav-link" href="#laboratory" data-toggle="tab">Laboratory</a></li>
                     <li class="nav-item"><a class="nav-link" href="#certificate" data-toggle="tab">Issue Certificate</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#referral" data-toggle="tab" v-show="appointment.issue_action != null && appointment.issue_action != 'certificate'">Referral</a></li>
                     </ul>
                 </div>
                 <div class="card-body">
                     <div class="tab-content">
-                        <div class="tab-pane active" id="consent">
-                            <EServiceDocConsentView :consent="appointment.consent" :appointment="appointment" :patient="appointment.patient" :consultation="appointment"/>
-                        </div>
-                        <div class="tab-pane" id="consultation">
-                            <EServiceDocConsultationView  :consultation="consultation" :appointment="appointment" :patient="appointment.patient"/>
-                        </div>
-                        <div class="tab-pane" id="report">
-                            <EServiceDocReportView  :findings="findings" :consultation="appointment" :patient="appointment.patient" :report="appointment.report"/>
-                        </div>
-                        <div class="tab-pane" id="laboratory">
-                            <EServiceDocLaboratoryView  :findings="findings" :consultation="appointment" :patient="appointment.patient" :laboratory="appointment.laboratory"/>
-                        </div>
                         <div class="tab-pane" id="certificate">
                             <div class="card" v-if="((appointment.report == null) && (appointment.laboratory == null)) && (appointment.status != 8)"><div class="card-header">Awaiting Report</div><div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div></div>
                             <EServiceDocIssueView :appointment="appointment" v-else-if="appointment.issuer != null" />
                             <!--EServiceDocFormIssue :appointment="appointment" v-else-if="" /-->
                             <EServiceDocFormIssue v-else-if="(appointment.consultation.decision == 8 || appointment.issuer == null)" :appointment="appointment" />    
                             <div class="card" v-else><div class="card-header">Awaiting Report</div><div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div></div>
+                        </div>
+                        <div class="tab-pane active" id="consent">
+                            <EServiceDocConsentView :consent="appointment.consent" :appointment="appointment" :patient="appointment.patient" :consultation="appointment"/>
+                        </div>
+                        <div class="tab-pane" id="consultation">
+                            <EServiceDocConsultationView  :consultation="consultation" :appointment="appointment" :patient="appointment.patient"/>
+                        </div>
+                        <div class="tab-pane" id="laboratory">
+                            <EServiceDocLaboratoryView  :findings="findings" :consultation="appointment" :patient="appointment.patient" :laboratory="appointment.laboratory"/>
+                        </div>
+                        <div class="tab-pane" id="referral">
+                            <div class="card" v-if="((appointment.referral == null) && (appointment.status == 10) && (appointment.issuer != null) && (appointment.consultation.summary != 'normal'))">
+                                <div class="card-header">Issue Referral</div>
+                                <div class="card-body">
+                                    <EServiceDocFormReferral :appointment="appointment" />
+                                </div>
+                            </div>
+                            <div class="card" v-else-if="appointment.referral != null">
+                                <div class="card-header">Referral</div>
+                                <div class="card-body">
+                                    <EServiceDocDetailReferral :appointment="appointment" :referral="appointment.referral" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="report">
+                            <EServiceDocReportView  :findings="findings" :consultation="appointment" :patient="appointment.patient" :report="appointment.report"/>
                         </div>
                     </div>
                 </div>
@@ -45,10 +60,10 @@
 export default {
     data(){
         return  {
+
         }
     },
     mounted() {
-        //console.log('Component mounted.')
     },
     created() {
         //this.getInitials();

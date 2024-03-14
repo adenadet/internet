@@ -167,6 +167,11 @@ Vue.filter('getAge', function(text){
     return age+' years';
 });
 
+Vue.filter('profilePicture', function (text){
+    if (text == null){return '/img/profile/default.png';}
+    else{ return '/img/profile/'+text ;}
+});
+
 Vue.filter('readMore', function (text, length, suffix) {
     if (text == null){return text;}
     else if (text.length <= length){return text;}
@@ -177,9 +182,9 @@ Vue.filter('shortDate', function(text){
     return moment(text).format('MMM Do, YY');    
 });
 
-Vue.filter('profilePicture', function (text){
-    if (text == null){return '/img/profile/default.png';}
-    else{ return '/img/profile/'+text ;}
+Vue.filter('treatFont', function(text){
+    let story = text.replaceAll("font-size: 1rem", "font-size: 2rem");
+    return story;    
 });
 
 //Users Components
@@ -189,5 +194,4 @@ const app = new Vue({
     router,
     data:{ search: '',},
     methods:{searchIt: _.debounce(()=>{Fire.$emit('searchInstance');}, 1000)},
-
 });

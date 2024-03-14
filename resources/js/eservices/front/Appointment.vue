@@ -44,7 +44,6 @@
         <h3 class="card-title">Appointment Detail</h3>
         <div class="card-tools">
             <button v-if="appointment.payment == null" type="button" class="btn btn-sm btn-success" title="Make Payment" @click="makePayment(appointment)"><i class="fas fa-credit-card"></i></button>
-            <!--<button v-else-if="appointment.front_officer == null" @click="to_doctor(appointment)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button-->
             <button v-if="appointment.status < 4" @click="to_doctor(appointment)" type="button" class="btn btn-sm btn-primary" title="Process"><i class="fas fa-check"></i></button>
         </div>
     </div>
@@ -80,38 +79,77 @@
                 <div class="row">
                     <div class="col-12">
                         <h4>Recent Activity</h4>
-                        <!--<div class="post" v-if="appointment.radiologist != null && appointment.radiologist_id != null">
-                            <h6><b>Radiologist</b></h6>
-                            <div class="user-block">
-                                <img class="img-circle img-bordered-sm" :src="appointment.radiologist != null ? '/img/profile/'+appointment.radiologist.image : '/img/profile/default.png'" :title="appointment.radiologist.first_name+' '+appointment.radiologist.last_name">
-                                <span class="username"><a href="#">{{appointment.radiologist != null ? appointment.radiologist.first_name+' '+appointment.radiologist.last_name : 'Radiologist Undefined'}}</a>
-                                </span>
-                                <span class="description">Posted: {{appointment.radiologist_at | excelDate}}</span>
+                        <div class="timeline">
+                            <div v-if="appointment.radiologist != null && appointment.radiologist_id != null">
+                                <i class="fas fa-file bg-purple"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fas fa-clock"></i> {{appointment.report.created_at | excelDate}}</span>
+                                    <h3 class="timeline-header"><b>Radiologist</b></h3>
+                                    <div class="timeline-body row">
+                                        <div class="user-block col-md-12">
+                                            <img class="img-circle img-bordered-sm" :src="appointment.radiologist != null ? '/img/profile/'+appointment.radiologist.image : '/img/profile/default.png'" :title="appointment.radiologist.first_name+' '+appointment.radiologist.last_name">
+                                            <span class="username"><a href="#">{{appointment.radiologist != null ? appointment.radiologist.first_name+' '+appointment.radiologist.last_name : 'Radiologist Undefined'}}</a>
+                                            </span>
+                                            <span class="description">Posted: {{appointment.report.created_at | excelDate}}</span>
+                                        </div><br />
+                                        <p class="col-md-12">{{ appointment.report.summary | firstUp }}</p>
+                                        <p class="col-md-12" v-html="appointment.report.details"></p>
+                                    </div>
+                                </div>
                             </div>
-                            <p>{{appointment.appointment.summary}}</p>
-                            <p>{{appointment.radiologist_remark}}</p>
-                        </div>-->
-
-                        <div class="post clearfix" v-if="appointment.medical_officer != null && appointment.doctor_id != null">
-                            <h6><b>Medical Officer</b></h6>
-                            <div class="user-block">
-                                <img class="img-circle img-bordered-sm" :src="appointment.medical_officer != null && appointment.medical_officer.image != null ? '/img/profile/'+appointment.medical_officer.image : '/img/profile/default.png'" alt="user image">
-                                <span class="username"><a href="#">{{appointment.medical_officer != null ? appointment.medical_officer.first_name+' '+appointment.medical_officer.last_name : 'Radiologist Undefined'}}</a>
-                                </span>
-                                <span class="description">Posted: {{appointment.medical_officer_at | excelDate}}</span>
+                            <div v-if="appointment.medical_officer != null && appointment.doctor_id != null && appointment.consultation != null">
+                                <i class="fas fa-user-md bg-green"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fas fa-clock"></i> {{appointment.consultation.created_at | excelDate}}</span>
+                                    <h3 class="timeline-header"><b>Medical Officer</b></h3>
+                                    <div class="timeline-body row">
+                                        <div class="user-block col-md-12">
+                                            <img class="img-circle img-bordered-sm" :src="appointment.medical_officer != null && appointment.medical_officer.image != null ? '/img/profile/'+appointment.medical_officer.image : '/img/profile/default.png'" alt="user image">
+                                            <span class="username"><a href="#">{{appointment.medical_officer | fullName}}</a>
+                                            </span>
+                                            <span class="description">Posted: {{appointment.consultation.created_at | excelDate}}</span>
+                                        </div>
+                                        <br />
+                                        <p class="col-md-12">{{ appointment.consultation.decision == 6 ? "Send to Xray for CXR": (appointment.consultation.decision == 7 ? "Send to Lab for Sputum": (appointment.consultation.decision == 8 ? "Kid under 11years": (appointment.consultation.decision == 10 ? "Patient Psotpoed": "Patient Cancelled"))) }}</p>
+                                        <p class="col-md-12" v-html="appointment.consultation.remarks"></p>
+                                    </div>
+                                </div>
                             </div>
-                            <p>{{appointment.medical_officer_remark}}</p>
-                        </div>
-
-                        <div class="post clearfix" v-if="appointment.front_office_id != null">
-                            <h6><b>Front Officer</b></h6>
-                            <div class="user-block">
-                                <img class="img-circle img-bordered-sm" :src="appointment.front_officer != null ? '/img/profile/'+appointment.front_officer.image : '/img/profile/default.png'" :title="appointment.front_officer != null ? appointment.front_officer.first_name+' '+appointment.front_officer.last_name : 'Undefined Officer'">
-                                <span class="username"><a href="#">{{appointment.front_officer != null ? appointment.front_officer.first_name+' '+appointment.front_officer.last_name : 'Undefined Officer'}}</a>
-                                </span>
-                                <span class="description">Posted: {{appointment.arrived_at | excelDate}}</span>
+                            <div v-if="appointment.xray_officer_id != null && appointment.xray_officer != null">
+                                <i class="fas fa-x-ray bg-blue"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fas fa-clock"></i> {{appointment.consultation.created_at | excelDate}}</span>
+                                    <h3 class="timeline-header"><b>Xray</b></h3>
+                                    <div class="timeline-body row">
+                                        <div class="user-block col-md-12">
+                                            <img class="img-circle img-bordered-sm" :src="appointment.xray_officer != null && appointment.xray_officer.image != null ? '/img/profile/'+appointment.xray_officer.image : '/img/profile/default.png'" alt="user image">
+                                            <span class="username"><a href="#">{{appointment.xray_officer | fullName}}</a>
+                                            </span>
+                                            <span class="description">Posted: {{appointment.xray_at | excelDate}}</span>
+                                        </div>
+                                        <br />
+                                        <p class="col-md-12">{{ appointment.consultation.decision == 6 ? "Send to Xray for CXR": (appointment.consultation.decision == 7 ? "Send to Lab for Sputum": (appointment.consultation.decision == 8 ? "Kid under 11years": (appointment.consultation.decision == 10 ? "Patient Psotpoed": "Patient Cancelled"))) }}</p>
+                                        <p class="col-md-12" v-html="appointment.consultation.remarks"></p>
+                                    </div>
+                                </div>
                             </div>
-                            <p v-html="appointment.front_office_remark"></p>
+                            <div  v-if="appointment.front_office_id != null">
+                                <i class="fas fa-hospital-user bg-blue"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fas fa-clock"></i> {{appointment.arrived_at | excelDate}}</span>
+                                    <h3 class="timeline-header"><b>Front Officer</b></h3>
+                                    <div class="timeline-body row">
+                                        <div class="user-block col-md-12">
+                                            <img class="img-circle img-bordered-sm" :src="appointment.front_officer != null ? '/img/profile/'+appointment.front_officer.image : '/img/profile/default.png'" :title="appointment.front_officer != null ? appointment.front_officer.first_name+' '+appointment.front_officer.last_name : 'Undefined Officer'">
+                                            <span class="username"><a href="#">{{appointment.front_officer | fullName}}</a>
+                                            </span>
+                                            <span class="description">Posted: {{appointment.arrived_at | excelDate}}</span>
+                                        </div>
+                                        <br />
+                                        <p class="col-md-12" v-html="appointment.front_office_remark"></p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -174,7 +212,7 @@ export default {
             this.$Progress.finish();
         },
         getInitials() {
-            axios.get('/api/emr/appointments/'+this.$route.params.id)
+            axios.get('/api/emr/consultations/'+this.$route.params.id)
             .then(response => {
                 Fire.$emit('refreshAppointment', response);
             })

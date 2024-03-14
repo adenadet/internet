@@ -13,12 +13,10 @@
     @include('partials.lte.navbar')
     @include('partials.lte.aside')
     <div class="content-wrapper">
-        @include('partials.lte.breadcrumb')
         @yield('content')
         @yield('extra_content')
     </div>
     <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
         <div class="p-3">
         <h5>Title</h5>
         <p>Sidebar content</p>

@@ -33,7 +33,7 @@ import EServiceDocConsultationSingle from '../eservices/doctor/ConsultationSingl
 import EServiceDocConsentView        from '../eservices/doctor/ConsentView.vue';
 import EServiceDocConsultationView   from '../eservices/doctor/ConsultationView.vue';
 import EServiceDocIssueView          from '../eservices/doctor/IssueView.vue';
-//import EServiceDocLaboratory         from '../eservices/doctor/Laboratory.vue';
+import EServiceDocPending            from '../eservices/doctor/Pending.vue';
 import EServiceDocLaboratoryView     from '../eservices/doctor/LaboratoryView.vue';
 import EServiceDocPatientView        from '../eservices/doctor/PatientView.vue';
 import EServiceDocReportView         from '../eservices/doctor/ReportView.vue';
@@ -55,9 +55,12 @@ import EServiceRadReviews            from '../eservices/radiologist/Reviews.vue'
     import EServiceDocFormConsentPad           from '../eservices/doctor/forms/ConsentPad.vue';
     import EServiceDocFormIssue                from '../eservices/doctor/forms/Issue.vue';
     import EServiceDocFormLaboratory           from '../eservices/doctor/forms/Laboratory.vue';
+    import EServiceDocFormReferral             from '../eservices/doctor/forms/Referral.vue';
     import EServiceDocFormScreening            from '../eservices/doctor/forms/Screening.vue';
 
-    import EServiceRadFormReport            from '../eservices/radiologist/forms/Report.vue';
+    import EServiceDocDetailReferral           from '../eservices/doctor/details/Referral.vue';
+
+    import EServiceRadFormReport               from '../eservices/radiologist/forms/Report.vue';
     
 
 Vue.component('EServiceCertificate',             EServiceCertificate);
@@ -85,7 +88,7 @@ Vue.component('EServiceDocConsultationSingle',   EServiceDocConsultationSingle);
 Vue.component('EServiceDocConsentView',          EServiceDocConsentView);
 Vue.component('EServiceDocConsultationView',     EServiceDocConsultationView);
 Vue.component('EServiceDocIssueView',            EServiceDocIssueView);
-//Vue.component('EServiceDocLaboratory',           EServiceDocLaboratory); 
+Vue.component('EServiceDocPending',              EServiceDocPending); 
 Vue.component('EServiceDocLaboratoryView',       EServiceDocLaboratoryView); 
 Vue.component('EServiceDocPatientView',          EServiceDocPatientView); 
 Vue.component('EServiceDocReportView',           EServiceDocReportView); 
@@ -103,10 +106,13 @@ Vue.component('EServiceRadReviews',              EServiceRadReviews);
     Vue.component('EServiceFormPayment',         EServiceFormPayment);
     Vue.component('EServiceFormSearch',          EServiceFormSearch);
 
+    Vue.component('EServiceDocDetailReferral',   EServiceDocDetailReferral);
+
     Vue.component('EServiceDocFormConsent',      EServiceDocFormConsent);
     Vue.component('EServiceDocFormConsentPad',   EServiceDocFormConsentPad);
     Vue.component('EServiceDocFormIssue',        EServiceDocFormIssue);
     Vue.component('EServiceDocFormLaboratory',   EServiceDocFormLaboratory);
+    Vue.component('EServiceDocFormReferral',     EServiceDocFormReferral);
     Vue.component('EServiceDocFormScreening',    EServiceDocFormScreening);
 
     Vue.component('EServiceRadFormReport',       EServiceRadFormReport);
@@ -125,7 +131,7 @@ let routes = [
     {path: '/eservices/doctor/consultations',           component:EServiceDocConsultations},
     {path: '/eservices/doctor/consultations/:id',       component:EServiceDocConsultationSingle},
     {path: '/eservices/doctor/consultation/:id',        component:EServiceDocConsultation},
-    //{path: '/eservices/doctor/laboratory',              component:EServiceDocLaboratory},
+    {path: '/eservices/doctor/pending',                 component:EServiceDocPending},
     {path: '/eservices/doctor/reviews',                 component:EServiceDocReviews},
     
     {path: '/eservices/front_admin',                    component:EServiceFrontAdminAppointments},
