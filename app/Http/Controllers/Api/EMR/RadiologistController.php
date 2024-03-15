@@ -25,9 +25,6 @@ class RadiologistController extends Controller
         return response()->json([
             'findings'      => RadFinding::orderBy('code', 'ASC')->get(), 
             'reports'       => Appointment::whereNull('radiologist_id')->Where('status', '=', 6)->with(['service', 'patient',])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(10),
-            'nations'       => Country::orderBy('name', 'ASC')->get(),   
-            'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
-            'services'      => Service::orderBy('name', 'ASC')->get(),  
         ]);
     }
 

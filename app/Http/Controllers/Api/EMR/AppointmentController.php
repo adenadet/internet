@@ -202,15 +202,6 @@ class AppointmentController extends Controller
             ]);
         }
 
-        /* Option 1, Not interacting with the template for now
-        $pdf = \PDF::loadView('certificates.normal', $consultation);
-
-        \Mail::send('mails.certificates.normal', $consultation, function ($message) use ($consultation, $pdf) {
-            $message->to($consultation['patient']['email'], $consultation['patient']['email'])
-                ->subject('Certificate for'.$consultation['service']['name'].' '.$consultation['patient']['first_name'].' '.$consultation['patient']['last_name'])
-                ->attachData($pdf->output(), $consultation['service']['name']." Certificate for ".$consultation['patient']['first_name']." ".$consultation['patient']['last_name'].".pdf");
-        });*/
-
         /* Option 2, Using Mail */
         if ($request->input('issue_action') == 'certificate'){
             \Mail::to($app->patient->email)->send(new NormalMail($app));
@@ -302,9 +293,8 @@ class AppointmentController extends Controller
 
         return response()->json([
             'appointments'  => $appointments,
-            'nations'       => Country::orderBy('name', 'ASC')->get(),   
-            'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
-            'services'      => Service::orderBy('name', 'ASC')->get(),   
+            //'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
+            //'services'      => Service::orderBy('name', 'ASC')->get(),   
         ]);
     }
 

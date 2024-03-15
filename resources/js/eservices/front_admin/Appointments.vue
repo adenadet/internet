@@ -99,8 +99,8 @@
                                                 <button v-show="appointment.status == 0" class="dropdown-item btn btn-block btn-sm" @click="makePayment(appointment)"><i class="fa fa-credit-card mr-1 text-success"></i> Make Payment</button>
                                                 <button v-show="appointment.status == 1" class="dropdown-item btn btn-block btn-sm" @click="viewPayment(appointment)"><i class="fa fa-file-pdf mr-1 text-success"></i> View Receipt</button>
                                                 <button v-show="appointment.status <= 1 || appointment.status == null" class="dropdown-item btn btn-default btn-sm" @click="rescheduleAppointment(appointment)"><i class="fa fa-calendar mr-1"></i> Reschedule Appointment</button>
-                                                <button v-show="appointment.status == 1" class="dropdown-item btn btn-warning btn-sm" @click="resendAppointment(appointment.id)"><i class="fa fa-envelope mr-1 text-warning"></i> Resend Confirmation</button>
-                                                <button v-show="appointment.status == 0" class="dropdown-itembtn btn-danger btn-sm" @click="deleteAppointment(appointment.id)"><i class="fa fa-trash mr-1 text-danger"></i> Delete Appointment</button>
+                                                <button v-show="appointment.status == 1" class="dropdown-item btn btn-block btn-sm" @click="resendAppointment(appointment.id)"><i class="fa fa-envelope mr-1 text-warning"></i> Resend Confirmation</button>
+                                                <button v-show="appointment.status == 0" class="dropdown-item btn btn-block btn-sm" @click="deleteAppointment(appointment.id)"><i class="fa fa-trash mr-1 text-danger"></i> Delete Appointment</button>
                                             </div>
                                         </td>
                                     </tr>

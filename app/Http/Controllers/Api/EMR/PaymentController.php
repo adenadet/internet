@@ -8,8 +8,11 @@ use App\Models\EMR\Payment;
 use App\Models\EMR\Service;
 use Illuminate\Http\Request;
 
+use App\Http\Traits\Eservice\AppointmentTrait;
+
 class PaymentController extends Controller
 {
+    use AppointmentTrait;
     public function index()
     {
         return response()->json([
@@ -61,8 +64,8 @@ class PaymentController extends Controller
         return response()->json([
             'payment' => Payment::where('id', $payment->id)->with(['service', 'patient'])->first(),
             'payments' => Payment::with(['service', 'patient'])->latest()->paginate(10),
-            'appointments' => Appointment::whereNOTIN('status', [6, 7, 8, 9])->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
-            'appointment' => Appointment::where('id', $appointment->id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality' ])->first(),
+            'appointments' => $this->appointment_get_all(NULL, 1, true, 'ASC'),
+            'appointment' => $this->appointment_get_by_id($request->input('appointment_id'), NULL),
         ]);
     }
 

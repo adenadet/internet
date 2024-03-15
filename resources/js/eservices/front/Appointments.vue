@@ -84,7 +84,7 @@
                                             <router-link :to="'/eservices/front_office/appointment/'+appointment.id"><button class="dropdown-item btn btn-block btn-sm"><i class="fa fa-eye mr-1 text-primary"></i> View Appointment</button></router-link>
                                             <button v-show="appointment.status == 0" class="dropdown-item btn btn-block btn-sm" @click="makePayment(appointment)"><i class="fa fa-credit-card mr-1 text-success"></i> Make Payment</button>
                                             <button v-show="appointment.status == 1" class="dropdown-item btn btn-block btn-sm" @click="viewPayment(appointment)"><i class="fa fa-file-pdf mr-1 text-success"></i> View Receipt</button>
-                                            <button v-show="appointment.status == 0" class="dropdown-itembtn btn-danger btn-sm" @click="deleteAppointment(appointment.id)"><i class="fa fa-trash mr-1 text-danger"></i> Delete Appointment</button>
+                                            <button v-show="appointment.status == 0" class="dropdown-item btn btn-block btn-sm" @click="deleteAppointment(appointment.id)"><i class="fa fa-trash mr-1 text-danger"></i> Delete Appointment</button>
                                         </div> 
                                     </td>
                                 </tr>

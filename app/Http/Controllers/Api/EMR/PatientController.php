@@ -18,13 +18,9 @@ class PatientController extends Controller
     public function index()
     {
         return response()->json([
-            'applicants' => Patient::orderBy('created_at', 'DESC')->with('nationality')->paginate(100), 
-            'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
-            'services' => Service::orderBy('name', 'ASC')->get(),
-            'states' => State::orderBy('name', 'ASC')->get(),
             'nations' => Country::orderBy('name', 'ASC')->get(), 
-            'patients' => Patient::orderBy('created_at', 'DESC')->get(),     
+            'applicants' => Patient::orderBy('created_at', 'DESC')->with('nationality')->paginate(50),     
         ]);
     }
 
@@ -74,15 +70,11 @@ class PatientController extends Controller
         ]);
 
         return response()->json([
-            'applicants' => Patient::orderBy('created_at', 'DESC')->with(['nationality',])->paginate(25),
-            'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
-            'services' => Service::orderBy('name', 'ASC')->get(),
-            'states' => State::orderBy('name', 'ASC')->get(),
             'nations' => Country::orderBy('name', 'ASC')->get(), 
-            'patients' => Patient::orderBy('first_name', 'ASC')->get(),     
+            'applicants' => Patient::orderBy('created_at', 'DESC')->with('nationality')->paginate(50),     
         ]);
-    }
+        }
 
     public function show($id)
     {
@@ -135,8 +127,6 @@ class PatientController extends Controller
         $patient->save();
 
         return response()->json([
-            'applicants' => Patient::orderBy('created_at', 'DESC')->with(['nationality',])->paginate(100),
-            'appointments' => Appointment::where('patient_id', auth('api')->id())->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'services' => Service::orderBy('name', 'ASC')->get(),
             'states' => State::orderBy('name', 'ASC')->get(),
