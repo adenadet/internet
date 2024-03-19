@@ -128,10 +128,8 @@ class PatientController extends Controller
 
         return response()->json([
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
-            'services' => Service::orderBy('name', 'ASC')->get(),
-            'states' => State::orderBy('name', 'ASC')->get(),
             'nations' => Country::orderBy('name', 'ASC')->get(), 
-            'patients' => Patient::orderBy('first_name', 'ASC')->get(),     
+            'applicants' => Patient::orderBy('created_at', 'DESC')->with('nationality')->paginate(50),        
         ]);
     }
 
