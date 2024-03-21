@@ -9,10 +9,11 @@ use App\Models\EMR\Service;
 use Illuminate\Http\Request;
 
 use App\Http\Traits\Eservice\AppointmentTrait;
+use App\Http\Traits\Eservice\PaymentTrait;
 
 class PaymentController extends Controller
 {
-    use AppointmentTrait;
+    use AppointmentTrait, PaymentTrait;
     public function index()
     {
         return response()->json([
@@ -42,28 +43,12 @@ class PaymentController extends Controller
         ]);
 
         //Insert Payment
-        $payment = Payment::create([
-            'service_id' => $request->input('service_id'), 
-            'patient_id' => $request->input('patient_id'), 
-            'appointment_id' => $request->input('appointment_id'),
-            'amount' => $request->input('amount'), 
-            'employee_id' => $request->input('employee_id') ?? auth('api')->id(),
-            'channel' => $request->input('channel'), 
-            'details' => $request->input('details'),    
-        ]);
-        
-        //Update the appointment with payment details
-        $appointment = Appointment::find($request->input('appointment_id'));
-
-        $appointment->status = 1;
-        $appointment->payment_channel = $payment->channel;
-        $appointment->paid_by = auth('api')->id();
-        $appointment->save();
+        $payment = $this->payment_create_new($request);
         
         //Return Values
         return response()->json([
-            'payment' => Payment::where('id', $payment->id)->with(['service', 'patient'])->first(),
-            'payments' => Payment::with(['service', 'patient'])->latest()->paginate(10),
+            'payment' => $this->payment_get_by_id($payment->id),
+            'payments' => $this->payment_get_all(),
             'appointments' => $this->appointment_get_all(NULL, 1, true, 'ASC'),
             'appointment' => $this->appointment_get_by_id($request->input('appointment_id'), NULL),
         ]);
@@ -72,10 +57,10 @@ class PaymentController extends Controller
     public function show($id)
     {
         return response()->json([
-            'payment' => Payment::where('id', $id)->with(['service', 'patient.state'])->first(),
-            'payments' => Payment::with(['service', 'patient'])->latest()->paginate(10),
-            'appointments' => Appointment::whereNOTIN('status', [6, 7, 8, 9])->with(['service', 'patient'])->orderBy('date', 'ASC')->paginate(10),
-       ]);
+            'payment' => $this->payment_get_by_id($id),
+            'payments' => $this->payment_get_all(),
+            'appointments' => $this->appointment_get_all(NULL, 1, true, 'ASC'),
+        ]);
     }
 
     public function update(Request $request, $id)

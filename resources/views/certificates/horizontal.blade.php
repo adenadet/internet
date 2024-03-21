@@ -13,7 +13,7 @@
 <body>
     <div class="row m-0">
         <div class="col-2 p-3 pt-0">
-            <img src="https://intranet.saintnicholashospital.com/img/applicants/{{$appointment->patient->image}}" class="img-fluid" />
+            <img src="/img/applicants/{{$appointment->patient->image}}" class="img-fluid" />
         </div>
         <div class="col-10">
             <div class="row">
