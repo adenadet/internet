@@ -111,20 +111,10 @@ export default {
             .then(response =>{
                 this.$Progress.finish();
                 Fire.$emit('refreshPayment', response);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'The Payment has been made',
-                    showConfirmButton: false,
-                    timer: 1500
-                    });
+                Swal.fire({icon: 'success', title: 'The Payment has been made', showConfirmButton: false, timer: 1500});
                 })
             .catch(()=>{
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!',
-                    footer: 'Please try again later!'
-                    });
+                Swal.fire({icon: 'error', title: 'Oops...', text: 'Something went wrong!', footer: 'Please try again later!'});
                 this.$Progress.fail();
                 });
         },

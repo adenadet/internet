@@ -121,19 +121,15 @@ export default {
         this.getInitials();
         Fire.$on('refreshAppointment', response => {
             this.refreshAppointments(response);
-            $('#paymentModal').modal('hide');
-            $('#patientModal').modal('hide');
-            $('#appointmentModal').modal('hide');
+            this.closeModals();
         });
         Fire.$on('refresh', response => {
             this.refreshAppointments(response);
-            $('#paymentModal').modal('hide');
-            $('#patientModal').modal('hide');
-            $('#appointmentModal').modal('hide');
+            this.closeModals();
         });
         Fire.$on('refreshPayment', response => {
             this.refreshAppointments(response);
-            $('#paymentModal').modal('hide');
+            this.closeModals();
         });
     },
     methods: {
@@ -157,6 +153,7 @@ export default {
             $('#appointmentModal').modal('hide');
             $('#patientModal').modal('hide');
             $('#applicantModal').modal('hide');
+            $('#paymentModal').modal('hide');
             $('#receiptModal').modal('hide');
         },
         deleteAppointment(id){

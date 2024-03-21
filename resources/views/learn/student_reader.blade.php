@@ -40,6 +40,7 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    {{$lesson->file_type}}
                     @if(!(is_null($lesson->file_type)))<iframe src="{{ asset($lesson->file) }}" class="col-12" style="min-height: 1000px"></iframe>@endif
                     @if(!(is_null($lesson->video)))<router-view></router-view>@endif
                     <div class="row">
