@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Std;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Http\Traits\LearningTrait;
+
 use App\Models\Lms\Exam;
 use App\Models\Lms\Option;
 use App\Models\Lms\QuestionResult;
@@ -15,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ExamController extends Controller
 {
+    use LearningTrait;
+    
     public function index()
     {
         //
@@ -94,23 +98,21 @@ class ExamController extends Controller
     public function show($id)
     {
         //Check if this user can do this exam
-        $user_exam = UserExam::where('user_id', '=', Auth::id())->where('exam_id', '=', $id)->with('exam')->get();
 
-        if (count ($user_exam) == 0){
-            return view ('lms.students.no-exam');
+        $user_exam = UserExam::where('user_id', '=', Auth::id())->where('exam_id', '=', $id)->with('exam')->first();
+
+        if (!($user_exam)){
+            $user_exam = $this->learn_exam_create_new(Auth::id(), $id);
         }
         
         //Check If User Start Time is Set
-        if(is_null($user_exam[0]->user_start_time)) {$user_exam[0]->user_start_time = date('Y-m-d H:i:s');}
-        //Check if Status is Set to In Progress
-        if($user_exam[0]->status < 2){ $user_exam[0]->status = 2;}
-        //Save User Exam 
-        $user_exam[0]->save();
+        else if(is_null($user_exam->user_start_time)) {
+            $user_exam->user_start_time = date('Y-m-d H:i:s');
+            if($user_exam->status < 2){ $user_exam->status = 2;}
+            $user_exam->save();
+        }
         
-        //print_r($user_exam[0]);
-
         $exam_list = Exam::where('id', '=', $id)->with('questions.options')->get();
-        
         $exams = Exam::where('id', '=', $id)->with(['questions' => function ($query){
             $query->inRandomOrder()->with([
                 'options' => function ($query){$query->inRandomOrder();}]);

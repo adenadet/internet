@@ -5,6 +5,8 @@ use App\Models\EMR\Appointment;
 use App\Models\EMR\Payment;
 use App\Models\EMR\Service;
 
+use App\Http\Traits\EService\AppointmentTrait; 
+
 trait PaymentTrait{
     public function payment_create_new($request){
         $payment = Payment::create([
@@ -33,7 +35,7 @@ trait PaymentTrait{
     }
 
     public function payment_get_by_id($id){
-        return Payment::where('id', '=', $id)->with(['service', 'patient.state'])->first();
+        return Payment::where('id', '=', $id)->with(['service', 'patient'])->first();
     }
 
     

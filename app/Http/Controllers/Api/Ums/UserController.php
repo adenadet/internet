@@ -19,12 +19,14 @@ use App\Models\EMR\Patient;
 
 use Spatie\Permission\Models\Role;
 
+use App\Http\Traits\UserTrait;
 class UserController extends Controller
 {
+    use UserTrait;
+
     public function initials()
     {
-        $users = User::where('branch_id', auth('api')->user()->branch_id)->paginate(52);
-        return response()->json(['users' => $users]);
+        return response()->json(['users' => $this->user_get_all()]);
     }
       
     public function index()
@@ -34,7 +36,7 @@ class UserController extends Controller
         $departments = Department::select('id', 'name')->orderBy('name', 'ASC')->get();
         $nok = NextOfKin::where('user_id', auth('api')->id())->get();
         $states = State::orderBy('name', 'ASC')->get();
-        $users = User::orderBy('first_name', 'ASC')->with('area')->with('state')->with('branch')->with('department')->with('roles')->paginate(51);
+        $users = $this->user_get_all();
         
         return response()->json([
             'areas' => $areas,
@@ -102,31 +104,8 @@ class UserController extends Controller
             \Image::make($request['image'])->save(public_path('img/profile/').$image);
             $image_url = $image;
         }
-        
-        $user = User::create([
-            'email' => $request['email'],
-            'first_name' => $request['first_name'],
-            'middle_name' => $request['middle_name'],
-            'last_name' => $request['last_name'],
-            'street' => $request['street'],
-            'street2' => $request['street2'],
-            'city' => $request['city'],
-            'state_id' => $request['state_id'],
-            'area_id' => $request['area_id'],
-            'personal_email' => $request['personal_email'],
-            'phone' => $request['phone'],
-            'alt_phone' => $request['alt_phone'],
-            'branch_id' => $request['branch_id'],
-            'department_id' => $request['department_id'],
-            'sex' => $request['sex'],
-            'dob' => $request['dob'],
-            'image' => $image_url,
-            'updated_at' => date('Y-m-d H:i:s'),
-            'joined_at' => $request['joined_at'],
-            'unique_id' => $request['unique_id'],
-            ]);
-
-        $user->save();
+    
+        $user = $this->user_create_new($request, $image_url);
 
         return response()->json([
             // This are the required for User page
@@ -270,40 +249,15 @@ class UserController extends Controller
             if (file_exists($old_image)){ @unlink($old_image); }
         }
 
-        $user->email = $request['email'];
-        $user->first_name = $request['first_name'];
-        $user->middle_name = $request['middle_name'];
-        $user->last_name = $request['last_name'];
-        $user->street = $request['street'];
-        $user->street2 = $request['street2'];
-        $user->city = $request['city'];
-        $user->state_id = $request['state_id'];
-        $user->area_id = $request['area_id'];
-        $user->personal_email = $request['personal_email'];
-        $user->phone = $request['phone'];
-        $user->alt_phone = $request['alt_phone'];
-        $user->branch_id = $request['branch_id'];
-        $user->department_id = $request['department_id'];
-        $user->sex = $request['sex'];
-        $user->dob = $request['dob'];
-        $user->image = $image_url;
-        $user->updated_at = date('Y-m-d H:i:s');
-        $user->joined_at = $request->input('joined_at');
-        $user->dob = $request->input('dob');
-        $user->unique_id = $request->input('unique_id');
-            
-        $user->save();
+        $user = $this->user_update_user($request, $user);
 
         return response()->json([
-            // This are the required for User page
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'branches' => Branch::select('id', 'name')->orderBy('name', 'ASC')->get(),
             'departments' => Department::select('id', 'name')->orderBy('name', 'ASC')->get(),
             'nok' => NextOfKin::where('user_id', auth('api')->id())->get(),
             'states' => State::orderBy('name', 'ASC')->get(),       
-            'users' => User::orderBy('first_name', 'ASC')->with('area')->with('state')->with('branch')->with('department')->paginate(51),
-
-            //This is the based on the service requested
+            'users' => $this->user_get_all(),
             'message' => 'Your password has been changed successfully',
             'status' => 'success', 
             'user' => $user,
@@ -315,15 +269,12 @@ class UserController extends Controller
         $user = User::find($id);
         $user->delete();
         return response()->json([
-            // This are the required for User page
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'branches' => Branch::select('id', 'name')->orderBy('name', 'ASC')->get(),
             'departments' => Department::select('id', 'name')->orderBy('name', 'ASC')->get(),
             'nok' => NextOfKin::where('user_id', auth('api')->id())->get(),
             'states' => State::orderBy('name', 'ASC')->get(),       
-            'users' => User::orderBy('first_name', 'ASC')->with('area')->with('state')->with('branch')->with('department')->paginate(51),
-
-            //This is the based on the service requested
+            'users' => $this->user_get_all(),
             'message' => 'The user '.$user->first_name.' '.$user->last_name.' has been deleted',
             'status' => 'success', 
             'user' => $user,

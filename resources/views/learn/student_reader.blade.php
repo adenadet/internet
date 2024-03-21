@@ -11,13 +11,13 @@
                 <div class="card-body p-0">
                     <ul class="nav nav-pills flex-column">
                         <li class="nav-item active">
-                            <router-link to="/learn/student_area/courses" class="nav-link"><i class="fa fa-book"></i> My Courses</router-link>
+                            <a to="/learn/student_area/courses" class="nav-link"><i class="fa fa-book"></i> My Courses</a>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/learn/student_area/exams" class="nav-link"><i class="fas fa-user-clock"></i> My Exams</router-link>
+                            <a to="/learn/student_area/exams" class="nav-link"><i class="fas fa-user-clock"></i> My Exams</a>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/learn/student_area/results" class="nav-link"><i class="fas fa-portrait"></i> My Results </router-link>
+                            <a to="/learn/student_area/results" class="nav-link"><i class="fas fa-portrait"></i> My Results </a>
                         </li>
                     </ul>
                 </div>
@@ -28,10 +28,11 @@
                 <div class="card-header bg-dark"><h3 class="card-title">{{$lesson->name}}</h3>
                     <div class="card-tools">
                     @if(!is_null($lesson->exam))
-                        @if ($user_exam->status >= 3) <a href="/learn/student_area/exam/{$lesson->exam->id}"><button type="button" class="btn btn-sm btn-success">Redo Exam</button></a>
-                        @elseif((($lesson->exam->trials != null ? $lesson->exam->trials : 10000000) - $trial_count > 0) && ($user_exam->status < 3))<a href="/learn/student_area/exam/{$lesson.exam.id}"><button type="button" class="btn btn-sm btn-success">Go To Exam</button></a> 
+                        @if(is_null($user_exam))<a href="/learn/student_area/exam/{{$lesson->exam->id}}"><button type="button" class="btn btn-sm btn-success">Go To Exam</button></a>
+                        @elseif ($user_exam->status >= 3) <a href="/learn/student_area/exam/{{$lesson->exam->id}}"><button type="button" class="btn btn-sm btn-success">Redo Exam</button></a>
+                        @elseif((($lesson->exam->trials != null ? $lesson->exam->trials : 10000000) - $trial_count > 0) && ($user_exam->status < 3))<a href="/learn/student_area/exam/{{$lesson.exam.id}}"><button type="button" class="btn btn-sm btn-success">Go To Exam</button></a> 
                         @endif 
-                        @if((($lesson->exam->trials != null ? $lesson->exam->trials : 10000000) - $trial_count > 0) && ($user_exam->status >= 3))<button type="button" class="btn btn-sm btn-default">Next >></button>
+                        @if((($lesson->exam->trials != null ? $lesson->exam->trials : 10000000) - $trial_count > 0) && ((is_null($user_exam)) || ($user_exam->status >= 3)))<button type="button" class="btn btn-sm btn-default">Next >></button>
                         @else <button type="button" class="btn btn-sm btn-default">Skip >></button>
                         @endif
                     @else
@@ -40,8 +41,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    {{$lesson->file_type}}
-                    @if(!(is_null($lesson->file_type)))<iframe src="{{ asset($lesson->file) }}" class="col-12" style="min-height: 1000px"></iframe>@endif
+                    @if(!(is_null($lesson->file)))<iframe src="{{ asset($lesson->file) }}" class="col-12" style="min-height: 1000px"></iframe>@endif
                     @if(!(is_null($lesson->video)))<router-view></router-view>@endif
                     <div class="row">
                         {{$lesson->content}}

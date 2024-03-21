@@ -28,8 +28,6 @@ class StaffController extends Controller
         $departments = Department::select('id', 'name')->orderBy('name', 'ASC')->get();
         $nok = NextOfKin::where('user_id', auth('api')->id())->get();
         $states = State::orderBy('name', 'ASC')->get();
-        $staffs = Staff::select('user_id')->get();
-        $users = User::whereIn('id', $staffs)->orderBy('first_name', 'ASC')->with('area')->with('state')->with('branch')->with('department')->with('roles')->paginate(51);
         
         return response()->json([
             'areas' => $areas,
@@ -37,7 +35,7 @@ class StaffController extends Controller
             'departments' => $departments,
             'nok' => $nok,
             'states' => $states,       
-            'users' => $users,
+            'users' => $$this->get_all_staffs,
         ]);
     }
     

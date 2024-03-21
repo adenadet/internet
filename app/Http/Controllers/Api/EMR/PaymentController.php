@@ -8,8 +8,8 @@ use App\Models\EMR\Payment;
 use App\Models\EMR\Service;
 use Illuminate\Http\Request;
 
-use App\Http\Traits\Eservice\AppointmentTrait;
-use App\Http\Traits\Eservice\PaymentTrait;
+use App\Http\Traits\EService\AppointmentTrait;
+use App\Http\Traits\EService\PaymentTrait;
 
 class PaymentController extends Controller
 {

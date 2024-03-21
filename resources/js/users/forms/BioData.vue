@@ -127,10 +127,10 @@
                 <input type="date" class="form-control" id="joined_at" name="joined_at" placeholder="Enter Email Address *" required v-model="BioData.joined_at" :class="{'is-invalid' : BioData.errors.has('joined_at') }">
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-4 col-sm-12" v-if="!editMode">
             <div class="form-group">
                 <label>SNH ID</label>
-                <input type="text" class="form-control" id="unique_id" name="unique_id" placeholder="Enter Email Address *" required v-model="BioData.unique_id" :class="{'is-invalid' : BioData.errors.has('unique_id') }">
+                <input type="text" class="form-control" id="unique_id" name="unique_id" placeholder="Enter SNH Staff ID *" required v-model="BioData.unique_id" :class="{'is-invalid' : BioData.errors.has('unique_id') }">
             </div>
         </div>
         <div class="col-md-4 col-sm-12">

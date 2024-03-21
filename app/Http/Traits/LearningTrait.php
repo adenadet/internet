@@ -2,6 +2,7 @@
 namespace App\Http\Traits;
 
 use App\Models\Lms\Course;
+use App\Models\Lms\Exam;
 use App\Models\Lms\Lesson;
 use App\Models\Lms\Result;
 use App\Models\Lms\UserCourse;
@@ -126,9 +127,30 @@ trait LearningTrait{
                     $user_course->course->lessons[$user_course->level]->id
                 ]); 
             }
-            return ['icon'=> 'success', 'message' => 'Done', 'course' => $user_course];
+            return ['icon'=> 'success', 'message' => 'Done', 'course' => $user_course, 'trial_count' => 0];
         }
     }
+
+    public function learn_exam_create_new($user_id, $exam_id){
+        $exam = Exam::where('id', '=', $exam_id)->first();
+        $user_course = UserCourse::where([['user_id', '=', $user_id], ['course_id', '=', $exam->course_id], ['status', '!=', 3]])->orderBy('expiry_date', 'DESC')->first();
+
+        $user_exam = UserExam::create([
+            'user_id'           => $user_id,
+            'exam_id'           => $exam->id,
+            'course_id'         => $exam->course_id,
+            'lesson_id'         => $exam->lesson_id,
+            'assigned_date'     => $user_course->assigned_date,
+            'start_date'        => $user_course->start_date,
+            'expiry_date'       => $user_course->expiry_date,
+            'user_start_time'   => date('Y-m-d H:i:s'),
+            'user_finish_time'  => NULL,
+            'started'           => 2,
+        ]);
+
+        return $user_exam;
+    }
+
     public function learn_get_lesson($id){
         $lesson = Lesson::where('id', '=', $id)->with('course')->with('exam')->first();
         $trials = 0;
@@ -222,6 +244,7 @@ trait LearningTrait{
             'page_title' => 'Student Portal',
             'trials'    =>  $trials,
             'user_exam' =>  $user_exam,
+            'trial_count' => 0,
         ];
     } 
 }
