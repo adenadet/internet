@@ -87,7 +87,7 @@ export default {
     methods: {
         getAppointment(page=1){
             let query = this.$parent.search;
-            axios.get('/api/emr/consultations/reviews?page='+page)
+            axios.get('/api/emr/consultations/pending?page='+page)
             .then(response=>{
                 this.refreshConsultations(response)   
             })
@@ -101,7 +101,7 @@ export default {
         },
         getInitials(page=1) {
             let query = this.$parent.search;
-            axios.get('/api/emr/consultations/reviews?page='+page+'&query='+query)
+            axios.get('/api/emr/consultations/pending?page='+page+'&query='+query)
             .then(response => {
                 this.refreshConsultations(response)
             })

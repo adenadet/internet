@@ -26,7 +26,7 @@ trait AppointmentTrait{
             $query = Appointment::whereDate('date', '<=', date('Y-m-d'))->whereNull(['front_office_id',])->where('status', '=', 1)->with(['service', 'patient', 'payment']);
         }
         else if($type == 'pending'){
-            $query = Appointment::whereDate('date', '>=',date('Y-m-d', strtotime('-1 month')))->whereDate('date', '<=', date('Y-m-d'))->whereIn('status', [6, 7, 8, 9])->with(['service', 'patient',]);
+            $query = Appointment::whereDate('date', '>=',date('Y-m-d', strtotime('-1 month')))->whereDate('date', '<=', date('Y-m-d'))->whereIn('status', [6, 7, 8])->with(['service', 'patient',]);
         }
         else if($type == 'review'){
             $query = Appointment::whereDate('date', '>=',date('Y-m-d', strtotime('-1 month')))->whereDate('date', '<=', date('Y-m-d'))->whereIn('status', [6, 7, 8, 9, 10])->with(['service', 'patient']);
