@@ -14,7 +14,7 @@ use App\Models\EMR\Patient;
 
 use Spatie\Permission\Models\Role;
 
-trait LearningTrait{
+trait UserTrait{
     public function user_create_new_user($request, $image_url){
         $user = User::create([
             'email' => $request['email'],

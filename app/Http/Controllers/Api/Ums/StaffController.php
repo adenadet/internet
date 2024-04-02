@@ -19,8 +19,12 @@ use App\Models\EMR\Patient;
 
 use Spatie\Permission\Models\Role;
 
+use App\Http\Traits\UserTrait;
+
 class StaffController extends Controller
 {
+    use userTrait;
+
     public function index()
     {
         $areas = Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get();
@@ -35,7 +39,7 @@ class StaffController extends Controller
             'departments' => $departments,
             'nok' => $nok,
             'states' => $states,       
-            'users' => $$this->get_all_staffs,
+            'users' => $this->user_get_all_staffs(true),
         ]);
     }
     
