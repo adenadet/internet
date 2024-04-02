@@ -218,7 +218,7 @@ class AppointmentController extends Controller
 
     public function missed(){
         return response()->json([
-            'appointments' => $this->appointment_get_all('missed', ($_GET['page'] ?? 1), true),
+            'appointments' => $this->appointment_get_all('missed', ($_GET['page'] ?? 1), true, 'ASC'),
         ]);
     }
 
