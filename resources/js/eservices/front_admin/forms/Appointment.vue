@@ -5,7 +5,7 @@
             <alert-error :form="appointmentData"></alert-error> 
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <div class="form-group">
+                    <div class="form-group" v-if="!editMode">
                         <label>Applicant</label>
                         <model-list-select class="form-control" :list="patients" v-model="appointmentData.patient_id" option-value="id" :custom-text="codeAndNameAndDesc" placeholder="Select Applicant" />
                         <select class="form-control" id="patient_id" name="patient_id" v-model="appointmentData.patient_id" required>

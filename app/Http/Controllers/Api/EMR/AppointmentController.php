@@ -211,7 +211,7 @@ class AppointmentController extends Controller
             \Mail::to($app->patient->email)->send(new AbnormalMail($app));
         }
         return response()->json([
-            'appointment' => $this->get_appointment_by_id($id, NULL)
+            'appointment' => $this->appointment_get_by_id($id, NULL),
         ]);
 
     }
@@ -293,8 +293,8 @@ class AppointmentController extends Controller
 
         return response()->json([
             'appointments'  => $appointments,
-            //'patients'      => Patient::orderBy('last_name', 'ASC')->get(),
-            //'services'      => Service::orderBy('name', 'ASC')->get(),   
+            'patients'      => Patient::select('id', 'first_name', 'middle_name', 'last_name')->orderBy('last_name', 'ASC')->get(),
+            'services'      => Service::orderBy('name', 'ASC')->get(),   
         ]);
     }
 

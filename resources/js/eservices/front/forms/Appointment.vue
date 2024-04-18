@@ -5,9 +5,14 @@
             <alert-error :form="appointmentData"></alert-error> 
             <div class="row">
                 <div class="col-md-12 col-sm-12">
-                    <div class="form-group">
+                    <div class="form-group" v-if="!editMode">
                         <label>Applicant</label>
                         <model-list-select class="form-control" :list="patients" v-model="appointmentData.patient_id" option-value="id" :custom-text="codeAndNameAndDesc" placeholder="Select Applicant" />
+                    </div>
+                    <div class="form-group" v-if="editMode">
+                        <label>Applicant</label>
+                        <div class="form-control">{{ appointment.patient | fullName }}</div>
+                        <input type="hidden" name="patient_id" v-model="appointmentData.patient_id" />
                     </div>
                 </div>
                 <div class="col-md-12 col-sm-12">

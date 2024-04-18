@@ -62,4 +62,36 @@ trait AppointmentTrait{
         }
     }
 
+    public function appointment_search($query, $type){
+        $search = $request->input('patient');
+
+        $patients = Patient::select('id')->orderBy('first_name', 'ASC')->where(function($query) use ($search){
+            $query->where('first_name', 'LIKE', "%$search%")
+            ->orWhere('middle_name', 'LIKE', "%$search%")
+            ->orWhere('last_name', 'LIKE', "%$search%")
+            ->orWhere('email', 'LIKE', "%$search%");
+        })->get();
+
+        $query = Appointment::whereIn('patient_id', $patients);
+        if (!is_null($request->input('start_date'))){$query->whereDate('date', '>=', $request->input('start_date'));}
+        if (!is_null($request->input('end_date'))){$query->whereDate('date', '<=', $request->input('end_date'));}
+        $appointments = $query->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->paginate(30);
+
+        if(is_null($type)){
+            return $query->with(['consultation', 'front_officer', 'medical_officer', 'radiologist', 'service', 'patient.nationality', 'payment.employee', 'report.findings'])->first();
+        }
+        else if($type == 'consultation'){
+            return $query->with(['consent', 'consultation', 'front_officer', 'issuing_officer', 'medical_officer', 'patient.nationality', 'payment.employee', 'radiologist', 'report.findings', 'referral.creator', 'service',])->first();
+        }
+        else if($type == 'radiologist'){
+            return $query->with(['certificate', 'consent', 'consultation', 'front_officer', 'medical_officer', 'service', 'patient.nationality', 'payment.employee', 'radiologist',])->first();
+        }
+        else if($type == 'referral'){
+            return $query->with(['front_officer', 'medical_officer', 'service', 'patient', 'referral.creator',])->first();
+        }
+        else if ($type == 'xray'){
+            $query = Appointment::where('status', '=', 6)->whereDate('date', '=', date('Y-m-d'))->where('status_end', '!=', 1)->with(['service', 'patient', 'payment']);
+        }
+    }
+
 }
