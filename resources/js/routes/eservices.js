@@ -15,6 +15,7 @@ import EServiceCertificateHeader     from '../eservices/certificates/Header.vue'
 import EServiceCertificateSummary    from '../eservices/certificates/Summary.vue';
 import EServiceCertificateSummaryKid from '../eservices/certificates/SummaryKid.vue';
 import EServiceCertificateSummaryLab from '../eservices/certificates/SummaryLab.vue';
+import EServiceReferral              from '../eservices/Referral.vue';
 
 import EServiceFrontAppointment      from '../eservices/front/Appointment.vue';
 import EServiceFrontAppointments     from '../eservices/front/Appointments.vue';
@@ -36,6 +37,8 @@ import EServiceDocIssueView          from '../eservices/doctor/IssueView.vue';
 //import EServiceDocLaboratory         from '../eservices/doctor/Laboratory.vue';
 import EServiceDocLaboratoryView     from '../eservices/doctor/LaboratoryView.vue';
 import EServiceDocPatientView        from '../eservices/doctor/PatientView.vue';
+import EServiceDocPending            from '../eservices/doctor/Pending.vue';
+import EServiceDocReferral           from '../eservices/doctor/Referral.vue'
 import EServiceDocReportView         from '../eservices/doctor/ReportView.vue';
 import EServiceDocReviews            from '../eservices/doctor/Reviews.vue';
 import EServiceDocView               from '../eservices/doctor/View.vue';
@@ -46,15 +49,17 @@ import EServiceRadReviews            from '../eservices/radiologist/Reviews.vue'
 
     import EServiceFormAppointment      from '../eservices/front/forms/Appointment.vue';
     import EServiceFormArrival          from '../eservices/front/forms/Arrival.vue';
+    import EServiceFormDirect           from '../eservices/front/forms/Direct.vue';
     import EServiceFormPayment          from '../eservices/front/forms/Payment.vue';
     import EserviceFormPatient          from '../eservices/front/forms/Patient.vue';
-    import EServiceFormDirect           from '../eservices/front/forms/Direct.vue';
     import EServiceFormSearch           from '../eservices/front/forms/Search.vue';
 
     import EServiceDocFormConsent              from '../eservices/doctor/forms/Consent.vue';
     import EServiceDocFormConsentPad           from '../eservices/doctor/forms/ConsentPad.vue';
     import EServiceDocFormIssue                from '../eservices/doctor/forms/Issue.vue';
     import EServiceDocFormLaboratory           from '../eservices/doctor/forms/Laboratory.vue';
+    import EServiceDocFormReferral             from '../eservices/doctor/forms/Referral.vue';
+    
     import EServiceDocFormScreening            from '../eservices/doctor/forms/Screening.vue';
 
     import EServiceRadFormReport            from '../eservices/radiologist/forms/Report.vue';
@@ -67,6 +72,7 @@ Vue.component('EServiceCertificateFooter',       EServiceCertificateFooter);
 Vue.component('EServiceCertificateSummary',      EServiceCertificateSummary);
 Vue.component('EServiceCertificateSummaryKid',   EServiceCertificateSummaryKid);
 Vue.component('EServiceCertificateSummaryLab',   EServiceCertificateSummaryLab);
+Vue.component('EServiceReferral',                EServiceReferral);
 
 
 Vue.component('EServiceFrontAppointment',        EServiceFrontAppointment);
@@ -87,7 +93,9 @@ Vue.component('EServiceDocConsultationView',     EServiceDocConsultationView);
 Vue.component('EServiceDocIssueView',            EServiceDocIssueView);
 //Vue.component('EServiceDocLaboratory',           EServiceDocLaboratory); 
 Vue.component('EServiceDocLaboratoryView',       EServiceDocLaboratoryView); 
-Vue.component('EServiceDocPatientView',          EServiceDocPatientView); 
+Vue.component('EServiceDocPatientView',          EServiceDocPatientView);
+Vue.component('EServiceDocPending',              EServiceDocPending); 
+Vue.component('EServiceDocReferral',             EServiceDocReferral); 
 Vue.component('EServiceDocReportView',           EServiceDocReportView); 
 Vue.component('EServiceDocReviews',              EServiceDocReviews);
 Vue.component('EServiceDocView',                 EServiceDocView);
@@ -107,6 +115,7 @@ Vue.component('EServiceRadReviews',              EServiceRadReviews);
     Vue.component('EServiceDocFormConsentPad',   EServiceDocFormConsentPad);
     Vue.component('EServiceDocFormIssue',        EServiceDocFormIssue);
     Vue.component('EServiceDocFormLaboratory',   EServiceDocFormLaboratory);
+    Vue.component('EServiceDocFormReferral',     EServiceDocFormReferral); 
     Vue.component('EServiceDocFormScreening',    EServiceDocFormScreening);
 
     Vue.component('EServiceRadFormReport',       EServiceRadFormReport);
@@ -125,12 +134,13 @@ let routes = [
     {path: '/eservices/doctor/consultations',           component:EServiceDocConsultations},
     {path: '/eservices/doctor/consultations/:id',       component:EServiceDocConsultationSingle},
     {path: '/eservices/doctor/consultation/:id',        component:EServiceDocConsultation},
-    //{path: '/eservices/doctor/laboratory',              component:EServiceDocLaboratory},
+    {path: '/eservices/doctor/pending',                 component:EServiceDocPending},
     {path: '/eservices/doctor/reviews',                 component:EServiceDocReviews},
     
     {path: '/eservices/front_admin',                    component:EServiceFrontAdminAppointments},
     {path: '/eservices/front_admin/appointments',       component:EServiceFrontAdminAppointments},
     {path: '/eservices/front_admin/appointments/missed',component:EServiceFrontMissed},
+    {path: '/eservices/front_admin/appointment/:id',    component:EServiceFrontAppointment},
     {path: '/eservices/front_admin/applicants',         component:EServiceFrontPatients},
     
     {path: '/eservices/front_office',                   component:EServiceFrontAppointments},
@@ -144,6 +154,9 @@ let routes = [
     {path: '/eservices/radiologist/reports',            component:EServiceRadReports},
     {path: '/eservices/radiologist/reviews',            component:EServiceRadReviews},
     {path: '/eservices/radiologist/report/:id',         component:EServiceRadReport},
+
+    {path: '/eservices/referrals/:id',                  component:EServiceReferral},
+
 ];
 
 export default routes 

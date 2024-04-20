@@ -14,7 +14,7 @@ class ConsultationController extends Controller
     public function index()
     {
         return response()->json([
-            'appointments' => Appointment::whereDate('date', '=', date('Y-m-d'))->whereIn('status', [4, 5, 6, 7, 8, 9, 10])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(70),
+            'appointments' => Appointment::whereDate('date', '=', date('Y-m-d'))->whereIn('status', [4, 5])->with(['service', 'patient'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(70),
         ]);
     }
 
@@ -74,6 +74,13 @@ class ConsultationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function pending(){
+        $last_month = date('Y-m-d', strtotime('-1 month'));
+        return response()->json([
+            'appointments' => Appointment::whereIn('status', [6, 7, 8, 9])->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->orderBy('schedule', 'ASC')->paginate(70),
+        ]);
     }
 
     public function reviews(){

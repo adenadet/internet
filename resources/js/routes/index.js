@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 //import applicant from './applicant';
 
 import chats from './chats';
+import claims from './claims';
 import contacts from './contacts';
 import dashboard from './dashboard';
 //import domiciliary from './domiciliary';
@@ -25,7 +26,7 @@ import ums from './ums';
 
 const baseRoutes = [];
 const routes = baseRoutes.concat(
-    chats,
+    chats, claims,
     contacts,
     dashboard,
     eservices,

@@ -7,10 +7,7 @@
                 <div class="col-md-12 col-sm-12">
                     <div class="form-group">
                         <label>Applicant</label>
-                        <select class="form-control" id="patient_id" name="patient_id" v-model="appointmentData.patient_id" required>
-                            <option value="">--Select Applicants--</option>
-                            <option v-for="patient in patients" :key="patient.id" :value="patient.id">{{patient.last_name+', '+patient.first_name+' '+patient.middle_name}}</option>
-                        </select>
+                        <model-list-select :list="patients" v-model="appointmentData.patient_id" option-value="id" :custom-text="codeAndNameAndDesc" placeholder="Select Applicant" />
                     </div>
                 </div>
                 <div class="col-md-12 col-sm-12">
@@ -48,7 +45,9 @@
 </section>
 </template>
 <script>
+import { ModelListSelect } from 'vue-search-select';
 export default {
+    components: {ModelListSelect},
     data(){
         return  {
             appointmentData: new Form({
@@ -73,6 +72,9 @@ export default {
         });
     },
     methods:{
+        codeAndNameAndDesc (item) {
+            return `${item.last_name}, ${item.first_name} ${item.middle_name}`
+        },
         createAppointment(){
             this.$Progress.start();
             this.appointmentData.post('/api/emr/appointments')

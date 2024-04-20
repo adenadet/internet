@@ -16,6 +16,22 @@ class ModulesController extends Controller
         return view('chats')->with($params);
     }
 
+    public function claims_curacel()
+    {
+        $params = [
+            'page_title' => 'Claims | Curacel',
+        ];
+        return view('curacel')->with($params);
+    }
+
+    public function claims_curacel_request()
+    {
+        $params = [
+            'page_title' => 'Claims | Curacel Claims Form',
+        ];
+        return view('curacel')->with($params);
+    }
+
     public function contacts()
     {
         $params = [

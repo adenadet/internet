@@ -71,8 +71,11 @@ window.Form = Form;
 
 //Import Chart and ChartKick for Charts
 import Chart from 'chart.js';
-import Chartkick from 'vue-chartkick';
+import Chartkick from 'vue-chartkick';   
 Vue.use(Chartkick.use(Chart));
+
+import VueExcelEditor from 'vue-excel-editor';
+Vue.use(VueExcelEditor);
 
 //Import Emit for all components
 window.Fire = new Vue();
@@ -84,6 +87,12 @@ Vue.use(paystack);
 //Import QR Code
 import VueQRCodeComponent from 'vue-qrcode-component';
 Vue.component('qr-code', VueQRCodeComponent);
+
+//Import Search and Select
+import {ModelListSelect} from 'vue-search-select';
+import 'vue-search-select/dist/VueSearchSelect.css';
+Vue.use(ModelListSelect);
+
 
 //Import WYSIWYG
 import wysiwyg from "vue-wysiwyg";

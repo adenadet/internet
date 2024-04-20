@@ -112,4 +112,12 @@ class ServiceController extends Controller
         ];
         return view('eservices')->with($params);
     }
+
+    public function referral()
+    {
+        $params = [
+            'page_title' => 'E-Services | Referral',
+        ];
+        return view('eservices')->with($params);
+    }
 }

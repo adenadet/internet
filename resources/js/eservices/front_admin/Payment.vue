@@ -30,18 +30,18 @@
                     <strong>St. Nicholas Hospital</strong><br>
                     57, Campbell Street,<br>
                     Lagos Island, Lagos, Nigeria<br>
-                    Phone: (555) 539-1037<br>
+                    Phone: +234 8035251295<br>
                     Email: info@saintnicholashospital.com
                   </address>
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-4 invoice-col">
-                  <b>Invoice #007612</b><br>
+                  <b>Invoice #{{appointment.id}}</b><br>
                   <br>
                   <b>Service:</b> {{ appointment.service.name }}<br />
-                  <b>Tack ID:</b> <br>
-                  <b>Payment Due:</b> 2/22/2014<br>
-                  <b>Account:</b> 968-34567
+                  <b>Tracking ID:</b> {{ appointment.transaction_id }}<br>
+                  <b>Payment Due:</b> {{appointment.date}}<br>
+                  <b>Account:</b> UK Tuberculosis Screening
                 </div>
                 <!-- /.col -->
               </div>

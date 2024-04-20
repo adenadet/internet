@@ -21,6 +21,7 @@ use PDF;
 use Mail;
 use App\Mail\Certificate\AbnormalMail;
 use App\Mail\Certificate\NormalMail;
+use Illuminate\Support\Facades\Mail as FacadesMail;
 
 class AppointmentController extends Controller
 {
@@ -78,7 +79,7 @@ class AppointmentController extends Controller
     public function show($id)
     {
         return response()->json([
-            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'laboratory', 'lab_officer', 'report.findings', 'issuing_officer'])->first(),
+            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'laboratory', 'lab_officer', 'report.findings', 'issuing_officer', 'referral.creator'])->first(),
             'findings'    => RadFinding::all(),
             'nations' => Country::orderBy('name', 'ASC')->get(), 
         ]);
@@ -175,7 +176,7 @@ class AppointmentController extends Controller
 
     public function certificates(){
         $last_month = date('Y-m-d', strtotime('-1 month'));
-        $appointments = Appointment::whereDate('date', '>=', $last_month)->whereDate('date', '<=', date('Y-m-d'))->whereNotNull(['doctor_id', 'front_office_id',])->Where('status', '>=', 7)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(70);
+        $appointments = Appointment::whereDate('date', '>=', $last_month)->whereDate('date', '<=', date('Y-m-d'))->whereNotNull(['doctor_id', 'front_office_id',])->Where('status', '>=', 7)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer', 'referral'])->orderBy('date', 'DESC')->paginate(70);
         
         return response()->json([
             'appointments' => $appointments,
@@ -226,13 +227,13 @@ class AppointmentController extends Controller
             \Mail::to($app->patient->email)->send(new AbnormalMail($app));
         }
         return response()->json([
-            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->first(),
+            'appointment' => Appointment::where('id',$id)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer', 'referral'])->first(),
         ]);
 
     }
 
     public function missed(){
-        $appointments = Appointment::whereDate('date', '<=', date('Y-m-d'))->whereNull(['front_office_id',])->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(30);
+        $appointments = Appointment::whereDate('date', '<=', date('Y-m-d'))->whereNull(['front_office_id',])->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer', 'referral'])->orderBy('date', 'DESC')->paginate(30);
         
         return response()->json([
             'appointments' => $appointments,
@@ -263,7 +264,7 @@ class AppointmentController extends Controller
         $appointments = Appointment::where('status', '=', 6)
         ->whereDate('date', '=', date('Y-m-d'))
         ->where('status_end', '!=', 1)
-        ->with(['front_officer', 'medical_officer', 'radiologist','lab_officer', 'service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])
+        ->with(['front_officer', 'referral', 'medical_officer', 'radiologist','lab_officer', 'service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])
         ->orderBy('date', 'DESC')->paginate(30);
         
         return response()->json([
@@ -281,10 +282,10 @@ class AppointmentController extends Controller
                 ->orWhere('unique_id', 'LIKE', "%$search%");
                 })->get();
 
-            $appointments = Appointment::whereIn('patient_id', $patients)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(30);
+            $appointments = Appointment::whereIn('patient_id', $patients)->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer', 'referral'])->orderBy('date', 'DESC')->paginate(30);
         }
         else{
-            $appointments = Appointment::whereNull(['front_office_id',])->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->orderBy('date', 'DESC')->paginate(30);        
+            $appointments = Appointment::whereNull(['front_office_id',])->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer', 'referral'])->orderBy('date', 'DESC')->paginate(30);        
         }
 
         return response()->json([
@@ -312,7 +313,7 @@ class AppointmentController extends Controller
         $app_query = Appointment::whereIn('patient_id', $patients);
         if (!is_null($request->input('start_date'))){$app_query->whereDate('date', '>=', $request->input('start_date'));}
         if (!is_null($request->input('end_date'))){$app_query->whereDate('date', '<=', $request->input('end_date'));}
-        $appointments = $app_query->with(['front_officer', 'medical_officer', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->paginate(30);
+        $appointments = $app_query->with(['front_officer', 'medical_officer', 'referral', 'radiologist','service', 'patient.nationality', 'payment.employee', 'consent', 'consultation', 'report.findings', 'issuing_officer'])->paginate(30);
 
         return response()->json([
             'appointments'  => $appointments,

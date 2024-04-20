@@ -53,11 +53,9 @@ class UserController extends Controller
             'roles' => 'required|array',
         ]);
 
-        print_r($request->input('roles'));
         $user = User::find($request->input('user_id'));
         
         $roles = Role::select('id', 'name')->whereIn('id', $request->input('roles'))->get();
-        print_r($roles);
         
         $user->syncRoles($request->input('roles'));
         

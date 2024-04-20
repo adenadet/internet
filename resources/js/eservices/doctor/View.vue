@@ -1,15 +1,16 @@
 <template>
-<div class="container">
+<div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header p-2">
                     <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#consent" data-toggle="tab">Consent Form</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#consultation" data-toggle="tab">Consultation</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#report" data-toggle="tab">Report</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#laboratory" data-toggle="tab">Laboratory</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#certificate" data-toggle="tab">Issue Certificate</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#consent" data-toggle="tab">Consent Form</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#consultation" data-toggle="tab">Consultation</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#report" data-toggle="tab">Report</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#laboratory" data-toggle="tab">Laboratory</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#certificate" data-toggle="tab">Issue Certificate</a></li>
+                        <li v-if="appointment.status == 10 && appointment.issue_action != 'certificate'" class="nav-item"><a class="nav-link" href="#referral" data-toggle="tab">Referral</a></li>
                     </ul>
                 </div>
                 <div class="card-body">
@@ -32,6 +33,10 @@
                             <!--EServiceDocFormIssue :appointment="appointment" v-else-if="" /-->
                             <EServiceDocFormIssue v-else-if="(appointment.consultation.decision == 8 || appointment.issuer == null)" :appointment="appointment" />    
                             <div class="card" v-else><div class="card-header">Awaiting Report</div><div class="card-body"><p>The report for this applicant is still pending, you can call the </p></div></div>
+                        </div>
+                        <div  v-if="appointment.status == 10 && appointment.issue_action != 'certificate'" class="tab-pane" id="referral">
+                            <EServiceDocReferral :appointment="appointment" v-if="appointment.referral != null" />
+                            <EServiceDocFormReferral v-else :appointment="appointment" />    
                         </div>
                     </div>
                 </div>

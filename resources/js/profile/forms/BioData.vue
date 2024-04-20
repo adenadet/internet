@@ -2,7 +2,6 @@
 <div>
 <form>
     <alert-error :form="BioData"></alert-error> 
-    {{ user}}
     <div class="row">
         <div class="col-sm-4">
             <div class="form-group">

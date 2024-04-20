@@ -45,19 +45,21 @@ Route::group(['middleware' => 'auth','namespace' => 'App\Http\Controllers\Learn'
 
 Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Controllers\EMR', 'name' => 'eservices.', 'prefix' => '/eservices'],function(){
     Route::get('/administrator',          'ServiceController@administrator');
+    Route::get('/doctor',                 'ServiceController@medical');
+    Route::get('/doctor/consent/{id}',    'ServiceController@consent');
+    Route::post('/doctor/consents',       'ServiceController@consent_save');
     Route::get('/front_admin',            'ServiceController@front_admin');
     Route::get('/front_office',           'ServiceController@front');
-    Route::get('/doctor',                 'ServiceController@medical');
     Route::get('/radiologist',            'ServiceController@radiologist');
-    Route::get('/doctor/consent/{id}',    'ServiceController@consent');
-    Route::post('/doctor/consents',        'ServiceController@consent_save');
-
+    Route::get('/referrals',              'ServiceController@referral');
+    
     Route::get('/administrator/{any}',    'ServiceController@administrator')->where('any', '.*');
     Route::get('/certificate/{any}',      'ServiceController@certificate')->where('any', '.*'); 
     Route::get('/front_admin/{any}',      'ServiceController@front_admin')->where('any', '.*');
     Route::get('/front_office/{any}',     'ServiceController@front')->where('any', '.*');
     Route::get('/doctor/{any}',           'ServiceController@medical')->where('any', '.*');
     Route::get('/radiologist/{any}',      'ServiceController@radiologist')->where('any', '.*'); 
+    Route::get('/referrals/{any}',        'ServiceController@referral')->where('any', '.*');
 });
 
 Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Controllers',], function () {
@@ -89,6 +91,11 @@ Route::group(['middleware' => ['auth', 'role:Staff'],'namespace' => 'App\Http\Co
     Route::get('/ticketing/{any}',          'ModulesController@ticketing')->where('any', '.*');
     Route::get('/users/{any}',              'ModulesController@users')->where('any', '.*');
 
+    Route::group(['middleware' => ['auth', 'role:Staff'], 'name' => 'claims.', 'prefix' => '/claims'],function(){
+        Route::get('/curacel',               'ModulesController@claims_curacel')->name('claims-curacel');
+        Route::get('/curacel/{any}',         'ModulesController@claims_curacel')->where('any', '.*');
+    
+    });
 });
 
 //Route::get('/member_area/{any}', 'HomeController@index')->where('any', '.*');

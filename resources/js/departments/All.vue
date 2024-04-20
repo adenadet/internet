@@ -22,10 +22,10 @@
                             </thead>
                             <tbody>
                                 <tr v-for="department in departments.data" :key="department.id">
-                                    <td>{{department.name}}</td>
-                                    <td>{{department.hod_id !== null ? department.hod.first_name+' '+department.hod.last_name : ''}}</td>
-                                    <td>{{department.email}}</td>
-                                    <td>{{department.ext}}</td>
+                                    <td>{{ department.name}}</td>
+                                    <td>{{ department.hod | FullNameStaff}}</td>
+                                    <td>{{ department.email}}</td>
+                                    <td>{{ department.ext}}</td>
                                     <td>{{department.users.length}}</td>
                                     <td :title="department.description">{{department.description | readMore(25, '...')}}</td>
                                     <td>
