@@ -4,11 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmployeeTrainingsTable extends Migration
+class CreateEmployeeTrainingsDuoTable extends Migration
 {
     public function up()
     {
-        Schema::create('hrms_user_trainings', function (Blueprint $table) {
+        Schema::create('hrms_user_trainings_duo', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
             $table->string('name');

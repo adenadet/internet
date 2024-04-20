@@ -23,7 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->integer('updated_by');
             $table->integer('deleted_by');
             $table->timestamps();
-            $table->softDelete();
+            $table->softDeletes();
         });
     }
 

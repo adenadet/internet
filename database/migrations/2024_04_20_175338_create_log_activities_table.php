@@ -4,17 +4,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateApplicantsTable extends Migration
+class CreateLogActivitiesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('hrms_applicants', function (Blueprint $table) {
+        Schema::create('user_log_activities', function (Blueprint $table) {
             $table->id();
+            $table->string('subject');
+            $table->text('url');
+            $table->string('method');
+            $table->string('ip');
+            $table->text('agent');
             $table->integer('user_id');
             $table->timestamps();
             $table->softDeletes();
@@ -23,6 +23,6 @@ class CreateApplicantsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('hrms_applicants');
+        Schema::dropIfExists('user_log_activities');
     }
 }

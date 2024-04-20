@@ -16,7 +16,7 @@ class CreateUserEducationTable extends Migration
             $table->text('institution_address');
             $table->text('source')->nullable();
             $table->timestamps();
-            $table->softDelete();
+            $table->softDeletes();
         });
     }
 

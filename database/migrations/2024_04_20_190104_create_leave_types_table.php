@@ -4,19 +4,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateJobApplicationsTable extends Migration
+class CreateLeaveTypesTable extends Migration
 {
     public function up()
     {
-        Schema::create('hrms_job_applications', function (Blueprint $table) {
+        Schema::create('hrms_leave_types', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('job_id');
-            $table->string('unique_id')->nullable();
-            $table->text('cover_letter')->nullable();
-            $table->text('resume')->nullable();
-            $table->text('hr_remarks')->nullable();
+            $table->string('name');
+            $table->integer('no_of_days');
             $table->integer('status');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->integer('created_by');
             $table->integer('updated_by');
             $table->integer('deleted_by')->nullable();
@@ -27,6 +25,6 @@ class CreateJobApplicationsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('hrms_job_applications');
+        Schema::dropIfExists('hrms_leave_types');
     }
 }
