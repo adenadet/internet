@@ -13,14 +13,32 @@ use App\Models\State;
 use App\Models\User;
 
 use App\Models\EMR\Patient;
-
+use App\Models\HRMS\Employee;
 use Spatie\Permission\Models\Role;
 
 trait UserTrait{
 
     use FileManagementTrait;
 
+    public function user_create_new_staff($request){
+        $user = $this->user_create_new_user($request, null);
+        $staff = Employee::create([
+            'user_id' => $user->id,
+            'supervisor_id' => $request->supervisor_id,
+            'department_id' => $user->department_id,
+            'unit_id' => $request->unit_id ?? NULL,
+            'company_id' => $request->company_id ?? NULL,
+            'salary_template' => $request->salary_template ?? NULL,
+            'joined_at' => $user->joined_at,
+            'left_at' => $request->input('left_at') ?? NULL,
+            'designation_id' => $request->input('designation_id') ?? NULL,
+            'created_by' => auth('api')->id(),
+            'updated_at' => auth('api')->id(),
+        ]);
+    }
+
     public function user_create_new_user($request, $image_url){
+        $image_url = (!is_null($request->input('image'))) ? $this->file_upload($request->input('image'), 'image', 'img/profile/', null) : 'default.png';
         $user = User::create([
             'email' => $request['email'],
             'first_name' => $request['first_name'],
@@ -63,7 +81,7 @@ trait UserTrait{
     public function user_update_user($request, $id){
         $user = User::where('id', '=', $id)->first();
 
-        $image_url = ((!(is_null($request->input('image')))) && ($request->input('image') != $user->image))? $this->file_upload('image', 'uploads/profile', $id): $user->image;
+        $image_url = ((!(is_null($request->input('image')))) && ($request->input('image') != $user->image))? $this->file_upload($request->input('image'), 'image', 'uploads/profile', $id): $user->image;
         
         $user->email = $request['email'];
         $user->first_name = $request['first_name'];

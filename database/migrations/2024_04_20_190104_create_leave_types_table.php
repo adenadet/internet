@@ -14,7 +14,7 @@ class CreateLeaveTypesTable extends Migration
             $table->integer('no_of_days');
             $table->integer('status');
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->integer('created_by');
             $table->integer('updated_by');
             $table->integer('deleted_by')->nullable();

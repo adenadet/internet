@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>UK TB Screening Certificate</title>
+        <title>Leave Request Notification</title>
     </head>
     <body>
         <h1>Hello {{$line_manager->first_name}}</h1>
