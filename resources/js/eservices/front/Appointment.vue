@@ -84,15 +84,17 @@
                                 <i class="fas fa-file bg-purple"></i>
                                 <div class="timeline-item">
                                     <span class="time"><i class="fas fa-clock"></i> {{appointment.report.created_at | excelDate}}</span>
-                                    <h3 class="timeline-header"><b>Radiologist</b></h3>
-                                    <div class="timeline-body row">
+                                    <h3 class="timeline-header">
                                         <div class="user-block col-md-12">
                                             <img class="img-circle img-bordered-sm" :src="appointment.radiologist != null ? '/img/profile/'+appointment.radiologist.image : '/img/profile/default.png'" :title="appointment.radiologist.first_name+' '+appointment.radiologist.last_name">
                                             <span class="username"><a href="#">{{appointment.radiologist != null ? appointment.radiologist.first_name+' '+appointment.radiologist.last_name : 'Radiologist Undefined'}}</a>
                                             </span>
+                                            <span class="description">Radiologist</span>
                                             <span class="description">Posted: {{appointment.report.created_at | excelDate}}</span>
-                                        </div><br />
-                                        <p class="col-md-12">{{ appointment.report.summary | firstUp }}</p>
+                                        </div>
+                                    </h3>
+                                    <div class="timeline-body row">
+                                        <p class="col-md-12"><strong>{{ appointment.report.summary | firstUp }}</strong></p>
                                         <p class="col-md-12" v-html="appointment.report.details"></p>
                                     </div>
                                 </div>

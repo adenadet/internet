@@ -12,6 +12,7 @@ import InventoryTransferOrders from '../inventory/TransferOrders.vue';
 import InventoryTransferOrdersInt from '../inventory/TransferOrdersInt.vue';
 
 import InventoryDetailTransferOrder from '../inventory/details/TransferOrder.vue';
+import InventoryDetailTRPending from '../inventory/details/TRPending.vue';
 
 import InventoryFormItem from '../inventory/forms/Item.vue';
 import InventoryFormItemType from '../inventory/forms/ItemType.vue';
@@ -27,6 +28,7 @@ Vue.component('InventoryStores',        InventoryStores);
 Vue.component('InventoryStore',         InventoryStore);
 
 Vue.component('InventoryDetailTransferOrder',       InventoryDetailTransferOrder);
+Vue.component('InventoryDetailTRPending',           InventoryDetailTRPending);
 
 Vue.component('InventoryTransferOrders', InventoryTransferOrders);
 Vue.component('InventoryTransferOrdersInt', InventoryTransferOrdersInt);

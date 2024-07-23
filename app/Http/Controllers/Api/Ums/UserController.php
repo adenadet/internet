@@ -55,28 +55,17 @@ class UserController extends Controller
             'roles' => 'required|array',
         ]);
 
-        print_r($request->input('roles'));
         $user = User::find($request->input('user_id'));
-        
-        $roles = Role::select('id', 'name')->whereIn('id', $request->input('roles'))->get();
-        print_r($roles);
-        
+        //$roles = Role::select('id', 'name')->whereIn('id', $request->input('roles'))->get();
         $user->syncRoles($request->input('roles'));
-        
-        $areas = Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get();
-        $branches = Branch::select('id', 'name')->orderBy('name', 'ASC')->get();
-        $departments = Department::select('id', 'name')->orderBy('name', 'ASC')->get();
-        $nok = NextOfKin::where('user_id', auth('api')->id())->get();
-        $states = State::orderBy('name', 'ASC')->get();
-        $users = User::orderBy('first_name', 'ASC')->with('area')->with('state')->with('branch')->with('roles')->paginate(51);
 
         return response()->json([
-            'areas' => $areas,
-            'branches' => $branches,
-            'departments' => $departments,
-            'nok' => $nok,
-            'states' => $states,       
-            'users' => $users,
+            'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
+            'branches' => Branch::select('id', 'name')->orderBy('name', 'ASC')->get(),
+            'departments' => Department::select('id', 'name')->orderBy('name', 'ASC')->get(),
+            'nok' => NextOfKin::where('user_id', auth('api')->id())->get(),
+            'states' => State::orderBy('name', 'ASC')->with(['areas'])->get(),       
+            'users' => $this->user_get_all(),
         ]);
     }
 
@@ -98,13 +87,6 @@ class UserController extends Controller
             //'unique_id' => 'required|unique:users',
         ]);
 
-        $image_url = null;
-        if (!is_null($request['image'])){
-            $image = $request['id']."-".time().".".explode('/',explode(':', substr( $request['image'], 0, strpos($request['image'], ';')))[1])[1];
-            \Image::make($request['image'])->save(public_path('img/profile/').$image);
-            $image_url = $image;
-        }
-    
         $user = $this->user_create_new($request, $image_url);
 
         return response()->json([
@@ -114,7 +96,7 @@ class UserController extends Controller
             'departments' => Department::select('id', 'name')->orderBy('name', 'ASC')->get(),
             'nok' => NextOfKin::where('user_id', auth('api')->id())->get(),
             'states' => State::orderBy('name', 'ASC')->get(),       
-            'users' => User::orderBy('first_name', 'ASC')->with('area')->with('state')->with('branch')->with('department')->paginate(51),
+            'users' => $this->user_get_all(),
 
             //This is the based on the service requested
             'message' => 'Your password has been changed successfully',
@@ -237,19 +219,7 @@ class UserController extends Controller
             'dob' => 'required|date',
         ]);
 
-        $user = User::find($id);
-        $image_url = $currentPhoto = $user->image;
-         
-        if (($request['image'] != $currentPhoto) && ($request['image'] != '')){
-            $image = $request['id']."-".time().".".explode('/',explode(':', substr( $request['image'], 0, strpos($request['image'], ';')))[1])[1];
-            \Image::make($request['image'])->save(public_path('img/profile/').$image);
-            $image_url = $image;
-            $old_image = public_path('img/profile/').$currentPhoto;
-
-            if (file_exists($old_image)){ @unlink($old_image); }
-        }
-
-        $user = $this->user_update_user($request, $user);
+        $user = $this->user_update_user($request, $id);
 
         return response()->json([
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),

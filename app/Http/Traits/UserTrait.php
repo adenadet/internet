@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Traits;
-
+use App\Http\Traits\FileTrait;
 use App\Models\Area;
 use App\Models\Branch;
 use App\Models\Country;
@@ -15,7 +15,9 @@ use App\Models\EMR\Patient;
 use Spatie\Permission\Models\Role;
 
 trait UserTrait{
+    use FileTrait;
     public function user_create_new_user($request, $image_url){
+        $image_url = $this->file_upload_to_location($request->input('image'), 'image', 'img/profile', null);
         $user = User::create([
             'email' => $request['email'],
             'first_name' => $request['first_name'],
@@ -47,15 +49,19 @@ trait UserTrait{
     }
 
     public function user_get_all_staffs($paginated){
-        $staffs = Staff::select('user_id')->get();
-        $users = User::whereIn('id', $staffs)->orderBy('first_name', 'ASC')->with(['area', 'branch', 'department', 'roles', 'state']);
+        $staffs = Staff::pluck('user_id');
+        $users = User::whereIn('id', $staffs)->orderBy('first_name', 'ASC')->with(['area', 'branch', 'department', 'roles', 'state', 'employee']);
 
         if ($paginated){$users = $users->paginate(51);}
         else{$users = $users->get();}
         
         return $users;
     }
-    public function user_update_user($request, $user){
+
+    public function user_update_user($request, $id){
+        $user = User::where('id', '=', $id)->first();
+        $image_url = $this->file_upload_to_location($request->input('image'), 'image', 'img/profile', null);
+        
         $user->email = $request['email'];
         $user->first_name = $request['first_name'];
         $user->middle_name = $request['middle_name'];

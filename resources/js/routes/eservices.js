@@ -3,9 +3,11 @@ import VueRouter from 'vue-router';
 
 import EServiceAdminDashboard        from '../eservices/admin/Dashboard.vue';
 import EServiceAdminReportDetailed   from '../eservices/admin/Detailed.vue';
+import EServiceAdminReportHomeOffice from '../eservices/admin/HomeOffice.vue';
 import EServiceAdminReportSummary    from '../eservices/admin/Summary.vue';
 Vue.component('EServiceAdminDashboard',             EServiceAdminDashboard);
 Vue.component('EServiceAdminReportDetailed',        EServiceAdminReportDetailed);
+Vue.component('EServiceAdminReportHomeOffice',      EServiceAdminReportHomeOffice);
 Vue.component('EServiceAdminReportSummary',         EServiceAdminReportSummary);    
 
 import EServiceCertificate           from '../eservices/certificates/Certificate.vue';
@@ -123,6 +125,7 @@ let routes = [
     {path: '/eservices/administrator',                  component:EServiceAdminDashboard},
     {path: '/eservices/administrator/dashboard',        component:EServiceAdminDashboard},
     {path: '/eservices/administrator/detailed_reports', component:EServiceAdminReportDetailed},
+    {path: '/eservices/administrator/home_office_reports', component:EServiceAdminReportHomeOffice},
     {path: '/eservices/administrator/summary_reports',  component:EServiceAdminReportSummary},
     {path: '/eservices/administrator/dashboard',        component:EServiceAdminDashboard},
 

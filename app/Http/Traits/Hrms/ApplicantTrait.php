@@ -2,6 +2,7 @@
 
 namespace App\Http\Traits\HRMS;
 
+use App\Http\Traits\Hrms\EmployeeTrait;
 use App\Http\Traits\LogTrait;
 use App\Http\Traits\UMS\UserTrait;
 
@@ -31,7 +32,9 @@ use Session;
 trait ApplicantTrait{
     public function hrms_applicant_create($request){}
     
-    public function hrms_applicant_confirm($request){}
+    public function hrms_applicant_confirm($request, $user_id){
+        //$user
+    }
 
     public function hrms_applicant_reject($request){}
 

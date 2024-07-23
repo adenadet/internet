@@ -62,6 +62,25 @@ trait AppointmentTrait{
         }
     }
 
+    public function appointment_get_by_period($type, $start, $end, $detailed, $paginated){
+        $query = Appointment::whereDate('date', '>=', $start)->whereDate('date', '<=', $end);
+        switch ($type){
+            case 'all':
+                $query = $query->where('status', '>=', 5);
+            break;
+            case 'sputum':
+                $sputum_tests = Laboratory::pluck('appointment_id');
+                $query = $query->whereIn('id', $sputum_tests);
+            break;
+        }
+
+        $query = $detailed ? $query->with(['consultation', 'laboratory', 'patient', 'referral.creator', 'radiologist', 'report.findings',]) : $query;
+
+        $appointments = $paginated ? $query->paginate(52) : $query->get();
+
+        return $appointments;
+    }
+
     public function appointment_search($query, $type){
         $search = $request->input('patient');
 

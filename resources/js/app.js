@@ -121,6 +121,19 @@ Vue.filter('currency', function(value) {
     return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 });
 
+Vue.filter('dateDay', function(text){
+    return moment(text).format('DD');
+});
+
+Vue.filter('dateMonth', function(text){
+    return moment(text).format('MM');
+});
+
+Vue.filter('dateYear', function(text){
+    return moment(text).format('YYYY');
+});
+
+
 Vue.filter('ExcelDate', function(text){
     return moment(text).format('Do MMMM, YYYY');
 });
@@ -146,11 +159,6 @@ Vue.filter('FullName', function(text){
     return text.last_name+', '+text.first_name+ (text.middle_name != null ? ' '+text.middle_name : '');
 });
 
-Vue.filter('Names', function(text){
-    if (text == null){return 'Old User/Staff';}
-    return text.first_name+ (text.middle_name != null ? ' '+text.middle_name : '');
-});
-
 Vue.filter('FullDate', function(text){
     return moment(text).format('LLLL');
 });
@@ -165,6 +173,11 @@ Vue.filter('getAge', function(text){
     var currentYear = currentDate.getFullYear();
     var age = currentYear - birthYear;
     return age+' years';
+});
+
+Vue.filter('Names', function(text){
+    if (text == null){return 'Old User/Staff';}
+    return text.first_name+ (text.middle_name != null ? ' '+text.middle_name : '');
 });
 
 Vue.filter('profilePicture', function (text){

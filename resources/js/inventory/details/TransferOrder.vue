@@ -1,94 +1,94 @@
 <template>
-<section>
-    <div class="container-fluid">
-        <div class="invoice p-3 mb-3">
-            <div class="row">
-                <div class="col-12">
-                    <h4>
-                        <i class="fas fa-globe"></i>Transfer Order
-                        <small class="float-right">Date: 2/10/2014</small>
-                    </h4>
+    <section>
+        <div class="container-fluid">
+            <div class="invoice p-3 mb-3">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>
+                            <i class="fas fa-globe"></i>Transfer Order
+                            <small class="float-right">Date: 2/10/2014</small>
+                        </h4>
+                    </div>
                 </div>
-            </div>
-            <div class="row invoice-info">
-                <div class="col-sm-4 invoice-col">
-                    From
-                    <address>
-                        <strong>Admin, Inc.</strong><br>
-                        795 Folsom Ave, Suite 600<br>
-                        San Francisco, CA 94107<br>
-                        Phone: (804) 123-5432<br>
-                        Email: info@almasaeedstudio.com
-                    </address>
+                <div class="row invoice-info">
+                    <div class="col-sm-4 invoice-col">
+                        From
+                        <address>
+                            <strong>Admin, Inc.</strong><br>
+                            795 Folsom Ave, Suite 600<br>
+                            San Francisco, CA 94107<br>
+                            Phone: (804) 123-5432<br>
+                            Email: info@almasaeedstudio.com
+                        </address>
+                    </div>
+                    <div class="col-sm-4 invoice-col">
+                        To
+                        <address>
+                            <strong>John Doe</strong><br>
+                            795 Folsom Ave, Suite 600<br>
+                            San Francisco, CA 94107<br>
+                            Phone: (555) 539-1037<br>
+                            Email: john.doe@example.com
+                        </address>
+                    </div>
+                    <div class="col-sm-4 invoice-col">
+                        <b>Invoice #007612</b><br>
+                        <br>
+                        <b>Order ID:</b> 4F3S8J<br>
+                        <b>Payment Due:</b> 2/22/2014<br>
+                        <b>Account:</b> 968-34567
+                    </div>
                 </div>
-                <div class="col-sm-4 invoice-col">
-                    To
-                    <address>
-                        <strong>John Doe</strong><br>
-                        795 Folsom Ave, Suite 600<br>
-                        San Francisco, CA 94107<br>
-                        Phone: (555) 539-1037<br>
-                        Email: john.doe@example.com
-                    </address>
-                </div>
-                <div class="col-sm-4 invoice-col">
-                    <b>Invoice #007612</b><br>
-                    <br>
-                    <b>Order ID:</b> 4F3S8J<br>
-                    <b>Payment Due:</b> 2/22/2014<br>
-                    <b>Account:</b> 968-34567
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th width="10%">Serial #</th>
-                                <th width="30%">Item</th>
-                                <th width="20%">Requested Qty</th>
-                                <th width="20%" v-if="transfer_order.status == 1 || transfer_order.status == 3">Approved Qty</th>
-                                <th width="20%" v-if="transfer_order.status == 3">Issued Qty</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(item,index) in transfer_order.items">
-                                <td>{{index | addOne}}</td>
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.requested_quantity }}</td>
-                                <td v-if="transfer_order.status == 1 || transfer_order.status == 3">{{ item.approved_quantity }}</td>
-                                <td v-if="transfer_order.status == 3">{{ item.transfer_quantity }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">&nbsp;</p>
-                </div>
-                <div class="col-6">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <tr>
-                                <th style="width:40%">Requested By:</th>
-                                <td>{{ transfer_order.creator | FullName }} <br />{{ transfer_order.created_at | excelDate }}</td>
-                            </tr>
-                            <tr>
-                                <th>Approved By:</th>
-                                <td>{{ transfer_order.approver | FullName }} <br />{{ transfer_order.approved_at | excelDate }}</td>
-                            </tr>
-                            <tr>
-                                <th>Issued By:</th>
-                                <td>{{ transfer_order.issuer | FullName }} <br />{{ transfer_order.transferred_at | excelDate }}</td>
-                            </tr>
+                <div class="row">
+                    <div class="col-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th width="10%">Serial #</th>
+                                    <th width="30%">Item</th>
+                                    <th width="20%">Requested Qty</th>
+                                    <th width="20%" v-if="transfer_order.status == 1 || transfer_order.status == 3">Approved Qty</th>
+                                    <th width="20%" v-if="transfer_order.status == 3">Issued Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item,index) in transfer_order.items">
+                                    <td>{{index | addOne}}</td>
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ item.requested_quantity }}</td>
+                                    <td v-if="transfer_order.status == 1 || transfer_order.status == 3">{{ item.approved_quantity }}</td>
+                                    <td v-if="transfer_order.status == 3">{{ item.transfer_quantity }}</td>
+                                </tr>
+                            </tbody>
                         </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">&nbsp;</p>
+                    </div>
+                    <div class="col-6">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <th style="width:40%">Requested By:</th>
+                                    <td>{{ transfer_order.creator | FullName }} <br />{{ transfer_order.created_at | excelDate }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Approved By:</th>
+                                    <td>{{ transfer_order.approver | FullName }} <br />{{ transfer_order.approved_at | excelDate }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Issued By:</th>
+                                    <td>{{ transfer_order.issuer | FullName }} <br />{{ transfer_order.transferred_at | excelDate }}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 </template>
 <script>
 export default {

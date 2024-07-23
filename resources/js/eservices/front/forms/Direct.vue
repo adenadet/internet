@@ -187,7 +187,7 @@ As with any of the services we offer; there are terms and conditions that apply 
                     </div>
                 </div>
             </div>
-            <paystack style="margin-auto;" class="btn btn-primary" type="button" :amount="this.ApplicantData.amount * 100" :email="ApplicantData.email" :paystackkey="PUBLIC_KEY" :callback="processAppointment" :close="close" :reference="genRef()" :embed="false" :disabled="terms == 0 || ApplicantData.email == '' || ApplicantData.first_name == '' || ApplicantData.last_name == '' || ApplicantData.schedule == ''">PAY NGN {{this.ApplicantData.amount}} Online</paystack>
+            <paystack style="" class="btn btn-primary" type="button" :amount="this.ApplicantData.amount * 100" :email="ApplicantData.email" :paystackkey="PUBLIC_KEY" :callback="processAppointment" :close="close" :reference="genRef()" :embed="false" :disabled="terms == 0 || ApplicantData.email == '' || ApplicantData.first_name == '' || ApplicantData.last_name == '' || ApplicantData.schedule == ''">PAY NGN {{this.ApplicantData.amount}} Online</paystack>
         </form>
     </div>
     <div class="card-footer">
@@ -361,8 +361,8 @@ export default {
             var year = age_dt.getUTCFullYear();  
             var age = Math.abs(year - 1970);  
             
-            if (age >= 11){this.ApplicantData.amount = 60000;}
-            else {this.ApplicantData.amount = 30000;}
+            if (age >= 11){this.ApplicantData.amount = 100000;}
+            else {this.ApplicantData.amount = 50000;}
         },
         updateProfilePic(e){
             let file = e.target.files[0];

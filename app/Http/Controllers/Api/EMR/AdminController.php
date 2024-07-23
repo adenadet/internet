@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\EMR;
 
 use App\Http\Controllers\Controller;
+use App\Http\Traits\Eservice\AppointmentTrait;
 use App\Models\EMR\Appointment;
 use App\Models\EMR\Consultation;
 use Illuminate\Http\Request;
@@ -10,6 +11,24 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+    use AppointmentTrait;
+    public function destroy($id)
+    {
+        
+    }
+
+    public function home_office_report(Request $request){
+        $this->validate($request, [
+            'end_date' => 'required | date',
+            'report_type' => 'required',
+            'start_date' => 'required | date',
+        ]);
+
+        $appointments = $this->appointment_get_by_period($request->input('report_type'), $request->input('start_date'), $request->input('end_date'), true, false);
+
+        return response()->json(['appointments' => $appointments,]);
+    }
+
     public function index()
     {
         
@@ -28,11 +47,6 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
         //
-    }
-
-    public function destroy($id)
-    {
-        
     }
 
     public function summary_report(Request $request){
