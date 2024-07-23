@@ -17,7 +17,7 @@ class CreateApplicantsTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->timestamps();
-            $table->softDelete();
+            $table->softDeletes();
         });
     }
 

@@ -85,9 +85,10 @@ class UserController extends Controller
             'sex' => 'required|string',
             'dob' => 'required|date',
             //'unique_id' => 'required|unique:users',
+            'supervisor_id' => 'sometimes|numeric',
         ]);
 
-        $user = $this->user_create_new($request, $image_url);
+        $user = $this->user_create_new($request, null);
 
         return response()->json([
             // This are the required for User page
@@ -107,7 +108,7 @@ class UserController extends Controller
     
     public function search()
     {
-        if ($search = \Request::get('q')){
+        if ($search = $_GET['q']){
             $users = User::orderBy('first_name', 'ASC')->with('area')->with('state')->with('branch')->with('department')->where(function($query) use ($search){
                 $query->where('first_name', 'LIKE', "%$search%")
                 ->orWhere('middle_name', 'LIKE', "%$search%")
@@ -125,10 +126,7 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user = auth('api')->user();
-        
-        if ($request->input('image')){
-            $name = time().'.'.explode('/',explode(':', substr($request->input('image'), 0, strpos($request->input('image'), ';'))))[1][1];
-        }
+
         return response()->json(['status' => 'Successful']);
     }
 
@@ -172,6 +170,12 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+        $areas = Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get();
+        $branches = Branch::select('id', 'name')->orderBy('name', 'ASC')->get();
+        $departments = Department::select('id', 'name')->orderBy('name', 'ASC')->get();
+        $nok = NextOfKin::where('user_id', auth('api')->id())->get();
+        $states = State::orderBy('name', 'ASC')->get();
+        $users = $this->user_get_all();
 
         return response()->json([
             'nations' => Country::orderBy('name', 'ASC')->get(),
@@ -238,6 +242,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
+        
         return response()->json([
             'areas' => Area::select('id', 'name')->where('state_id', 25)->orderBy('name', 'ASC')->get(),
             'branches' => Branch::select('id', 'name')->orderBy('name', 'ASC')->get(),

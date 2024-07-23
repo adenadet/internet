@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Http\Traits\Finance;
+namespace App\Http\Traits\Hrms;
 
 use App\Http\Traits\LogTrait;
 

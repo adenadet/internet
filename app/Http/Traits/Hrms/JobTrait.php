@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Http\Traits\HRMS;
+namespace App\Http\Traits\Hrms;
 
 use App\Http\Traits\LogTrait;
 use App\Http\Traits\UMS\UserTrait;

@@ -11,6 +11,7 @@ class CreateEmployeesTable extends Migration
         Schema::create('hrms_employees', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
+            $table->integer('unique_id')->nullable();
             $table->integer('supervisor_id')->nullable();
             $table->integer('department_id')->nullable();
             $table->integer('unit_id')->nullable();
@@ -23,7 +24,7 @@ class CreateEmployeesTable extends Migration
             $table->integer('updated_by');
             $table->integer('deleted_by');
             $table->timestamps();
-            $table->softDelete();
+            $table->softDeletes();
         });
     }
 

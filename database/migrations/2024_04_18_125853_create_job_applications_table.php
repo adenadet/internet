@@ -21,7 +21,7 @@ class CreateJobApplicationsTable extends Migration
             $table->integer('updated_by');
             $table->integer('deleted_by')->nullable();
             $table->timestamps();
-            $table->softDelete();
+            $table->softDeletes();
         });
     }
 
